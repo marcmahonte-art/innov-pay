@@ -6,6 +6,7 @@ import { MoovProvider } from './moov/moov.provider';
 import { OrangeProvider } from './orange/orange.provider';
 import { VisaProvider } from './visa/visa.provider';
 import { MastercardProvider } from './mastercard/mastercard.provider';
+import { KonoomProvider } from './konoom/konoom.provider';
 import { PaymentProvider } from './interfaces/payment-provider.interface';
 import { EncryptionUtil } from '../../common/utils/encryption.util';
 
@@ -63,6 +64,8 @@ export class ProvidersService {
         return new VisaProvider(credentials);
       case 'mastercard':
         return new MastercardProvider(credentials);
+      case 'konoom':
+        return new KonoomProvider(credentials);
       default:
         throw new NotFoundException(`Provider implementation for ${name} not found`);
     }

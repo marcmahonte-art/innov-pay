@@ -15,7 +15,9 @@ import {
   FileText, 
   Menu, 
   X,
-  User
+  User,
+  Link2,
+  Send
 } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -50,6 +52,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const navItems = [
     { name: 'Vue d\'ensemble', href: '/dashboard', icon: Home },
     { name: 'Transactions', href: '/dashboard/payments', icon: CreditCard },
+    { name: 'Liens de paiement', href: '/dashboard/paylinks', icon: Link2 },
+    { name: 'Paiement de masse', href: '/dashboard/bulk-payouts', icon: Send },
     { name: 'Clés API', href: '/dashboard/api-keys', icon: Key },
     { name: 'Webhooks', href: '/dashboard/webhooks', icon: Activity },
     { name: 'Réglements', href: '/dashboard/settlements', icon: Coins },

@@ -48,6 +48,18 @@ async function main() {
       weight: 50,
       credentials: { sharedSecret: 'mastercard_mock_secret', merchantId: 'mc_merchant_id' },
     },
+    {
+      name: 'konoom',
+      method: PaymentMethod.KONOOM_MONEY,
+      priority: 1,
+      weight: 100,
+      credentials: {
+        clientId: 'konoom_client_id',
+        clientSecret: 'konoom_mock_secret',
+        webhookSecret: 'konoom_webhook_secret',
+        baseUrl: 'https://api.konoom.td/v1',
+      },
+    },
   ];
 
   for (const prov of providers) {

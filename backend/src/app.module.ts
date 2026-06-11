@@ -11,6 +11,9 @@ import { WebhooksModule } from './modules/webhooks/webhooks.module';
 import { SettlementsModule } from './modules/settlements/settlements.module';
 import { KycModule } from './modules/kyc/kyc.module';
 import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
+import { PayLinksModule } from './modules/paylinks/paylinks.module';
+import { BulkPayoutsModule } from './modules/bulk-payouts/bulk-payouts.module';
+import { CheckoutModule } from './modules/checkout/checkout.module';
 
 @Module({
   imports: [
@@ -55,6 +58,10 @@ import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
     WebhooksModule,
     SettlementsModule,
     KycModule,
+    PayLinksModule,
+    BulkPayoutsModule,
+    CheckoutModule,
   ],
 })
 export class AppModule {}
+

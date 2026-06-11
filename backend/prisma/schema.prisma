@@ -27,8 +27,29 @@ enum PaymentMethod {
   AIRTEL_MONEY
   ORANGE_MONEY
   MOOV_MONEY
+  KONOOM_MONEY
   VISA
   MASTERCARD
+}
+
+enum PayLinkStatus {
+  ACTIVE
+  EXPIRED
+  PAID
+  CANCELLED
+}
+
+enum BulkPayoutStatus {
+  DRAFT
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum PayoutItemStatus {
+  PENDING
+  SUCCESS
+  FAILED
 }
 
 enum KycDocumentType {
@@ -83,6 +104,8 @@ model Merchant {
   webhooks     Webhook[]
   settlements  Settlement[]
   kycDocs      KycDocument[]
+  payLinks     PayLink[]
+  bulkPayouts  BulkPayout[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -124,11 +147,14 @@ model Payment {
   webhookAttempts   WebhookLog[]
   settlementId      String?
   settlement        Settlement?    @relation(fields: [settlementId], references: [id])
+  payLinkId         String?
+  payLink           PayLink?       @relation(fields: [payLinkId], references: [id])
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
 
   @@unique([merchantId, merchantReference])
   @@index([status])
+  @@index([payLinkId])
 }
 
 model Provider {
@@ -219,4 +245,61 @@ model AuditLog {
   createdAt DateTime @default(now())
 
   @@index([userId])
+}
+
+model PayLink {
+  id            String        @id @default(uuid())
+  merchantId    String
+  merchant      Merchant      @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  title         String
+  description   String?
+  amount        Decimal       @db.Decimal(18, 2)
+  currency      String        @default("XAF")
+  status        PayLinkStatus @default(ACTIVE)
+  slug          String        @unique
+  isReusable    Boolean       @default(false)
+  expiresAt     DateTime?
+  maxPayments   Int?
+  totalPaid     Int           @default(0)
+  metadata      Json?
+  payments      Payment[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([merchantId])
+}
+
+model BulkPayout {
+  id            String           @id @default(uuid())
+  merchantId    String
+  merchant      Merchant         @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  totalAmount   Decimal          @db.Decimal(18, 2)
+  totalFees     Decimal          @default(0) @db.Decimal(18, 2)
+  currency      String           @default("XAF")
+  status        BulkPayoutStatus @default(DRAFT)
+  totalItems    Int              @default(0)
+  successCount  Int              @default(0)
+  failedCount   Int              @default(0)
+  items         PayoutItem[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([merchantId])
+}
+
+model PayoutItem {
+  id              String           @id @default(uuid())
+  bulkPayoutId    String
+  bulkPayout      BulkPayout       @relation(fields: [bulkPayoutId], references: [id], onDelete: Cascade)
+  recipientPhone  String
+  recipientName   String?
+  amount          Decimal          @db.Decimal(18, 2)
+  provider        String
+  status          PayoutItemStatus @default(PENDING)
+  providerRef     String?
+  errorMessage    String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([bulkPayoutId])
 }
