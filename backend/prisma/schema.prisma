@@ -1,0 +1,222 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  MERCHANT_OWNER
+  MERCHANT_ADMIN
+  DEVELOPER
+  SUPPORT
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  AIRTEL_MONEY
+  ORANGE_MONEY
+  MOOV_MONEY
+  VISA
+  MASTERCARD
+}
+
+enum KycDocumentType {
+  RCCM         // Registre du Commerce et du Crédit Mobilier
+  NIF          // Numéro d'Identification Fiscale
+  ID_CARD      // Pièce d'identité du gérant
+  UTILITY_BILL // Facture d'eau/électricité (justificatif de domicile)
+}
+
+enum KycStatus {
+  UNVERIFIED
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum SettlementStatus {
+  PENDING
+  PROCESSED
+  FAILED
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  name         String
+  role         UserRole   @default(MERCHANT_OWNER)
+  isActive     Boolean    @default(true)
+  merchantId   String?
+  merchant     Merchant?  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  auditLogs    AuditLog[]
+
+  @@index([merchantId])
+}
+
+model Merchant {
+  id           String        @id @default(uuid())
+  businessName String
+  email        String        @unique
+  phone        String
+  address      String?
+  kycStatus    KycStatus     @default(UNVERIFIED)
+  balance      Decimal       @default(0.00) @db.Decimal(18, 2)
+  pendingBal   Decimal       @default(0.00) @db.Decimal(18, 2)
+  currency     String        @default("XAF")
+  users        User[]
+  apiKeys      ApiKey[]
+  payments     Payment[]
+  webhooks     Webhook[]
+  settlements  Settlement[]
+  kycDocs      KycDocument[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model ApiKey {
+  id           String    @id @default(uuid())
+  merchantId   String
+  merchant     Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  publicKey    String    @unique // pk_live_... / pk_test_...
+  secretHash   String    // SHA-256 hash of secret key
+  isLive       Boolean   @default(false)
+  lastUsedAt   DateTime?
+  expiresAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([merchantId])
+}
+
+model Payment {
+  id                String         @id @default(uuid())
+  merchantId        String
+  merchant          Merchant       @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  amount            Decimal        @db.Decimal(18, 2)
+  currency          String         @default("XAF")
+  status            PaymentStatus  @default(PENDING)
+  paymentMethod     PaymentMethod
+  customerEmail     String
+  customerPhone     String?
+  providerId        String
+  provider          Provider       @relation(fields: [providerId], references: [id])
+  providerReference String?        @unique
+  merchantReference String         // Order ID supplied by merchant
+  fee               Decimal        @default(0.00) @db.Decimal(18, 2) // Total fee charged to merchant
+  providerFee       Decimal        @default(0.00) @db.Decimal(18, 2) // Fee charged by provider
+  netAmount         Decimal        @db.Decimal(18, 2) // amount - fee
+  errorMessage      String?
+  metadata          Json?          // Key-value pairs from merchant
+  webhookAttempts   WebhookLog[]
+  settlementId      String?
+  settlement        Settlement?    @relation(fields: [settlementId], references: [id])
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  @@unique([merchantId, merchantReference])
+  @@index([status])
+}
+
+model Provider {
+  id          String        @id @default(uuid())
+  name        String        @unique // airtel, orange, moov, visa, mastercard
+  method      PaymentMethod
+  isHealthy   Boolean       @default(true)
+  priority    Int           @default(1)
+  weight      Int           @default(100) // For weighted routing
+  credentials Json          // Encrypted API keys, URLs
+  payments    Payment[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Webhook {
+  id         String       @id @default(uuid())
+  merchantId String       @unique
+  merchant   Merchant     @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  url        String
+  secret     String       // Webhook signature secret
+  isActive   Boolean      @default(true)
+  events     String[]     // e.g. ["payment.success", "payment.failed"]
+  logs       WebhookLog[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model WebhookLog {
+  id         String   @id @default(uuid())
+  webhookId  String
+  webhook    Webhook  @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  paymentId  String
+  payment    Payment  @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  event      String   // payment.success, etc.
+  payload    Json
+  url        String
+  headers    Json
+  statusCode Int?
+  response   String?
+  success    Boolean  @default(false)
+  attempt    Int      @default(1)
+  createdAt  DateTime @default(now())
+
+  @@index([paymentId])
+  @@index([webhookId])
+}
+
+model Settlement {
+  id          String           @id @default(uuid())
+  merchantId  String
+  merchant    Merchant         @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  amount      Decimal          @db.Decimal(18, 2) // Net settlement amount
+  feeTotal    Decimal          @db.Decimal(18, 2)
+  currency    String           @default("XAF")
+  status      SettlementStatus @default(PENDING)
+  payoutPhone String?          // For Mobile Money payout
+  bankDetails Json?            // Bank routing details (e.g. UBA, Ecobank)
+  payments    Payment[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([merchantId])
+}
+
+model KycDocument {
+  id         String          @id @default(uuid())
+  merchantId String
+  merchant   Merchant        @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  type       KycDocumentType
+  fileUrl    String
+  status     KycStatus       @default(PENDING)
+  notes      String?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@index([merchantId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  details   String
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
