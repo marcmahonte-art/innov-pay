@@ -15,7 +15,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET') || 'supersecretjwtkeyforinnovpay2026aggregator',
         signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRES_IN') || '24h',
+          expiresIn: (configService.get<string>('JWT_EXPIRES_IN') || '24h') as any,
         },
       }),
     }),

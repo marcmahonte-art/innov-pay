@@ -47,7 +47,7 @@ export class PaymentsService {
 
     // 3. Fee calculation (CEMAC standard rates)
     // Airtel/Orange/Moov: 2.0% total fee, Cards: 3.5% total fee
-    const feeRate = [PaymentMethod.VISA, PaymentMethod.MASTERCARD].includes(dto.paymentMethod) ? 0.035 : 0.02;
+    const feeRate = ([PaymentMethod.VISA, PaymentMethod.MASTERCARD] as PaymentMethod[]).includes(dto.paymentMethod) ? 0.035 : 0.02;
     const fee = Number(dto.amount) * feeRate;
     const providerFee = fee * 0.6; // Assuming provider takes 60% of our fee
     const netAmount = Number(dto.amount) - fee;
