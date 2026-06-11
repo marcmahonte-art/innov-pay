@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: innov-pay-api
+    env: docker
+    dockerContext: backend
+    dockerfilePath: Dockerfile
+    plan: starter
+    port: 5000
+    envVars:
+      - key: PORT
+        value: "5000"
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: JWT_SECRET
+        value: "supersecretjwtkeyforinnovpay2026aggregator"
+      - key: JWT_REFRESH_SECRET
+        value: "supersecretjwtrefreshkeyforinnovpay2026aggregator"
+      - key: ENCRYPTION_KEY
+        value: "d7a5b3a3c27e85c13b28b7e415fb507a213e89a5940f8b1a4570220c5417ab90"
