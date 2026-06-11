@@ -1,7 +1,13 @@
 import { PrismaClient, PaymentMethod, UserRole } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 import * as bcrypt from 'bcrypt';
+import "dotenv/config";
 
-const prisma = new PrismaClient();
+const databaseUrl = process.env.DATABASE_URL || 'postgresql://innov_user:innov_password@localhost:5432/innov_pay?schema=public';
+const pool = new Pool({ connectionString: databaseUrl });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log('🚀 Seeding initial providers...');
@@ -84,4 +90,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    await pool.end();
   });

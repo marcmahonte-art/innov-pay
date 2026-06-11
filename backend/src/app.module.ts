@@ -26,12 +26,14 @@ import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
         const redisUrl = configService.get<string>('REDIS_URL') || 'redis://localhost:6379';
         try {
           const url = new URL(redisUrl);
+          const isTls = url.protocol === 'rediss:';
           return {
             connection: {
               host: url.hostname,
               port: parseInt(url.port, 10) || 6379,
               username: url.username || undefined,
               password: url.password || undefined,
+              ...(isTls ? { tls: {} } : {}),
             },
           };
         } catch {
