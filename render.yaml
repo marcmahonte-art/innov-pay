@@ -3,8 +3,8 @@ services:
     name: innov-pay-api
     env: docker
     dockerContext: backend
-    dockerfilePath: Dockerfile
-    plan: starter
+    dockerfilePath: backend/Dockerfile
+    plan: free
     port: 5000
     envVars:
       - key: PORT
