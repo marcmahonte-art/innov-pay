@@ -1,0 +1,11 @@
+{
+  "project": "polo6",
+  "name": "polo6",
+  "framework": "nextjs",
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": ".next",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "<YOUR_BACKEND_URL>",
+    "FRONTEND_URL": "https://polo6.vercel.app"
+  }
+}
