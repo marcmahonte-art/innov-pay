@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { SettlementStatus } from '@prisma/client';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class SettlementsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mailService: MailService,
+  ) {}
 
   /**
    * Aggregate all successful, unsettled payments and generate a Settlement request.
@@ -88,6 +92,7 @@ export class SettlementsService {
   async processPayout(settlementId: string) {
     const settlement = await this.prisma.settlement.findUnique({
       where: { id: settlementId },
+      include: { merchant: true },
     });
 
     if (!settlement) {
@@ -98,13 +103,34 @@ export class SettlementsService {
       throw new BadRequestException('Settlement has already been processed or failed');
     }
 
-    return this.prisma.settlement.update({
+    const updated = await this.prisma.settlement.update({
       where: { id: settlementId },
       data: {
         status: SettlementStatus.PROCESSED,
         updatedAt: new Date(),
       },
     });
+
+    // Send email notification to merchant
+    const accountDetails = settlement.payoutPhone
+      ? `Mobile Money (+235 ${settlement.payoutPhone})`
+      : settlement.bankDetails
+      ? typeof settlement.bankDetails === 'string'
+        ? settlement.bankDetails
+        : JSON.stringify(settlement.bankDetails)
+      : 'Coordonnées bancaires enregistrées';
+
+    const reference = `SET-${settlement.id.substring(0, 8).toUpperCase()}`;
+
+    this.mailService.sendPayoutEmail(
+      settlement.merchant.email,
+      Number(settlement.amount),
+      settlement.currency,
+      accountDetails,
+      reference,
+    );
+
+    return updated;
   }
 
   /**

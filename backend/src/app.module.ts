@@ -14,6 +14,9 @@ import { AuditLogsModule } from './modules/audit-logs/audit-logs.module';
 import { PayLinksModule } from './modules/paylinks/paylinks.module';
 import { BulkPayoutsModule } from './modules/bulk-payouts/bulk-payouts.module';
 import { CheckoutModule } from './modules/checkout/checkout.module';
+import { MailModule } from './modules/mail/mail.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -61,7 +64,9 @@ import { CheckoutModule } from './modules/checkout/checkout.module';
     PayLinksModule,
     BulkPayoutsModule,
     CheckoutModule,
+    MailModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
-

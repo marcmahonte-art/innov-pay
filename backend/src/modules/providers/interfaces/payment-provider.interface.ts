@@ -3,6 +3,7 @@ export interface ProviderPaymentResponse {
   status: 'PENDING' | 'SUCCESS' | 'FAILED';
   redirectUrl?: string; // e.g., for Orange Money Web Payment or Card 3D Secure redirect
   instructions?: string; // e.g., USSD instructions (e.g., "*133#")
+  rawResponse?: any;
 }
 
 export interface ProviderStatusResponse {
@@ -11,8 +12,9 @@ export interface ProviderStatusResponse {
 }
 
 export interface ProviderRefundResponse {
-  refundReference: string;
+  refundReference?: string;
   status: 'SUCCESS' | 'FAILED';
+  rawResponse?: any;
 }
 
 export interface PaymentProvider {

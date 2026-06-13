@@ -19,6 +19,24 @@ export default function CheckoutSessionPage() {
   const [paymentInstructions, setPaymentInstructions] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [otpRequired, setOtpRequired] = useState(false);
+  const [otp, setOtp] = useState('');
+
+  const verifyOtpMutation = useMutation({
+    mutationFn: async () => {
+      setErrorMessage(null);
+      const res = await publicApi.post(`/checkout/sessions/${sessionId}/verify-otp`, {
+        otp,
+      });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      handlePaymentSuccess(data);
+    },
+    onError: (err: any) => {
+      setErrorMessage(err.response?.data?.message || err.message || 'Le code OTP saisi est incorrect.');
+    },
+  });
 
   // Fetch Checkout Session details
   const { data: session, isLoading, error } = useQuery({
@@ -50,6 +68,9 @@ export default function CheckoutSessionPage() {
     onSuccess: (data) => {
       if (data.status === 'SUCCESS') {
         handlePaymentSuccess(data);
+      } else if (data.otpRequired) {
+        setOtpRequired(true);
+        setPaymentInstructions(data.instructions || null);
       } else if (data.instructions) {
         setPaymentInstructions(data.instructions);
       } else {
@@ -165,6 +186,49 @@ export default function CheckoutSessionPage() {
                   Votre transaction de {amountFormatted} {session.currency} a été validée.
                 </p>
               </div>
+            </div>
+          ) : otpRequired ? (
+            <div className="space-y-5">
+              <div className="h-12 w-12 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-400">
+                <Smartphone className="h-6 w-6" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-sm font-bold text-white">Validation OTP Requise</h3>
+                <p className="text-xs text-slate-400">
+                  {paymentInstructions || "Veuillez saisir le code OTP envoyé par SMS pour finaliser le paiement."}
+                </p>
+                <input
+                  type="text"
+                  maxLength={6}
+                  required
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  placeholder="Saisir l'OTP (ex: 123456)"
+                  className="w-full bg-slate-950 border border-slate-850 rounded-xl py-3 px-4 text-white text-center text-lg tracking-widest focus:border-indigo-500 focus:outline-none transition font-mono mt-2"
+                />
+              </div>
+              
+              {errorMessage && (
+                <div className="bg-rose-500/10 border border-rose-500/20 text-rose-450 p-3 rounded-xl text-[11px] flex items-start space-x-2">
+                  <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
+
+              <button
+                onClick={() => verifyOtpMutation.mutate()}
+                disabled={otp.length < 6 || verifyOtpMutation.isPending}
+                className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-550 disabled:bg-slate-800 text-white font-bold rounded-xl text-sm transition shadow-lg flex items-center justify-center"
+              >
+                {verifyOtpMutation.isPending ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 animate-spin mr-2" />
+                    Validation en cours...
+                  </>
+                ) : (
+                  "Confirmer le paiement"
+                )}
+              </button>
             </div>
           ) : paymentInstructions ? (
             <div className="space-y-5">

@@ -5,6 +5,7 @@ import { ProvidersService } from '../providers/providers.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { PaymentStatus, PaymentMethod } from '@prisma/client';
 import { WebhooksService } from '../webhooks/webhooks.service';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class PaymentsService {
@@ -13,6 +14,7 @@ export class PaymentsService {
     private readonly paymentRouter: PaymentRouter,
     private readonly providersService: ProvidersService,
     private readonly webhooksService: WebhooksService,
+    private readonly mailService: MailService,
   ) {}
 
   /**
@@ -78,6 +80,13 @@ export class PaymentsService {
     // If status resolves instantly (e.g. mock instant success), update balances
     if (paymentRecord.status === PaymentStatus.SUCCESS) {
       await this.creditMerchantBalance(merchantId, netAmount);
+      this.mailService.sendPaymentReceivedEmail(
+        paymentRecord.merchant.email,
+        paymentRecord.customerEmail || paymentRecord.customerPhone || 'Client',
+        Number(paymentRecord.amount),
+        paymentRecord.currency,
+        paymentRecord.id,
+      );
     }
 
     return {
@@ -119,6 +128,13 @@ export class PaymentsService {
           // If payment succeeded, credit merchant balance
           if (updatedPayment.status === PaymentStatus.SUCCESS) {
             await this.creditMerchantBalance(merchantId, Number(updatedPayment.netAmount));
+            this.mailService.sendPaymentReceivedEmail(
+              updatedPayment.merchant.email,
+              updatedPayment.customerEmail || updatedPayment.customerPhone || 'Client',
+              Number(updatedPayment.amount),
+              updatedPayment.currency,
+              updatedPayment.id,
+            );
           }
 
           // Trigger asynchronous webhook delivery
@@ -292,5 +308,63 @@ export class PaymentsService {
         balance: { decrement: amount },
       },
     });
+  }
+
+  /**
+   * For simulated OTP validation: transition a payment to SUCCESS, credit the merchant balance,
+   * send the payment email, and trigger the merchant webhook callback.
+   */
+  async completePaymentSuccessfully(paymentId: string, merchantId: string) {
+    const payment = await this.prisma.payment.findFirst({
+      where: { id: paymentId, merchantId },
+      include: { merchant: true },
+    });
+
+    if (!payment) {
+      throw new NotFoundException('Transaction introuvable');
+    }
+
+    if (payment.status === PaymentStatus.SUCCESS) {
+      return; // Already processed
+    }
+
+    const updatedPayment = await this.prisma.payment.update({
+      where: { id: payment.id },
+      data: {
+        status: PaymentStatus.SUCCESS,
+      },
+      include: { merchant: true },
+    });
+
+    // Credit merchant balance
+    await this.creditMerchantBalance(merchantId, Number(updatedPayment.netAmount));
+
+    // Send email notification
+    this.mailService.sendPaymentReceivedEmail(
+      updatedPayment.merchant.email,
+      updatedPayment.customerEmail || updatedPayment.customerPhone || 'Client',
+      Number(updatedPayment.amount),
+      updatedPayment.currency,
+      updatedPayment.id,
+    );
+
+    // Queue webhook notification asynchronously
+    this.webhooksService.queueWebhook(
+      merchantId,
+      'payment.success',
+      {
+        paymentId: updatedPayment.id,
+        merchantReference: updatedPayment.merchantReference,
+        amount: Number(updatedPayment.amount),
+        currency: updatedPayment.currency,
+        status: updatedPayment.status,
+        fee: Number(updatedPayment.fee),
+        netAmount: Number(updatedPayment.netAmount),
+        customerEmail: updatedPayment.customerEmail,
+        customerPhone: updatedPayment.customerPhone,
+        createdAt: updatedPayment.createdAt,
+      },
+      updatedPayment.id,
+    ).catch(err => console.error('Failed to queue webhook after OTP validation:', err));
   }
 }

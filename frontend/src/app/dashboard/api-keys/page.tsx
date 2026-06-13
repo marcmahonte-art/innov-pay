@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { Key, Copy, RotateCw, Trash2, Eye, EyeOff, AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
+import { Key, Copy, RotateCw, Trash2, CheckCircle, Loader2, Lock, ShieldAlert } from 'lucide-react';
 import DashboardLayout from '@/components/DashboardLayout';
 import { apiClient } from '@/lib/api';
 
@@ -18,6 +18,17 @@ export default function ApiKeysPage() {
       return res.data;
     },
   });
+
+  // Fetch KYC status for production compliance check
+  const { data: kycData } = useQuery({
+    queryKey: ['kycDocs'],
+    queryFn: async () => {
+      const res = await apiClient.get('/kyc/documents');
+      return res.data;
+    },
+  });
+
+  const globalStatus = kycData?.kycStatus || 'UNVERIFIED';
 
   // Create API Key Mutation
   const createMutation = useMutation({
@@ -66,12 +77,12 @@ export default function ApiKeysPage() {
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-extrabold text-white tracking-tight">Clés API</h1>
-          <p className="text-slate-400 mt-1">Gérez vos clés d'API publiques et secrètes pour intégrer Innov Pay dans votre application.</p>
+          <p className="text-slate-400 mt-1">Gérez vos clés d'API publiques et secrètes pour intégrer Innov Pay dans vos applications.</p>
         </div>
 
         {/* Secret Key Disclosure Box */}
         {newSecretKey && (
-          <div className="bg-slate-900 border-2 border-emerald-500/30 rounded-3xl p-6 shadow-2xl space-y-4">
+          <div className="bg-slate-900 border-2 border-emerald-500/30 rounded-3xl p-6 shadow-2xl space-y-4 animate-pulse-once">
             <div className="flex items-center space-x-3 text-emerald-400">
               <CheckCircle className="h-6 w-6" />
               <h3 className="text-lg font-bold text-white">Nouvelle clé secrète générée !</h3>
@@ -101,23 +112,36 @@ export default function ApiKeysPage() {
         )}
 
         {/* Action Controls */}
-        <div className="flex flex-wrap gap-4">
-          <button
-            onClick={() => createMutation.mutate(false)}
-            disabled={isMutating}
-            className="flex items-center bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-5 rounded-2xl text-sm transition"
-          >
-            {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Key className="h-4 w-4 mr-2 text-indigo-400" />}
-            Générer Clé de Test (Sandbox)
-          </button>
-          <button
-            onClick={() => createMutation.mutate(true)}
-            disabled={isMutating}
-            className="flex items-center bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-5 rounded-2xl text-sm transition shadow-lg shadow-indigo-600/10"
-          >
-            {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Key className="h-4 w-4 mr-2" />}
-            Générer Clé Live (Production)
-          </button>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-wrap gap-4">
+            <button
+              onClick={() => createMutation.mutate(false)}
+              disabled={isMutating}
+              className="flex items-center bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-5 rounded-2xl text-sm transition disabled:opacity-40"
+            >
+              {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Key className="h-4 w-4 mr-2 text-indigo-400" />}
+              Générer Clé de Test (Sandbox)
+            </button>
+            
+            <button
+              onClick={() => createMutation.mutate(true)}
+              disabled={isMutating || globalStatus !== 'APPROVED'}
+              className="flex items-center bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-5 rounded-2xl text-sm transition shadow-lg shadow-indigo-600/10 disabled:opacity-40 disabled:cursor-not-allowed"
+              title={globalStatus !== 'APPROVED' ? 'Veuillez soumettre vos documents de conformité KYC pour débloquer le mode production.' : 'Générer clé de production'}
+            >
+              {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Key className="h-4 w-4 mr-2" />}
+              Générer Clé Live (Production)
+            </button>
+          </div>
+
+          {globalStatus !== 'APPROVED' && (
+            <div className="flex items-start space-x-2.5 p-4 bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs rounded-2xl max-w-2xl">
+              <ShieldAlert className="h-4.5 w-4.5 shrink-0 text-amber-400 mt-0.5" />
+              <div>
+                <strong>Alerte de Conformité :</strong> La création de clés d'API réelles (LIVE) nécessite que votre dossier KYC d'entreprise soit entièrement validé. Rendez-vous sur la page <a href="/dashboard/kyc" className="underline font-bold text-white hover:text-indigo-200">Conformité KYC</a> pour régulariser votre situation.
+              </div>
+            </div>
+          )}
         </div>
 
         {/* API Keys Table */}
@@ -195,7 +219,7 @@ export default function ApiKeysPage() {
                   ) : (
                     <tr>
                       <td colSpan={5} className="py-8 text-center text-slate-500">
-                        Aucune clé API configurée. Utilisez les boutons ci-dessus pour en créer.
+                        Aucune clé API active. Utilisez les boutons ci-dessus pour en créer.
                       </td>
                     </tr>
                   )}

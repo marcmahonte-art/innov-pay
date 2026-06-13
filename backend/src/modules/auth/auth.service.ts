@@ -6,12 +6,15 @@ import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { UserRole } from '@prisma/client';
+import { MailService } from '../mail/mail.service';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   async register(dto: RegisterDto) {
@@ -63,6 +66,9 @@ export class AuthService {
 
       return { user, merchant, secretKey };
     });
+
+    // Fire off welcome email
+    this.mailService.sendWelcomeEmail(result.user.email, result.merchant.businessName);
 
     const payload: JwtPayload = {
       sub: result.user.id,
@@ -125,6 +131,3 @@ export class AuthService {
     };
   }
 }
-
-// Inline polyfill for crypto if needed, but NodeJS crypto is available globally
-import * as crypto from 'crypto';

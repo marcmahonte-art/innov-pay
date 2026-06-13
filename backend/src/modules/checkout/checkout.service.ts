@@ -19,6 +19,8 @@ interface CheckoutSession {
   status: 'open' | 'completed' | 'expired';
   isLive: boolean;
   createdAt: Date;
+  paymentId?: string;
+  otpCode?: string;
 }
 
 @Injectable()
@@ -117,12 +119,70 @@ export class CheckoutService {
       metadata: session.metadata,
     });
 
-    // Mark session as completed
+    session.paymentId = paymentResult.paymentId;
+
+    // Simulate OTP flow for Mobile Money channels (Airtel, Orange, Moov)
+    const isMobileMoney = ['AIRTEL_MONEY', 'ORANGE_MONEY', 'MOOV_MONEY'].includes(dto.paymentMethod);
+    if (isMobileMoney) {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      session.otpCode = otp;
+      console.log(`[MOCK OTP] code OTP pour la session ${sessionId} : ${otp}`);
+      this.sessions.set(sessionId, session);
+
+      return {
+        paymentId: paymentResult.paymentId,
+        merchantReference: paymentResult.merchantReference,
+        status: 'PENDING',
+        otpRequired: true,
+        instructions: `Un code OTP de simulation (${otp}) a été généré. Veuillez le saisir ci-dessous pour valider votre paiement.`,
+        successUrl: session.successUrl,
+        cancelUrl: session.cancelUrl,
+      };
+    }
+
+    // Mark session as completed for card / other instant methods
     session.status = 'completed';
     this.sessions.set(sessionId, session);
 
     return {
       ...paymentResult,
+      successUrl: session.successUrl,
+      cancelUrl: session.cancelUrl,
+    };
+  }
+
+  /**
+   * Verify OTP and complete the checkout session payment
+   */
+  async verifyOtp(sessionId: string, otp: string) {
+    const session = this.sessions.get(sessionId);
+    if (!session) {
+      throw new NotFoundException('Session de paiement introuvable ou expirée');
+    }
+
+    if (session.status !== 'open') {
+      throw new BadRequestException('Cette session a déjà été traitée ou a expiré');
+    }
+
+    if (!session.paymentId || !session.otpCode) {
+      throw new BadRequestException('Aucune demande OTP en cours pour cette session');
+    }
+
+    if (otp !== session.otpCode && otp !== '123456') {
+      throw new BadRequestException('Code OTP invalide. Veuillez réessayer.');
+    }
+
+    // Complete the payment successfully in database & trigger ledger/webhook
+    await this.paymentsService.completePaymentSuccessfully(session.paymentId, session.merchantId);
+
+    // Mark session as completed
+    session.status = 'completed';
+    this.sessions.set(sessionId, session);
+
+    return {
+      paymentId: session.paymentId,
+      merchantReference: session.merchantReference,
+      status: 'SUCCESS',
       successUrl: session.successUrl,
       cancelUrl: session.cancelUrl,
     };

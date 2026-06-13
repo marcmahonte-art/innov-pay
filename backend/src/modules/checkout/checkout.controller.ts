@@ -32,4 +32,10 @@ export class CheckoutController {
   async paySession(@Param('id') sessionId: string, @Body() dto: PaySessionDto) {
     return this.checkoutService.paySession(sessionId, dto);
   }
+
+  @Post('sessions/:id/verify-otp')
+  @ApiOperation({ summary: 'Vérifier le code OTP d\'une session' })
+  async verifyOtp(@Param('id') sessionId: string, @Body() body: { otp: string }) {
+    return this.checkoutService.verifyOtp(sessionId, body.otp);
+  }
 }
