@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Recharger le compte - Innov Pay</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#eff1f3",
+                    "surface-variant": "#e0e3e5",
+                    "on-surface": "#191c1e",
+                    "primary": "#00103e",
+                    "tertiary-container": "#003112",
+                    "error-container": "#ffdad6",
+                    "inverse-surface": "#2d3133",
+                    "on-secondary-container": "#571a00",
+                    "surface-tint": "#475b9c",
+                    "primary-fixed": "#dce1ff",
+                    "on-secondary-fixed": "#370e00",
+                    "outline": "#757681",
+                    "tertiary-fixed-dim": "#79db8d",
+                    "on-primary-fixed-variant": "#2e4382",
+                    "secondary-container": "#fd651e",
+                    "primary-container": "#0a2463",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#e0e3e5",
+                    "inverse-primary": "#b5c4ff",
+                    "sidebar-hover": "#1E3A8A",
+                    "tertiary": "#001a06",
+                    "surface-dim": "#d8dadc",
+                    "surface-container-high": "#e6e8ea",
+                    "primary-fixed-dim": "#b5c4ff",
+                    "on-tertiary-fixed": "#00210a",
+                    "text-inactive": "#9CA3AF",
+                    "background": "#f7f9fb",
+                    "on-surface-variant": "#444650",
+                    "on-tertiary": "#ffffff",
+                    "success": "#15803D",
+                    "text-gray": "#6B7280",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#95f8a7",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#c5c6d2",
+                    "on-secondary-fixed-variant": "#7f2b00",
+                    "on-background": "#191c1e",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-container": "#41a35b",
+                    "admin-sidebar": "#0F172A",
+                    "on-primary-fixed": "#00164d",
+                    "surface-bright": "#f7f9fb",
+                    "on-secondary": "#ffffff",
+                    "error": "#B91C1C",
+                    "surface": "#f7f9fb",
+                    "secondary-fixed-dim": "#ffb599",
+                    "on-tertiary-fixed-variant": "#005323",
+                    "warning": "#92400E",
+                    "secondary": "#a73a00",
+                    "secondary-fixed": "#ffdbce",
+                    "on-primary-container": "#7a8ed2",
+                    "card-bg": "#FFFFFF",
+                    "border": "#E5E7EB",
+                    "surface-container-low": "#f2f4f6",
+                    "surface-container": "#eceef0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "topbar-height": "48px",
+                    "container-padding": "24px",
+                    "stack-sm": "8px",
+                    "sidebar-width": "220px",
+                    "grid-gap": "12px",
+                    "stack-md": "16px"
+            },
+            "fontFamily": {
+                    "dashboard-amount": ["Inter"],
+                    "hero-h1-mobile": ["Inter"],
+                    "body-base": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "code-mono": ["Courier Prime"],
+                    "caption-xs": ["Inter"],
+                    "hero-subtitle": ["Inter"],
+                    "hero-h1": ["Inter"],
+                    "sidebar-brand": ["Inter"]
+            },
+            "fontSize": {
+                    "dashboard-amount": ["22px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "hero-h1-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-base": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "code-mono": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "caption-xs": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "hero-subtitle": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "hero-h1": ["60px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "sidebar-brand": ["20px", {"lineHeight": "24px", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .method-card.active { border-color: #0a2463; background-color: rgba(10, 36, 99, 0.04); }
+        .method-card.active .check-icon { display: block; }
+        .sidebar-item-active { background-color: #1E3A8A; color: #ffffff; border-radius: 0.5rem; margin: 0.25rem 0.5rem; }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Sidebar -->
+<aside class="fixed h-full w-[220px] left-0 top-0 bg-admin-sidebar flex flex-col py-6 transition-all duration-200 ease-in-out z-50">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-8 h-8 bg-secondary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">account_balance_wallet</span>
+</div>
+<div>
+<h1 class="font-sidebar-brand text-sidebar-brand text-white leading-none">Innov Pay</h1>
+<p class="text-[10px] text-text-inactive uppercase tracking-wider mt-1">Fintech Solutions</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-4 py-2 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="text-label-sm font-label-sm">Tableau de bord</span>
+</a>
+<a class="flex items-center px-4 py-2 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">storefront</span>
+<span class="text-label-sm font-label-sm">Gérer ma boutique</span>
+</a>
+<a class="flex items-center px-4 py-2 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">send</span>
+<span class="text-label-sm font-label-sm">Envoyer de l'argent</span>
+</a>
+<a class="flex items-center px-4 py-2 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">request_quote</span>
+<span class="text-label-sm font-label-sm">Demander un paiement</span>
+</a>
+<a class="flex items-center px-4 py-2 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">payments</span>
+<span class="text-label-sm font-label-sm">Collecter des paiements</span>
+</a>
+<a class="flex items-center px-4 py-2 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">account_balance_wallet</span>
+<span class="text-label-sm font-label-sm">Débourser des paiements</span>
+</a>
+<a class="bg-sidebar-hover text-on-primary rounded-lg mx-2 my-1 flex items-center px-4 py-2 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">add_card</span>
+<span class="text-label-sm font-label-sm">Recharger le compte</span>
+</a>
+<a class="flex items-center px-4 py-2 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">output</span>
+<span class="text-label-sm font-label-sm">Retirer l'argent</span>
+</a>
+<div class="pt-4 pb-2 px-6">
+<p class="text-[10px] text-text-inactive uppercase tracking-widest">Outils &amp; Développeurs</p>
+</div>
+<a class="flex items-center px-4 py-2 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">qr_code_2</span>
+<span class="text-label-sm font-label-sm">InnovQR</span>
+</a>
+<a class="flex items-center px-4 py-2 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">api</span>
+<span class="text-label-sm font-label-sm">Intégrez notre API</span>
+</a>
+<a class="flex items-center px-4 py-2 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span>
+<span class="text-label-sm font-label-sm">Analytics</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="ml-[220px] min-h-screen">
+<!-- Top Bar -->
+<header class="h-topbar-height bg-card-bg shadow-sm flex justify-between items-center px-container-padding sticky top-0 z-40 border-b border-border">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-text-gray cursor-pointer">search</span>
+<input class="border-none focus:ring-0 text-label-sm bg-transparent w-64" placeholder="Rechercher une transaction..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-text-gray cursor-pointer hover:text-primary transition-opacity">notifications</span>
+<span class="material-symbols-outlined text-text-gray cursor-pointer hover:text-primary transition-opacity">settings</span>
+<div class="flex items-center gap-3 border-l border-border pl-6">
+<div class="text-right">
+<p class="text-label-sm font-bold text-primary">Ali Mahamat</p>
+<p class="text-caption-xs text-text-gray">ID: 882941</p>
+</div>
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full bg-surface-container-high border border-border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCpqbKGDLAaKnP9NDKkaf8gkekrG0mNRMnS6k7p-CeQFcJ_smfYOncQOK1YN13kc2E00yrVDBPYlibhuLv6S1lgafmw9O6KH1ioB19REcBc4I8gSAm7_gyh4p9P1eeT_O4toVqgCi0N5I5PSpc1hnPrdBpTro6W1S6lBuizIwDD9GztM0n4chtSvS50oZaCjgY1GIc4CWmHU9eU99uyqeItbMGuewX222c7WIbddKVW5yTYWHmgOKSL-4Ljaco2GxWXenFe6Gx8OrW"/>
+</div>
+</div>
+</header>
+<!-- Page Header -->
+<div class="p-container-padding">
+<div class="mb-8">
+<h2 class="text-dashboard-amount font-dashboard-amount text-primary mb-1">Recharger le compte</h2>
+<p class="text-body-base text-text-gray">Ajoutez des fonds en toute sécurité via nos multiples canaux de paiement.</p>
+</div>
+<!-- Main Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-grid-gap">
+<!-- Left: Form Section -->
+<div class="lg:col-span-8 space-y-grid-gap">
+<!-- Top-up Form Card -->
+<div class="bg-card-bg rounded-xl border border-border p-6 shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
+<h3 class="text-label-sm font-bold text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">payments</span>
+                            1. Détails du rechargement
+                        </h3>
+<div class="space-y-6">
+<!-- Amount Input -->
+<div>
+<label class="block text-caption-xs font-bold text-text-gray uppercase mb-2">Montant à recharger</label>
+<div class="relative flex items-center">
+<input class="w-full pl-4 pr-16 py-4 bg-surface-container-low border border-border rounded-lg text-dashboard-amount font-dashboard-amount focus:ring-2 focus:ring-primary focus:border-primary transition-all" id="amount-input" placeholder="0.00" type="number" value="50000"/>
+<span class="absolute right-4 text-label-sm font-bold text-text-gray">XAF</span>
+</div>
+<div class="flex gap-2 mt-3">
+<button class="px-4 py-1.5 rounded-full border border-border text-caption-xs font-medium hover:bg-primary-container hover:text-white transition-colors" onclick="setAmount(10000)">+ 10,000</button>
+<button class="px-4 py-1.5 rounded-full border border-border text-caption-xs font-medium hover:bg-primary-container hover:text-white transition-colors" onclick="setAmount(50000)">+ 50,000</button>
+<button class="px-4 py-1.5 rounded-full border border-border text-caption-xs font-medium hover:bg-primary-container hover:text-white transition-colors" onclick="setAmount(100000)">+ 100,000</button>
+</div>
+</div>
+<!-- Payment Methods Grid -->
+<div>
+<label class="block text-caption-xs font-bold text-text-gray uppercase mb-4">2. Choisissez votre méthode</label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Mobile Money -->
+<div class="method-card active cursor-pointer border border-border rounded-xl p-4 transition-all relative" id="method-momo" onclick="selectMethod('momo')">
+<div class="flex flex-col items-center text-center gap-3">
+<div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-2xl">smartphone</span>
+</div>
+<div>
+<p class="text-label-sm font-bold text-primary">Mobile Money</p>
+<p class="text-caption-xs text-text-gray">Airtel, Moov, Orange</p>
+</div>
+</div>
+<div class="check-icon absolute top-2 right-2 text-primary">
+<span class="material-symbols-outlined text-lg fill-1">check_circle</span>
+</div>
+</div>
+<!-- Bank Transfer -->
+<div class="method-card cursor-pointer border border-border rounded-xl p-4 transition-all relative" id="method-bank" onclick="selectMethod('bank')">
+<div class="flex flex-col items-center text-center gap-3">
+<div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl">account_balance</span>
+</div>
+<div>
+<p class="text-label-sm font-bold text-primary">Virement Bancaire</p>
+<p class="text-caption-xs text-text-gray">Délai: 24h - 48h</p>
+</div>
+</div>
+<div class="check-icon hidden absolute top-2 right-2 text-primary">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+</div>
+<!-- Credit Card -->
+<div class="method-card cursor-pointer border border-border rounded-xl p-4 transition-all relative" id="method-card" onclick="selectMethod('card')">
+<div class="flex flex-col items-center text-center gap-3">
+<div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-success text-2xl">credit_card</span>
+</div>
+<div>
+<p class="text-label-sm font-bold text-primary">Carte Bancaire</p>
+<p class="text-caption-xs text-text-gray">Visa, Mastercard</p>
+</div>
+</div>
+<div class="check-icon hidden absolute top-2 right-2 text-primary">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Method Details Container -->
+<div class="p-5 bg-surface-container-low border border-dashed border-outline-variant rounded-lg" id="method-details">
+<!-- Mobile Money Details -->
+<div class="" id="momo-details">
+<div class="flex flex-col md:flex-row gap-4 items-center">
+<div class="flex-1 w-full">
+<label class="block text-caption-xs font-bold text-text-gray uppercase mb-1">Numéro de téléphone</label>
+<input class="w-full border border-border rounded-lg py-2.5 px-4 text-label-sm" placeholder="+235 ...." type="text"/>
+</div>
+<div class="flex-1 w-full">
+<label class="block text-caption-xs font-bold text-text-gray uppercase mb-1">Opérateur</label>
+<select class="w-full border border-border rounded-lg py-2.5 px-4 text-label-sm">
+<option>Airtel Tchad</option>
+<option>Moov Africa</option>
+<option>Orange Money</option>
+</select>
+</div>
+</div>
+<p class="text-[11px] text-text-gray mt-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">info</span>
+                                        Une notification push sera envoyée sur votre téléphone pour validation.
+                                    </p>
+</div>
+<!-- Bank Details (Hidden by default) -->
+<div class="hidden" id="bank-details">
+<div class="space-y-4">
+<div class="flex justify-between items-center p-3 bg-white rounded border border-border">
+<div>
+<p class="text-caption-xs font-bold text-text-gray">IBAN Innov Pay</p>
+<p class="text-label-sm font-mono">TD76 3000 1000 5000 1234 5678 901</p>
+</div>
+<button class="text-primary hover:bg-surface-container rounded p-1"><span class="material-symbols-outlined text-lg">content_copy</span></button>
+</div>
+<div class="flex justify-between items-center p-3 bg-white rounded border border-border">
+<div>
+<p class="text-caption-xs font-bold text-text-gray">Code SWIFT</p>
+<p class="text-label-sm font-mono">INNP TD NN</p>
+</div>
+<button class="text-primary hover:bg-surface-container rounded p-1"><span class="material-symbols-outlined text-lg">content_copy</span></button>
+</div>
+</div>
+</div>
+<!-- Card Details (Hidden by default) -->
+<div class="hidden" id="card-details">
+<div class="grid grid-cols-2 gap-4">
+<div class="col-span-2">
+<label class="block text-caption-xs font-bold text-text-gray mb-1">Numéro de carte</label>
+<input class="w-full border border-border rounded-lg py-2.5 px-4 text-label-sm" placeholder="0000 0000 0000 0000" type="text"/>
+</div>
+<div>
+<label class="block text-caption-xs font-bold text-text-gray mb-1">Expiration</label>
+<input class="w-full border border-border rounded-lg py-2.5 px-4 text-label-sm" placeholder="MM/YY" type="text"/>
+</div>
+<div>
+<label class="block text-caption-xs font-bold text-text-gray mb-1">CVV</label>
+<input class="w-full border border-border rounded-lg py-2.5 px-4 text-label-sm" placeholder="123" type="text"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8">
+<button class="w-full bg-primary text-white py-4 rounded-lg font-bold text-body-base hover:bg-primary-container transition-all flex items-center justify-center gap-3" onclick="processTopUp()">
+<span class="material-symbols-outlined">bolt</span>
+                                Confirmer le rechargement
+                            </button>
+</div>
+</div>
+<!-- History Section -->
+<div class="bg-card-bg rounded-xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.08)] overflow-hidden">
+<div class="p-6 border-b border-border flex justify-between items-center">
+<h3 class="text-label-sm font-bold text-primary">Historique récent</h3>
+<button class="text-caption-xs font-bold text-secondary hover:underline">Voir tout</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-3 text-caption-xs font-bold text-text-gray uppercase">Transaction</th>
+<th class="px-6 py-3 text-caption-xs font-bold text-text-gray uppercase">Date</th>
+<th class="px-6 py-3 text-caption-xs font-bold text-text-gray uppercase text-right">Montant</th>
+<th class="px-6 py-3 text-caption-xs font-bold text-text-gray uppercase">Statut</th>
+<th class="px-6 py-3 text-caption-xs font-bold text-text-gray uppercase text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-lg">smartphone</span>
+</div>
+<p class="text-label-sm font-medium">Top-up Airtel</p>
+</div>
+</td>
+<td class="px-6 py-4 text-caption-xs text-text-gray">Hier, 14:20</td>
+<td class="px-6 py-4 text-label-sm font-bold text-right">+25,000 XAF</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-green-100 text-success text-[10px] font-bold rounded-full uppercase">Succès</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-primary hover:bg-surface-container-low p-2 rounded-full">
+<span class="material-symbols-outlined text-lg">download</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-lg">account_balance</span>
+</div>
+<p class="text-label-sm font-medium">Virement BCC</p>
+</div>
+</td>
+<td class="px-6 py-4 text-caption-xs text-text-gray">12 Nov, 09:15</td>
+<td class="px-6 py-4 text-label-sm font-bold text-right">+150,000 XAF</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-amber-100 text-warning text-[10px] font-bold rounded-full uppercase">En cours</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-text-inactive cursor-not-allowed p-2 rounded-full">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-success text-lg">credit_card</span>
+</div>
+<p class="text-label-sm font-medium">Top-up Visa</p>
+</div>
+</td>
+<td class="px-6 py-4 text-caption-xs text-text-gray">10 Nov, 18:45</td>
+<td class="px-6 py-4 text-label-sm font-bold text-right">+10,000 XAF</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-green-100 text-success text-[10px] font-bold rounded-full uppercase">Succès</span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-primary hover:bg-surface-container-low p-2 rounded-full">
+<span class="material-symbols-outlined text-lg">download</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Right: Summary & Info Section -->
+<div class="lg:col-span-4 space-y-grid-gap">
+<!-- Current Balance Card -->
+<div class="bg-primary text-white rounded-xl p-6 shadow-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-7xl">account_balance_wallet</span>
+</div>
+<p class="text-caption-xs font-medium uppercase opacity-70 mb-2">Solde actuel</p>
+<div class="flex items-center justify-between">
+<h3 class="text-3xl font-bold font-dashboard-amount" id="balance-display">1,240,500 <span class="text-lg">XAF</span></h3>
+<button class="opacity-70 hover:opacity-100 transition-opacity" onclick="toggleBalance()">
+<span class="material-symbols-outlined" id="balance-icon">visibility_off</span>
+</button>
+</div>
+<div class="mt-4 pt-4 border-t border-white/10 flex items-center gap-2">
+<span class="material-symbols-outlined text-success text-sm" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<p class="text-caption-xs">+ 12% par rapport au mois dernier</p>
+</div>
+</div>
+<!-- Support Card -->
+<div class="bg-white rounded-xl border border-border p-6">
+<h4 class="text-label-sm font-bold text-primary mb-4">Besoin d'aide ?</h4>
+<div class="space-y-4">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 bg-surface-container rounded-full flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">live_help</span>
+</div>
+<div>
+<p class="text-caption-xs font-bold text-primary">Centre d'aide</p>
+<p class="text-caption-xs text-text-gray">Consultez nos tutoriels sur les rechargements.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 bg-surface-container rounded-full flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary">support_agent</span>
+</div>
+<div>
+<p class="text-caption-xs font-bold text-primary">Support 24/7</p>
+<p class="text-caption-xs text-text-gray">Nos agents sont prêts à vous aider par chat.</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 border border-primary text-primary py-2.5 rounded-lg text-label-sm font-bold hover:bg-primary hover:text-white transition-all">
+                            Contacter le support
+                        </button>
+</div>
+<!-- Security Badge -->
+<div class="bg-surface-container-low border border-border rounded-xl p-6 flex flex-col items-center text-center">
+<img alt="Security Illustration" class="w-16 h-16 mb-4" data-alt="A 3D rendered high-gloss security shield icon with a glowing green checkmark, symbolizing financial safety and transaction integrity. The lighting is crisp and professional, reflecting a high-end corporate fintech aesthetic with subtle gradients and clean sharp edges. The colors are predominantly blue and silver to instill trust and robustness in the payment process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMSdI-HQpgxRnBXVarYCiLZluGUPrEI2t2-G7a9x1owPRDUPubhAt_cgCzNPtK_7Tcneh-9HGueubpNgx5bEpnUBCA5wt6SUsZIAEoL1ub9ov1FKmrYODlmwWzMi1v6nOi-bBbP9_BeTE31vGGSYkcA3Vo_MwLlHh5aDr8tCTVLmMJ9M6DsjiPBplarKNvwWd0BH0hcL3Oo7FO7y3nlzR7z5UKiahraLpDPVmF__dorCiqxy-hFtE0mqs4v36rCUWyzF4FCZE-3EH6"/>
+<h4 class="text-label-sm font-bold text-primary mb-1">Sécurité de niveau bancaire</h4>
+<p class="text-caption-xs text-text-gray">Toutes vos transactions sont cryptées avec le protocole SSL 256 bits et surveillées par nos systèmes anti-fraude.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Success Modal (Hidden) -->
+<div class="fixed inset-0 bg-black/50 z-[100] hidden items-center justify-center p-4" id="success-modal">
+<div class="bg-white rounded-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300">
+<div class="p-8 text-center">
+<div class="w-20 h-20 bg-green-100 text-success rounded-full flex items-center justify-center mx-auto mb-6">
+<span class="material-symbols-outlined text-5xl animate-bounce">check_circle</span>
+</div>
+<h3 class="text-dashboard-amount font-dashboard-amount text-primary mb-2">Rechargement réussi !</h3>
+<p class="text-body-base text-text-gray mb-6">Votre compte a été crédité avec succès. Votre nouveau solde est à jour.</p>
+<div class="bg-surface-container-low rounded-xl p-4 text-left mb-8 space-y-3">
+<div class="flex justify-between">
+<span class="text-caption-xs text-text-gray">Montant :</span>
+<span class="text-label-sm font-bold text-primary" id="receipt-amount">50,000 XAF</span>
+</div>
+<div class="flex justify-between">
+<span class="text-caption-xs text-text-gray">Référence :</span>
+<span class="text-label-sm font-bold text-primary">#TX-992144</span>
+</div>
+<div class="flex justify-between">
+<span class="text-caption-xs text-text-gray">Date :</span>
+<span class="text-label-sm font-bold text-primary">Aujourd'hui, 10:45</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="w-full bg-surface-container text-primary font-bold py-3 rounded-lg text-label-sm" onclick="closeModal()">Fermer</button>
+<button class="w-full bg-primary text-white font-bold py-3 rounded-lg text-label-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span> Reçu
+                    </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+        function selectMethod(method) {
+            // Remove active state from all cards
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('active');
+                card.querySelector('.check-icon').classList.add('hidden');
+            });
+            
+            // Add active state to selected card
+            const selectedCard = document.getElementById(`method-${method}`);
+            selectedCard.classList.add('active');
+            selectedCard.querySelector('.check-icon').classList.remove('hidden');
+
+            // Hide all detail sections
+            document.getElementById('momo-details').classList.add('hidden');
+            document.getElementById('bank-details').classList.add('hidden');
+            document.getElementById('card-details').classList.add('hidden');
+
+            // Show selected detail section
+            document.getElementById(`${method}-details`).classList.remove('hidden');
+        }
+
+        function setAmount(amount) {
+            document.getElementById('amount-input').value = amount;
+        }
+
+        let balanceHidden = false;
+        function toggleBalance() {
+            const balanceText = document.getElementById('balance-display');
+            const icon = document.getElementById('balance-icon');
+            balanceHidden = !balanceHidden;
+            
+            if (balanceHidden) {
+                balanceText.innerHTML = '••••••• <span class="text-lg">XAF</span>';
+                icon.innerText = 'visibility';
+            } else {
+                balanceText.innerHTML = '1,240,500 <span class="text-lg">XAF</span>';
+                icon.innerText = 'visibility_off';
+            }
+        }
+
+        function processTopUp() {
+            const amount = document.getElementById('amount-input').value;
+            document.getElementById('receipt-amount').innerText = parseInt(amount).toLocaleString() + ' XAF';
+            
+            const modal = document.getElementById('success-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.querySelector('div').classList.remove('scale-95');
+                modal.querySelector('div').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('success-modal');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+    </script>
+</body></html>

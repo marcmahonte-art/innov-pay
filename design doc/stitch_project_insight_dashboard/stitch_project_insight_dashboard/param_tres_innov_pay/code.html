@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Paramètres - Innov Pay</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Courier+Prime&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#757681",
+                    "card-bg": "#FFFFFF",
+                    "secondary-container": "#fd651e",
+                    "tertiary-fixed": "#95f8a7",
+                    "border": "#E5E7EB",
+                    "on-tertiary-container": "#41a35b",
+                    "on-primary-fixed": "#00164d",
+                    "primary": "#00103e",
+                    "on-primary-container": "#7a8ed2",
+                    "surface-variant": "#e0e3e5",
+                    "sidebar-hover": "#1E3A8A",
+                    "secondary-fixed": "#ffdbce",
+                    "surface": "#f7f9fb",
+                    "on-tertiary-fixed-variant": "#005323",
+                    "on-secondary-fixed": "#370e00",
+                    "surface-tint": "#475b9c",
+                    "surface-container-high": "#e6e8ea",
+                    "surface-container": "#eceef0",
+                    "text-gray": "#6B7280",
+                    "primary-container": "#0a2463",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#2d3133",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#444650",
+                    "text-inactive": "#9CA3AF",
+                    "on-surface": "#191c1e",
+                    "on-secondary-container": "#571a00",
+                    "on-tertiary-fixed": "#00210a",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f7f9fb",
+                    "tertiary": "#001a06",
+                    "on-primary-fixed-variant": "#2e4382",
+                    "primary-fixed-dim": "#b5c4ff",
+                    "tertiary-container": "#003112",
+                    "admin-sidebar": "#0F172A",
+                    "outline-variant": "#c5c6d2",
+                    "on-secondary-fixed-variant": "#7f2b00",
+                    "inverse-on-surface": "#eff1f3",
+                    "secondary": "#a73a00",
+                    "surface-container-low": "#f2f4f6",
+                    "on-secondary": "#ffffff",
+                    "on-background": "#191c1e",
+                    "success": "#15803D",
+                    "surface-dim": "#d8dadc",
+                    "secondary-fixed-dim": "#ffb599",
+                    "warning": "#92400E",
+                    "tertiary-fixed-dim": "#79db8d",
+                    "inverse-primary": "#b5c4ff",
+                    "error": "#B91C1C",
+                    "on-tertiary": "#ffffff",
+                    "background": "#f7f9fb",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#dce1ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "sidebar-width": "220px",
+                    "topbar-height": "48px",
+                    "stack-md": "16px",
+                    "container-padding": "24px",
+                    "grid-gap": "12px"
+            },
+            "fontFamily": {
+                    "hero-h1": ["Inter"],
+                    "hero-subtitle": ["Inter"],
+                    "caption-xs": ["Inter"],
+                    "body-base": ["Inter"],
+                    "hero-h1-mobile": ["Inter"],
+                    "sidebar-brand": ["Inter"],
+                    "code-mono": ["Courier Prime"],
+                    "label-sm": ["Inter"],
+                    "dashboard-amount": ["Inter"]
+            },
+            "fontSize": {
+                    "hero-h1": ["60px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "hero-subtitle": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "caption-xs": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-base": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "hero-h1-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "sidebar-brand": ["20px", {"lineHeight": "24px", "fontWeight": "700"}],
+                    "code-mono": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "dashboard-amount": ["22px", {"lineHeight": "28px", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid #E5E7EB;
+        }
+        .tab-active {
+            color: #00103e;
+            border-bottom: 2px solid #fd651e;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- Sidebar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full w-[220px] bg-admin-sidebar flex flex-col p-stack-md gap-stack-sm z-50">
+<div class="mb-8 px-2 flex items-center gap-2">
+<div class="w-8 h-8 bg-secondary-container rounded flex items-center justify-center text-on-primary font-bold">IP</div>
+<div>
+<h1 class="font-sidebar-brand text-sidebar-brand text-on-primary leading-none">Innov Pay</h1>
+<p class="text-[10px] text-text-inactive uppercase tracking-wider">Fintech Solution</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-text-inactive hover:text-on-primary transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-body-base text-body-base">Tableau de bord</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-text-inactive hover:text-on-primary transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+<span class="font-body-base text-body-base">Gérer ma boutique</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-text-inactive hover:text-on-primary transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">send</span>
+<span class="font-body-base text-body-base">Envoyer de l'argent</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-text-inactive hover:text-on-primary transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="font-body-base text-body-base">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-text-inactive hover:text-on-primary transition-colors rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-body-base text-body-base">Bénéficiaires</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-sidebar-hover text-on-primary font-bold rounded-lg group" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-body-base text-body-base">Paramètres</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-white/10">
+<button class="w-full bg-secondary-container text-on-primary py-2 px-4 rounded-lg font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">add</span>
+                Nouvelle Transaction
+            </button>
+</div>
+</aside>
+<!-- Top Navigation (Shared Component) -->
+<header class="fixed top-0 right-0 w-[calc(100%-220px)] h-topbar-height bg-card-bg shadow-sm flex justify-between items-center px-container-padding z-40 border-b border-border">
+<div class="flex items-center bg-surface-container rounded-full px-3 py-1 w-96">
+<span class="material-symbols-outlined text-text-gray text-[18px] mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-sm w-full outline-none" placeholder="Rechercher..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-text-gray hover:bg-surface-container-low p-2 rounded-full transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-text-gray hover:bg-surface-container-low p-2 rounded-full transition-all">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="h-8 w-[1px] bg-border mx-2"></div>
+<div class="flex items-center gap-2">
+<div class="text-right">
+<p class="text-xs font-bold text-primary leading-none">Abdoulaye M.</p>
+<p class="text-[10px] text-text-gray">Admin Boutique</p>
+</div>
+<img alt="Avatar de l'utilisateur" class="w-8 h-8 rounded-full border border-border" data-alt="A professional portrait of a West African businessman in a sharp navy blue suit, set against a blurred office background with warm sunset lighting. The image conveys confidence and professionalism, using a palette of deep blues and soft oranges to match the corporate fintech brand. High-end photography style with shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3LHUIoiTcQmv58eB1EElB7MggEFp0E83RKWLi9qzaS_ar2L8IE62oDIBNywK0JmiT_iRLtbHDLE9fa_8fJUKisGaCU4i43JYaYr55fjCMeKxM0ojigxMd0hUiHGgwBalK7z_YbpenxDmP4_cIasmi3D4Mwm0fs-SSXGURPUVbQUVQH3fkRu-ZBndrOhKhBeGh0wPMpy-QS8KdNWG-lcPaqJpXtlu5FcZF9M-rw2pNojgY4rhfoflVzEkVCk2jxBDQgMDCXNRW39iC"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[220px] pt-[calc(48px+32px)] px-container-padding pb-24">
+<div class="max-w-5xl mx-auto">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-hero-h1 text-[32px] text-primary">Paramètres</h2>
+<p class="text-text-gray font-body-base">Gérez votre profil, votre sécurité et vos intégrations API.</p>
+</div>
+<button class="bg-primary-container text-on-primary px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 shadow-md hover:translate-y-[-2px] transition-all">
+<span class="material-symbols-outlined">save</span>
+                    Enregistrer les modifications
+                </button>
+</div>
+<!-- Tab Navigation -->
+<div class="border-b border-border flex gap-8 mb-8 overflow-x-auto">
+<button class="pb-3 px-1 text-sm font-medium transition-all tab-active whitespace-nowrap" id="tab-general" onclick="switchTab('general')">Général</button>
+<button class="pb-3 px-1 text-sm font-medium transition-all text-text-inactive hover:text-primary whitespace-nowrap" id="tab-securite" onclick="switchTab('securite')">Sécurité</button>
+<button class="pb-3 px-1 text-sm font-medium transition-all text-text-inactive hover:text-primary whitespace-nowrap" id="tab-notifications" onclick="switchTab('notifications')">Notifications</button>
+<button class="pb-3 px-1 text-sm font-medium transition-all text-text-inactive hover:text-primary whitespace-nowrap" id="tab-api" onclick="switchTab('api')">API &amp; Webhooks</button>
+</div>
+<!-- Content Area -->
+<div class="space-y-6" id="content-general">
+<!-- Section Profil Marchand -->
+<div class="bg-card-bg rounded-xl p-6 shadow-sm border border-border">
+<h3 class="font-label-sm text-lg text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">storefront</span>
+                        Profil Marchand
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="flex flex-col items-center justify-center border-2 border-dashed border-border rounded-xl p-8 bg-surface-container-low group cursor-pointer hover:border-secondary-container transition-colors">
+<img alt="Logo boutique" class="w-20 h-20 rounded-lg mb-4 object-cover" data-alt="A clean, minimalist abstract logo for a tech company, featuring geometric interlocking shapes in navy blue and orange on a pristine white background. The style is modern, professional, and corporate, specifically designed for a fintech platform in a high-density dashboard environment. Sharp edges and symmetrical design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjdS0Il8xnzRwY9wr0dc-Es1qAgqy4u-nL87qzM7wP7O2hdjhAhwG5IesS-v2jUa118zg43PzorAn7wmyVqe_FwdcbD92vfUY3rmgEU2xUVeshdPSsswI5SGNzAiF7V1n3K7-uFpnNfedsd38qMRrSLJetLWZoq4DCxPoGu6Dom2pzKraSRuSiJqctoaKcIZPDJqATY2FmD6w8a1zyWpews8LGV1k9LAyab975WcKj_90b2PmeFUNlFOWnbXL2Fhq9WX1Zo_EfOTku"/>
+<p class="text-xs font-medium text-primary">Changer le logo</p>
+<p class="text-[10px] text-text-gray mt-1">PNG, JPG max 5MB</p>
+</div>
+<div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-text-gray">Nom de l'entreprise</label>
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none transition-all" type="text" value="Innov Tech Solutions SARL"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-text-gray">Email de contact</label>
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none transition-all" type="email" value="contact@innovtech-td.com"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-text-gray">Téléphone</label>
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none transition-all" type="tel" value="+235 66 00 00 00"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-text-gray">Adresse</label>
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none transition-all" type="text" value="Quartier Sabangali, N'Djaména, Tchad"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Section Personnalisation -->
+<div class="bg-card-bg rounded-xl p-6 shadow-sm border border-border">
+<h3 class="font-label-sm text-lg text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">palette</span>
+                        Personnalisation
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<div class="space-y-4">
+<label class="text-sm font-medium text-primary">Couleur primaire (Liens de paiement)</label>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-primary-container border-4 border-white shadow-sm ring-1 ring-border"></div>
+<div class="flex-1">
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-border rounded-lg text-code-mono text-xs uppercase" type="text" value="#0A2463"/>
+</div>
+<button class="p-2 border border-border rounded-lg hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]">colorize</span>
+</button>
+</div>
+<div class="flex gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-container cursor-pointer ring-2 ring-offset-2 ring-primary-container"></div>
+<div class="w-6 h-6 rounded-full bg-secondary-container cursor-pointer"></div>
+<div class="w-6 h-6 rounded-full bg-success cursor-pointer"></div>
+<div class="w-6 h-6 rounded-full bg-[#7C3AED] cursor-pointer"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl border border-border">
+<div>
+<p class="font-bold text-primary">Mode sombre</p>
+<p class="text-xs text-text-gray">Activer l'apparence sombre pour l'interface.</p>
+</div>
+<button class="w-12 h-6 bg-slate-300 rounded-full relative transition-colors duration-200 focus:outline-none" onclick="toggleDarkMode()">
+<div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200" id="dark-mode-toggle"></div>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Securite Section (Hidden by default) -->
+<div class="hidden space-y-6" id="content-securite">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Password Update -->
+<div class="bg-card-bg rounded-xl p-6 shadow-sm border border-border">
+<h3 class="font-label-sm text-lg text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">lock</span>
+                            Modifier le mot de passe
+                        </h3>
+<div class="space-y-4">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-text-gray">Mot de passe actuel</label>
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none transition-all" placeholder="••••••••••••" type="password"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-text-gray">Nouveau mot de passe</label>
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none transition-all" type="password"/>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-text-gray">Confirmer le nouveau mot de passe</label>
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none transition-all" type="password"/>
+</div>
+<button class="w-full py-2 bg-surface-container-highest text-primary font-bold rounded-lg text-sm hover:bg-border transition-colors">
+                                Mettre à jour le mot de passe
+                            </button>
+</div>
+</div>
+<!-- 2FA -->
+<div class="bg-card-bg rounded-xl p-6 shadow-sm border border-border flex flex-col">
+<div class="flex justify-between items-start mb-6">
+<h3 class="font-label-sm text-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">verified_user</span>
+                                Authentification 2FA
+                            </h3>
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-bold rounded-full uppercase">Recommandé</span>
+</div>
+<p class="text-sm text-text-gray mb-8">L'authentification à deux facteurs ajoute une couche de sécurité supplémentaire à votre compte en exigeant plus qu'un simple mot de passe pour vous connecter.</p>
+<div class="mt-auto flex items-center justify-between p-4 bg-primary-container rounded-xl text-on-primary">
+<div>
+<p class="font-bold">Statut : Désactivé</p>
+<p class="text-[10px] opacity-80">Sécurisez votre compte maintenant</p>
+</div>
+<button class="px-4 py-2 bg-white text-primary-container font-bold rounded-lg text-sm">Activer</button>
+</div>
+</div>
+</div>
+<!-- Active Sessions -->
+<div class="bg-card-bg rounded-xl shadow-sm border border-border overflow-hidden">
+<div class="p-6 border-b border-border">
+<h3 class="font-label-sm text-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">devices</span>
+                            Sessions actives
+                        </h3>
+</div>
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-3 text-[10px] font-bold text-text-gray uppercase tracking-wider">Appareil</th>
+<th class="px-6 py-3 text-[10px] font-bold text-text-gray uppercase tracking-wider">Lieu</th>
+<th class="px-6 py-3 text-[10px] font-bold text-text-gray uppercase tracking-wider">Adresse IP</th>
+<th class="px-6 py-3 text-[10px] font-bold text-text-gray uppercase tracking-wider">Date</th>
+<th class="px-6 py-3 text-[10px] font-bold text-text-gray uppercase tracking-wider">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-text-gray">laptop_mac</span>
+<div class="text-sm font-medium text-primary">MacBook Pro M2</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-text-gray">N'Djaména, Tchad</td>
+<td class="px-6 py-4 text-sm text-code-mono">41.203.22.14</td>
+<td class="px-6 py-4 text-sm text-text-gray">Aujourd'hui, 10:45</td>
+<td class="px-6 py-4">
+<span class="text-xs font-bold text-success">Session actuelle</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-text-gray">smartphone</span>
+<div class="text-sm font-medium text-primary">iPhone 14 Pro</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-text-gray">N'Djaména, Tchad</td>
+<td class="px-6 py-4 text-sm text-code-mono">154.72.164.20</td>
+<td class="px-6 py-4 text-sm text-text-gray">Hier, 18:20</td>
+<td class="px-6 py-4">
+<button class="text-xs font-bold text-error hover:underline">Déconnecter</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Notifications Section (Hidden by default) -->
+<div class="hidden max-w-2xl" id="content-notifications">
+<div class="bg-card-bg rounded-xl shadow-sm border border-border">
+<div class="p-6 border-b border-border">
+<h3 class="font-label-sm text-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">notifications_active</span>
+                            Préférences de notification
+                        </h3>
+</div>
+<div class="p-6 space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-bold text-primary">Paiements reçus</p>
+<p class="text-xs text-text-gray">Être alerté pour chaque nouvelle transaction (Email/SMS).</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary-container"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-bold text-primary">Rapports hebdomadaires</p>
+<p class="text-xs text-text-gray">Recevez un résumé de votre activité chaque lundi matin.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary-container"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-bold text-primary">Alertes de sécurité</p>
+<p class="text-xs text-text-gray">Notifications en cas de connexion suspecte ou changement de MDP.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary-container"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-bold text-primary">Nouveautés produit</p>
+<p class="text-xs text-text-gray">Restez informé des nouvelles fonctionnalités de Innov Pay.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary-container"></div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- API & Webhooks Section (Hidden by default) -->
+<div class="hidden space-y-6" id="content-api">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- API Keys -->
+<div class="bg-card-bg rounded-xl p-6 shadow-sm border border-border">
+<div class="flex justify-between items-start mb-6">
+<h3 class="font-label-sm text-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">key</span>
+                                Clés d'API
+                            </h3>
+<a class="text-xs font-bold text-secondary-container hover:underline flex items-center gap-1" href="#">
+                                Documentation Développeur
+                                <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</div>
+<div class="space-y-4">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-text-gray">Clé Publique (Production)</label>
+<div class="relative">
+<input class="w-full px-4 py-2 bg-surface-container border border-border rounded-lg text-code-mono text-xs focus:ring-0 outline-none" readonly="" type="text" value="pk_prod_92hksn293kas01l"/>
+<button class="absolute right-2 top-1.5 p-1 text-text-gray hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-xs font-semibold text-text-gray">Signature secrète HMAC</label>
+<div class="relative">
+<input class="w-full px-4 py-2 bg-surface-container border border-border rounded-lg text-code-mono text-xs focus:ring-0 outline-none" readonly="" type="password" value="whsec_092384092384092384"/>
+<button class="absolute right-2 top-1.5 p-1 text-text-gray hover:text-primary">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Webhooks -->
+<div class="bg-card-bg rounded-xl p-6 shadow-sm border border-border">
+<h3 class="font-label-sm text-lg text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">webhook</span>
+                            Webhooks
+                        </h3>
+<div class="space-y-4">
+<div class="space-y-1">
+<label class="text-xs font-semibold text-text-gray">URL du Webhook de production</label>
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-border rounded-lg text-sm focus:ring-2 focus:ring-primary-container outline-none transition-all" type="url" value="https://api.monsite.com/webhooks/innovpay"/>
+<p class="text-[10px] text-text-gray mt-1 italic">Nous enverrons des notifications POST à cette URL.</p>
+</div>
+<div class="flex gap-2 pt-2">
+<button class="flex-1 py-2 bg-primary-container text-on-primary font-bold rounded-lg text-sm hover:opacity-90 transition-opacity">
+                                    Tester l'URL
+                                </button>
+<button class="flex-1 py-2 border border-border text-primary font-bold rounded-lg text-sm hover:bg-surface-container transition-colors">
+                                    Voir les logs
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        function switchTab(tabId) {
+            // Hide all contents
+            ['general', 'securite', 'notifications', 'api'].forEach(id => {
+                document.getElementById(`content-${id}`).classList.add('hidden');
+                document.getElementById(`tab-${id}`).classList.remove('tab-active');
+                document.getElementById(`tab-${id}`).classList.add('text-text-inactive');
+            });
+
+            // Show active content
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.add('tab-active');
+            document.getElementById(`tab-${tabId}`).classList.remove('text-text-inactive');
+        }
+
+        let darkMode = false;
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            const body = document.querySelector('html');
+            const toggle = document.getElementById('dark-mode-toggle');
+            
+            if (darkMode) {
+                body.classList.add('dark');
+                toggle.classList.add('translate-x-6');
+                toggle.parentElement.classList.replace('bg-slate-300', 'bg-secondary-container');
+            } else {
+                body.classList.remove('dark');
+                toggle.classList.remove('translate-x-6');
+                toggle.parentElement.classList.replace('bg-secondary-container', 'bg-slate-300');
+            }
+        }
+    </script>
+</body></html>

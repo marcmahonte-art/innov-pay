@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Innov Pay - Intégrez notre API</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Courier+Prime:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .code-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .code-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .code-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 231, 235, 0.5);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-container": "#571a00",
+                      "on-tertiary": "#ffffff",
+                      "on-surface": "#191c1e",
+                      "border": "#E5E7EB",
+                      "primary-fixed": "#dce1ff",
+                      "tertiary-fixed-dim": "#79db8d",
+                      "surface-container-lowest": "#ffffff",
+                      "surface": "#f7f9fb",
+                      "error": "#B91C1C",
+                      "card-bg": "#FFFFFF",
+                      "text-inactive": "#9CA3AF",
+                      "on-tertiary-fixed-variant": "#005323",
+                      "surface-dim": "#d8dadc",
+                      "on-primary-fixed": "#00164d",
+                      "surface-container-low": "#f2f4f6",
+                      "primary-container": "#0a2463",
+                      "success": "#15803D",
+                      "secondary": "#a73a00",
+                      "sidebar-hover": "#1E3A8A",
+                      "primary-fixed-dim": "#b5c4ff",
+                      "outline-variant": "#c5c6d2",
+                      "tertiary-fixed": "#95f8a7",
+                      "admin-sidebar": "#0F172A",
+                      "background": "#f7f9fb",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed-variant": "#2e4382",
+                      "on-secondary-fixed": "#370e00",
+                      "on-primary": "#ffffff",
+                      "text-gray": "#6B7280",
+                      "surface-container-high": "#e6e8ea",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed": "#ffdbce",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-error": "#ffffff",
+                      "on-primary-container": "#7a8ed2",
+                      "tertiary-container": "#003112",
+                      "secondary-container": "#fd651e",
+                      "on-tertiary-container": "#41a35b",
+                      "surface-bright": "#f7f9fb",
+                      "on-tertiary-fixed": "#00210a",
+                      "inverse-primary": "#b5c4ff",
+                      "on-secondary-fixed-variant": "#7f2b00",
+                      "primary": "#00103e",
+                      "inverse-surface": "#2d3133",
+                      "secondary-fixed-dim": "#ffb599",
+                      "on-background": "#191c1e",
+                      "surface-tint": "#475b9c",
+                      "surface-container-highest": "#e0e3e5",
+                      "warning": "#92400E",
+                      "on-surface-variant": "#444650",
+                      "tertiary": "#001a06",
+                      "outline": "#757681",
+                      "surface-variant": "#e0e3e5",
+                      "surface-container": "#eceef0",
+                      "on-secondary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding": "24px",
+                      "sidebar-width": "220px",
+                      "stack-sm": "8px",
+                      "grid-gap": "12px",
+                      "topbar-height": "48px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "hero-h1": ["Inter"],
+                      "code-mono": ["Courier Prime"],
+                      "caption-xs": ["Inter"],
+                      "body-base": ["Inter"],
+                      "dashboard-amount": ["Inter"],
+                      "hero-h1-mobile": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "sidebar-brand": ["Inter"],
+                      "hero-subtitle": ["Inter"]
+              },
+              "fontSize": {
+                      "hero-h1": ["60px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "code-mono": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "caption-xs": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "body-base": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "dashboard-amount": ["22px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "hero-h1-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "sidebar-brand": ["20px", {"lineHeight": "24px", "fontWeight": "700"}],
+                      "hero-subtitle": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background font-body-base text-on-surface">
+<!-- Sidebar (Shared Component) -->
+<aside class="fixed h-full w-[220px] left-0 top-0 bg-admin-sidebar flex flex-col h-screen py-6 z-50">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-8 h-8 bg-secondary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div>
+<h1 class="text-on-primary font-sidebar-brand text-sidebar-brand leading-none">Innov Pay</h1>
+<p class="text-text-inactive text-[10px] uppercase tracking-widest mt-1">Fintech Solutions</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto px-2 space-y-1">
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="text-label-sm">Tableau de bord</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">storefront</span>
+<span class="text-label-sm">Gérer ma boutique</span>
+</a>
+<div class="pt-4 pb-2 px-4 text-[10px] text-text-inactive uppercase font-bold tracking-wider">Transferts</div>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">send</span>
+<span class="text-label-sm">Envoyer de l'argent</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">request_quote</span>
+<span class="text-label-sm">Demander un paiement</span>
+</a>
+<div class="pt-4 pb-2 px-4 text-[10px] text-text-inactive uppercase font-bold tracking-wider">Développeur</div>
+<a class="bg-sidebar-hover text-on-primary rounded-lg mx-2 my-1 flex items-center px-4 py-2 group" href="#">
+<span class="material-symbols-outlined mr-3">api</span>
+<span class="text-label-sm">Intégrez notre API</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span>
+<span class="text-label-sm">Analytics</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">manage_accounts</span>
+<span class="text-label-sm">Gestion des rôles</span>
+</a>
+</nav>
+<div class="px-4 mt-auto">
+<div class="bg-primary-container p-4 rounded-xl border border-on-primary-container/20">
+<p class="text-[10px] text-on-primary-container uppercase font-bold">Besoin d'aide ?</p>
+<p class="text-on-primary text-xs mt-1">Consultez la doc technique</p>
+<button class="mt-3 w-full bg-white text-primary text-xs font-bold py-2 rounded-lg hover:bg-primary-fixed transition-colors">Documentation</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Shell -->
+<main class="ml-[220px] min-h-screen">
+<!-- TopNavBar (Shared Component Implementation) -->
+<header class="fixed top-0 right-0 w-[calc(100%-220px)] h-[48px] bg-card-bg border-b border-border shadow-sm flex justify-between items-center px-container-padding z-40">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-gray text-sm">search</span>
+<input class="w-full pl-10 pr-4 py-1.5 bg-surface-container-low border-none rounded-full text-sm focus:ring-1 focus:ring-primary" placeholder="Rechercher une transaction, un log..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-8 h-8 flex items-center justify-center text-text-gray hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-text-gray hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-border mx-2"></div>
+<div class="flex items-center gap-2 group cursor-pointer">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5ppc-IWb1wf7yq9FOFLIRpT0pjXtYTgmKlH5bJ2t6mBxQIwU0L8-XNxIiscT6_HO2Q2TF2PgChb62AWkk48aIqnctKiDjk3S3Rn4dUWqvpvC5x7ARp2Cys6HWGyCobbahopMlCvujSbcPL_gRKlGMc3Q7E3eLA0byLl5FfTtSPMifP-Lj0oyKku4RrIMlcqjcNXOfjN0WhFWpRPnPXMsFP_1RA99flWHSrcJca2AFM1ESnz3rwO57jJAdrqZ6sWpINQ6cCL3_Y130"/>
+</div>
+<span class="text-label-sm font-bold">Tech Lead</span>
+<span class="material-symbols-outlined text-text-gray text-sm">expand_more</span>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="pt-[48px] p-container-padding">
+<!-- Header Section -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 text-text-gray mb-2">
+<span class="text-caption-xs font-bold uppercase tracking-widest">Espace Développeur</span>
+<span class="w-1 h-1 bg-text-gray rounded-full"></span>
+<span class="text-caption-xs font-bold uppercase tracking-widest">API v2.4</span>
+</div>
+<h2 class="font-hero-h1-mobile text-hero-h1-mobile md:font-hero-h1 md:text-hero-h1 text-primary -tracking-tight">Intégrez notre API</h2>
+<p class="text-hero-subtitle text-text-gray max-w-2xl mt-2">Construisez des expériences de paiement fluides au Tchad et dans la zone CEMAC avec nos outils robustes.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-white border border-border text-primary rounded-lg text-label-sm font-bold flex items-center gap-2 hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-sm">download</span>
+                        SDK Flutter
+                    </button>
+<button class="px-4 py-2 bg-secondary-container text-white rounded-lg text-label-sm font-bold flex items-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-secondary-container/20">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Nouvelle App
+                    </button>
+</div>
+</div>
+<!-- Tab Navigation -->
+<div class="flex border-b border-border mb-8 overflow-x-auto no-scrollbar">
+<button class="tab-btn px-6 py-4 text-label-sm font-bold text-primary border-b-2 border-primary whitespace-nowrap transition-all" id="tab-apps" onclick="switchTab('apps')">Mes applications</button>
+<button class="tab-btn px-6 py-4 text-label-sm font-bold text-text-gray hover:text-primary transition-all whitespace-nowrap" id="tab-doc" onclick="switchTab('doc')">Documentation</button>
+<button class="tab-btn px-6 py-4 text-label-sm font-bold text-text-gray hover:text-primary transition-all whitespace-nowrap" id="tab-logs" onclick="switchTab('logs')">Logs API</button>
+<button class="tab-btn px-6 py-4 text-label-sm font-bold text-text-gray hover:text-primary transition-all whitespace-nowrap" id="tab-playground" onclick="switchTab('playground')">Playground</button>
+</div>
+<!-- Tab Content: Mes applications -->
+<section class="tab-content block animate-in fade-in duration-300" id="content-apps">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- App Card 1 -->
+<div class="bg-card-bg rounded-xl border border-border overflow-hidden group hover:shadow-lg transition-all">
+<div class="p-6">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-primary-container rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<div>
+<h3 class="text-body-base font-bold text-primary">E-shop Tchad Main</h3>
+<div class="flex gap-2 mt-1">
+<span class="bg-success/10 text-success px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Production</span>
+<span class="text-text-gray text-[10px] font-medium">Créée le 12/05/2023</span>
+</div>
+</div>
+</div>
+<button class="text-text-gray hover:text-primary">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="space-y-4">
+<div>
+<label class="text-[10px] font-bold text-text-gray uppercase tracking-widest block mb-2">Clé Publique</label>
+<div class="flex gap-2">
+<code class="flex-1 bg-surface-container-low p-3 rounded-lg font-code-mono text-code-mono text-primary truncate border border-border">pk_live_51MzkH0K2Q1...</code>
+<button class="p-3 bg-surface-container-low hover:bg-border rounded-lg transition-colors" title="Copier">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+<div>
+<label class="text-[10px] font-bold text-text-gray uppercase tracking-widest block mb-2">Clé Secrète</label>
+<div class="flex gap-2">
+<div class="flex-1 bg-surface-container-low p-3 rounded-lg font-code-mono text-code-mono text-primary flex items-center justify-between border border-border">
+<span>••••••••••••••••••••••••</span>
+<span class="material-symbols-outlined text-sm text-text-gray cursor-pointer">visibility</span>
+</div>
+<button class="p-3 bg-surface-container-low hover:bg-border rounded-lg transition-colors group/regen" title="Régénérer">
+<span class="material-symbols-outlined text-sm group-hover/regen:rotate-180 transition-transform duration-500">refresh</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low px-6 py-4 border-t border-border flex justify-between items-center">
+<span class="text-caption-xs text-text-gray">Dernier usage: il y a 5 min</span>
+<a class="text-caption-xs font-bold text-primary hover:underline" href="#">Voir les stats →</a>
+</div>
+</div>
+<!-- App Card 2 (Sandbox) -->
+<div class="bg-card-bg rounded-xl border border-border border-dashed overflow-hidden group hover:shadow-lg transition-all">
+<div class="p-6">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-surface-container-high rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">science</span>
+</div>
+<div>
+<h3 class="text-body-base font-bold text-primary">Test Environment</h3>
+<div class="flex gap-2 mt-1">
+<span class="bg-warning/10 text-warning px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Sandbox</span>
+<span class="text-text-gray text-[10px] font-medium">Créée le 01/10/2023</span>
+</div>
+</div>
+</div>
+<button class="text-text-gray hover:text-primary">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="space-y-4">
+<div>
+<label class="text-[10px] font-bold text-text-gray uppercase tracking-widest block mb-2">Clé Publique</label>
+<div class="flex gap-2">
+<code class="flex-1 bg-surface-container-low p-3 rounded-lg font-code-mono text-code-mono text-primary truncate border border-border">pk_test_72RlsK0L3...</code>
+<button class="p-3 bg-surface-container-low hover:bg-border rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+<div>
+<label class="text-[10px] font-bold text-text-gray uppercase tracking-widest block mb-2">Clé Secrète</label>
+<div class="flex gap-2">
+<code class="flex-1 bg-surface-container-low p-3 rounded-lg font-code-mono text-code-mono text-primary truncate border border-border">sk_test_90XpQ7V...</code>
+<button class="p-3 bg-surface-container-low hover:bg-border rounded-lg transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tab Content: Logs API -->
+<section class="tab-content hidden animate-in slide-in-from-bottom-2 duration-300" id="content-logs">
+<div class="bg-card-bg rounded-xl border border-border overflow-hidden">
+<div class="p-4 border-b border-border flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex gap-2">
+<select class="bg-surface-container-low border-none rounded-lg text-caption-xs font-bold text-primary focus:ring-1 focus:ring-primary">
+<option>Toutes les méthodes</option>
+<option>GET</option>
+<option>POST</option>
+<option>PUT</option>
+</select>
+<select class="bg-surface-container-low border-none rounded-lg text-caption-xs font-bold text-primary focus:ring-1 focus:ring-primary">
+<option>Tous les status</option>
+<option>200 OK</option>
+<option>400 Error</option>
+<option>500 Error</option>
+</select>
+</div>
+<div class="text-caption-xs text-text-gray font-medium">Affichage de 50 derniers évènements</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-[10px] font-bold uppercase tracking-widest text-text-gray">
+<tr>
+<th class="px-6 py-3">Timestamp</th>
+<th class="px-6 py-3">Méthode</th>
+<th class="px-6 py-3">Endpoint</th>
+<th class="px-6 py-3">Status</th>
+<th class="px-6 py-3 text-right">IP Address</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border">
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer">
+<td class="px-6 py-4 text-caption-xs text-text-gray font-medium">Aujourd'hui, 14:23:45</td>
+<td class="px-6 py-4"><span class="font-bold text-primary">POST</span></td>
+<td class="px-6 py-4 font-code-mono text-[13px]">/v1/payments/create</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-success/10 text-success text-[10px] font-bold">201 CREATED</span>
+</td>
+<td class="px-6 py-4 text-right font-code-mono text-caption-xs text-text-gray">41.223.14.89</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer">
+<td class="px-6 py-4 text-caption-xs text-text-gray font-medium">Aujourd'hui, 14:22:12</td>
+<td class="px-6 py-4"><span class="font-bold text-primary">GET</span></td>
+<td class="px-6 py-4 font-code-mono text-[13px]">/v1/transactions/tx_9012</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-success/10 text-success text-[10px] font-bold">200 OK</span>
+</td>
+<td class="px-6 py-4 text-right font-code-mono text-caption-xs text-text-gray">41.223.14.89</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group cursor-pointer">
+<td class="px-6 py-4 text-caption-xs text-text-gray font-medium">Aujourd'hui, 14:15:00</td>
+<td class="px-6 py-4"><span class="font-bold text-primary">POST</span></td>
+<td class="px-6 py-4 font-code-mono text-[13px]">/v1/payouts/request</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-error/10 text-error text-[10px] font-bold">401 UNAUTHORIZED</span>
+</td>
+<td class="px-6 py-4 text-right font-code-mono text-caption-xs text-text-gray">102.67.1.5</td>
+</tr>
+<!-- Repeat rows as needed -->
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Tab Content: Playground -->
+<section class="tab-content hidden animate-in zoom-in-95 duration-300" id="content-playground">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-320px)] min-h-[500px]">
+<!-- Editor Side -->
+<div class="lg:col-span-7 flex flex-col gap-4">
+<div class="flex-1 bg-admin-sidebar rounded-xl flex flex-col overflow-hidden shadow-2xl">
+<div class="bg-[#1e293b] px-4 py-3 border-b border-slate-700 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="flex gap-1.5 mr-4">
+<div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+<div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+<div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+</div>
+<span class="text-slate-400 text-[11px] font-bold uppercase tracking-widest">Requête JSON</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex bg-slate-800 rounded p-0.5">
+<button class="px-3 py-1 text-[10px] font-bold text-white bg-primary rounded">POST</button>
+<button class="px-3 py-1 text-[10px] font-bold text-slate-400">GET</button>
+</div>
+<span class="text-slate-400 text-[11px] font-code-mono">/v1/payments/init</span>
+</div>
+</div>
+<div class="flex-1 p-4 font-code-mono text-sm leading-relaxed overflow-auto code-scrollbar text-emerald-400">
+<pre>{
+  <span class="text-pink-400">"amount"</span>: <span class="text-blue-400">25000</span>,
+  <span class="text-pink-400">"currency"</span>: <span class="text-orange-400">"XAF"</span>,
+  <span class="text-pink-400">"description"</span>: <span class="text-orange-400">"Achat smartphone Galaxy S21"</span>,
+  <span class="text-pink-400">"customer"</span>: {
+    <span class="text-pink-400">"name"</span>: <span class="text-orange-400">"Mahamat Idriss"</span>,
+    <span class="text-pink-400">"email"</span>: <span class="text-orange-400">"mahamat@example.td"</span>,
+    <span class="text-pink-400">"phone"</span>: <span class="text-orange-400">"+235 66 00 00 00"</span>
+  },
+  <span class="text-pink-400">"metadata"</span>: {
+    <span class="text-pink-400">"order_id"</span>: <span class="text-orange-400">"INV-9872"</span>
+  }
+}
+</pre>
+</div>
+<div class="p-4 bg-[#1e293b] border-t border-slate-700">
+<button class="w-full py-3 bg-secondary-container text-white rounded-lg font-bold flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-orange-900/20 active:scale-[0.98]">
+<span class="material-symbols-outlined">play_arrow</span>
+                                    Envoyer la requête de test
+                                </button>
+</div>
+</div>
+</div>
+<!-- Sidebar (Response & Snippets) -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<!-- Code Snippets -->
+<div class="bg-card-bg rounded-xl border border-border overflow-hidden">
+<div class="flex bg-surface-container-low border-b border-border">
+<button class="px-4 py-2 text-caption-xs font-bold text-primary border-b-2 border-primary">JavaScript</button>
+<button class="px-4 py-2 text-caption-xs font-bold text-text-gray hover:text-primary">PHP</button>
+<button class="px-4 py-2 text-caption-xs font-bold text-text-gray hover:text-primary">Python</button>
+</div>
+<div class="p-4 bg-admin-sidebar overflow-x-auto">
+<pre class="font-code-mono text-[12px] text-slate-300"><span class="text-purple-400">fetch</span>(<span class="text-orange-400">'https://api.innovpay.com/v1/payments'</span>, {
+  method: <span class="text-orange-400">'POST'</span>,
+  headers: {
+    <span class="text-orange-400">'Authorization'</span>: <span class="text-orange-400">'Bearer SK_LIVE_...'</span>,
+    <span class="text-orange-400">'Content-Type'</span>: <span class="text-orange-400">'application/json'</span>
+  },
+  body: JSON.<span class="text-purple-400">stringify</span>(payload)
+})
+.<span class="text-purple-400">then</span>(res =&gt; res.<span class="text-purple-400">json</span>())
+.<span class="text-purple-400">then</span>(data =&gt; console.<span class="text-purple-400">log</span>(data));
+</pre>
+</div>
+</div>
+<!-- Mock Response -->
+<div class="flex-1 bg-surface-container-low rounded-xl border border-border p-4 flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h4 class="text-caption-xs font-bold uppercase tracking-widest text-text-gray">Réponse du serveur</h4>
+<span class="px-2 py-0.5 rounded bg-success/10 text-success text-[10px] font-bold">200 OK</span>
+</div>
+<div class="flex-1 font-code-mono text-xs text-primary/80 overflow-auto code-scrollbar">
+<pre>{
+  "status": "success",
+  "data": {
+    "id": "pay_5f9a2",
+    "payment_url": "https://p.innovpay.com/..."
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<script>
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('block');
+            });
+            
+            // Remove active style from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-primary', 'border-b-2', 'border-primary');
+                btn.classList.add('text-text-gray');
+            });
+
+            // Show active tab content
+            const activeContent = document.getElementById('content-' + tabId);
+            activeContent.classList.remove('hidden');
+            activeContent.classList.add('block');
+
+            // Set active style for clicked button
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.classList.remove('text-text-gray');
+            activeBtn.classList.add('text-primary', 'border-b-2', 'border-primary');
+        }
+
+        // Search bar micro-interaction
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-2', 'ring-primary/20');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-2', 'ring-primary/20');
+        });
+    </script>
+</body></html>

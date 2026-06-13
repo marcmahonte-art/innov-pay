@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Courier+Prime&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#571a00",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "border": "#E5E7EB",
+                        "primary-fixed": "#dce1ff",
+                        "tertiary-fixed-dim": "#79db8d",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f7f9fb",
+                        "error": "#B91C1C",
+                        "card-bg": "#FFFFFF",
+                        "text-inactive": "#9CA3AF",
+                        "on-tertiary-fixed-variant": "#005323",
+                        "surface-dim": "#d8dadc",
+                        "on-primary-fixed": "#00164d",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-container": "#0a2463",
+                        "success": "#15803D",
+                        "secondary": "#a73a00",
+                        "sidebar-hover": "#1E3A8A",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "outline-variant": "#c5c6d2",
+                        "tertiary-fixed": "#95f8a7",
+                        "admin-sidebar": "#0F172A",
+                        "background": "#f7f9fb",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#2e4382",
+                        "on-secondary-fixed": "#370e00",
+                        "on-primary": "#ffffff",
+                        "text-gray": "#6B7280",
+                        "surface-container-high": "#e6e8ea",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#ffdbce",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#7a8ed2",
+                        "tertiary-container": "#003112",
+                        "secondary-container": "#fd651e",
+                        "on-tertiary-container": "#41a35b",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-fixed": "#00210a",
+                        "inverse-primary": "#b5c4ff",
+                        "on-secondary-fixed-variant": "#7f2b00",
+                        "primary": "#00103e",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed-dim": "#ffb599",
+                        "on-background": "#191c1e",
+                        "surface-tint": "#475b9c",
+                        "surface-container-highest": "#e0e3e5",
+                        "warning": "#92400E",
+                        "on-surface-variant": "#444650",
+                        "tertiary": "#001a06",
+                        "outline": "#757681",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container": "#eceef0",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "24px",
+                        "sidebar-width": "220px",
+                        "stack-sm": "8px",
+                        "grid-gap": "12px",
+                        "topbar-height": "48px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "hero-h1": ["Inter"],
+                        "code-mono": ["Courier Prime"],
+                        "caption-xs": ["Inter"],
+                        "body-base": ["Inter"],
+                        "dashboard-amount": ["Inter"],
+                        "hero-h1-mobile": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "sidebar-brand": ["Inter"],
+                        "hero-subtitle": ["Inter"]
+                    },
+                    "fontSize": {
+                        "hero-h1": ["60px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "code-mono": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "caption-xs": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "body-base": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "dashboard-amount": ["22px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "hero-h1-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "sidebar-brand": ["20px", {"lineHeight": "24px", "fontWeight": "700"}],
+                        "hero-subtitle": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-base text-on-surface min-h-screen" style="background-color: #f8fafc;">
+<!-- Sidebar Navigation -->
+<aside class="fixed h-full w-[220px] left-0 top-0 bg-admin-sidebar flex flex-col py-6 z-50" style="background-color: #0a2463;">
+<div class="px-6 mb-10">
+<h1 class="font-sidebar-brand text-sidebar-brand text-on-primary">Innov Pay</h1>
+<p class="text-[10px] text-text-inactive tracking-widest uppercase mt-1">Fintech Solutions</p>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto px-2">
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="text-label-sm">Tableau de bord</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">storefront</span>
+<span class="text-label-sm">Gérer ma boutique</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">send</span>
+<span class="text-label-sm">Envoyer de l'argent</span>
+</a>
+<a class="bg-sidebar-hover text-on-primary rounded-lg mx-2 my-1 flex items-center px-4 py-2 group" href="#">
+<span class="material-symbols-outlined mr-3">request_quote</span>
+<span class="text-label-sm">Demander un paiement</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">payments</span>
+<span class="text-label-sm">Collecter des paiements</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">account_balance_wallet</span>
+<span class="text-label-sm">Débourser des paiements</span>
+</a>
+<div class="pt-4 pb-2 px-4 text-[10px] font-bold text-text-inactive uppercase tracking-wider">Outils &amp; API</div>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">qr_code_2</span>
+<span class="text-label-sm">InnovQR</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">api</span>
+<span class="text-label-sm">Intégrez notre API</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span>
+<span class="text-label-sm">Analytics</span>
+</a>
+</nav>
+<div class="mt-auto px-4 pt-6 border-t border-white/10">
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="text-label-sm">Paramètres</span>
+</a>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-220px)] h-topbar-height bg-card-bg shadow-sm z-40 flex justify-between items-center px-container-padding">
+<div class="flex items-center bg-surface-container-low px-3 py-1.5 rounded-lg w-96 border border-border">
+<span class="material-symbols-outlined text-text-gray text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-base w-full p-0 h-auto" placeholder="Rechercher une transaction, un client..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors text-text-gray relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="h-6 w-px bg-border"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right">
+<p class="text-label-sm font-bold leading-none">Mahamat Idriss</p>
+<p class="text-caption-xs text-text-gray mt-1">Etablissement Al-Nour</p>
+</div>
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full object-cover border border-border" data-alt="A professional headshot of a Chadian business owner in a modern corporate setting, smiling confidently. The lighting is soft and natural, emphasizing a trustworthy and successful entrepreneur persona. The background is a clean, slightly blurred fintech office environment with blue and white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY5MqpY38rE6vwL5AWa-gfPLephXChxVAxlwdkYC33TvWbhNJQhDtyjmjhNLD1N4DBwzu3CjpU5RVZMy7t1gzYOeZg17ywqBwvIweoK0e4LI6TA-SeN2t-ikZRT9xi1BGbzxjqffgvBwCj2RwlK3COwdRsx58P67mTJEOyVSseindUz6ZPom72VePSD4meMNC9-riudfAYS-jhYXmvRHtpFIop8mJU5mvkQbD8O3AGlaro9uux2XVyyE-EOmMq8qcHBDH9oda4s-lp"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[220px] pt-topbar-height min-h-screen">
+<div class="p-container-padding max-w-[1400px] mx-auto">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-dashboard-amount text-primary mb-1">Demander un paiement</h2>
+<p class="text-text-gray text-body-base">Générez des liens de paiement sécurisés pour vos clients.</p>
+</div>
+<button class="flex items-center gap-2 bg-primary-container text-on-primary-container px-4 py-2.5 rounded-lg font-label-sm hover:opacity-90 transition-all shadow-sm">
+<span class="material-symbols-outlined">upload_file</span>
+<span>Envoi groupé (CSV)</span>
+</button>
+</div>
+<div class="grid grid-cols-12 gap-grid-gap">
+<!-- Main Form Column -->
+<div class="col-span-12 lg:col-span-8 space-y-grid-gap">
+<section class="bg-card-bg p-6 rounded-xl border border-border shadow-sm">
+<form class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="col-span-2">
+<label class="block text-label-sm font-semibold mb-2 text-primary">Titre de la demande</label>
+<input class="w-full border-border rounded-lg p-3 focus:border-primary-container focus:ring-1 focus:ring-primary-container text-body-base transition-all" placeholder="Ex: Prestation de services - Octobre" type="text"/>
+</div>
+<div class="col-span-2 md:col-span-1">
+<label class="block text-label-sm font-semibold mb-2 text-primary">Montant (FCFA)</label>
+<div class="relative">
+<input class="w-full border-border rounded-lg p-3 pr-16 focus:border-primary-container focus:ring-1 focus:ring-primary-container text-body-base font-bold" placeholder="0" type="number"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 text-text-gray font-bold">FCFA</span>
+</div>
+</div>
+<div class="col-span-2 md:col-span-1">
+<label class="block text-label-sm font-semibold mb-2 text-primary">Date d'échéance</label>
+<input class="w-full border-border rounded-lg p-3 focus:border-primary-container focus:ring-1 focus:ring-primary-container text-body-base" type="date"/>
+</div>
+<div class="col-span-2">
+<label class="block text-label-sm font-semibold mb-2 text-primary">Description (Optionnel)</label>
+<textarea class="w-full border-border rounded-lg p-3 focus:border-primary-container focus:ring-1 focus:ring-primary-container text-body-base" placeholder="Détaillez l'objet de la demande..." rows="3"></textarea>
+</div>
+</div>
+<div class="pt-4 border-t border-border">
+<h3 class="text-label-sm font-bold mb-4 text-primary uppercase tracking-wider">Informations du destinataire</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="col-span-2 md:col-span-1">
+<label class="block text-label-sm font-semibold mb-2 text-primary">Canal d'envoi</label>
+<select class="w-full border-border rounded-lg p-3 focus:border-primary-container focus:ring-1 focus:ring-primary-container text-body-base appearance-none bg-no-repeat bg-[right_1rem_center]">
+<option>SMS (+235)</option>
+<option>WhatsApp</option>
+<option>Email</option>
+</select>
+</div>
+<div class="col-span-2 md:col-span-1">
+<label class="block text-label-sm font-semibold mb-2 text-primary">Coordonnées</label>
+<input class="w-full border-border rounded-lg p-3 focus:border-primary-container focus:ring-1 focus:ring-primary-container text-body-base" placeholder="Numéro ou Email" type="text"/>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-border/50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-on-primary-container/10 flex items-center justify-center rounded-full">
+<span class="material-symbols-outlined text-primary-container">info</span>
+</div>
+<div>
+<p class="text-label-sm font-bold">Frais supportés par le client</p>
+<p class="text-caption-xs text-text-gray">Le client paiera les frais de transaction (2.5%)</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<button class="w-full bg-secondary-container text-on-secondary-container font-bold py-4 rounded-xl shadow-lg hover:scale-[1.01] transition-transform active:scale-[0.99]" style="background-color: #ea580c; color: #ffffff;" type="button">
+                                Générer le lien de paiement
+                            </button>
+</form>
+</section>
+</div>
+<!-- Right Sidebar: Templates -->
+<div class="col-span-12 lg:col-span-4 space-y-grid-gap">
+<section class="bg-card-bg p-6 rounded-xl border border-border shadow-sm flex flex-col h-full">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-label-sm font-bold text-primary">MES MODÈLES</h3>
+<button class="text-primary-container font-bold text-caption-xs hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                                Nouveau
+                            </button>
+</div>
+<div class="space-y-3">
+<div class="group p-4 rounded-lg border border-border hover:border-primary-container/30 hover:bg-surface-container-low transition-all cursor-pointer">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-bold">Frais scolaires</span>
+<span class="material-symbols-outlined text-text-inactive text-lg group-hover:text-primary-container">arrow_forward</span>
+</div>
+<p class="text-caption-xs text-text-gray">Inscription trimestrielle standard</p>
+<div class="mt-3 flex items-center gap-2">
+<span class="px-2 py-0.5 bg-success/10 text-success text-[10px] rounded font-bold" style="background-color: #dcfce7; color: #15803d;">150,000 FCFA</span>
+<span class="px-2 py-0.5 bg-surface-container-high text-text-gray text-[10px] rounded">WhatsApp</span>
+</div>
+</div>
+<div class="group p-4 rounded-lg border border-border hover:border-primary-container/30 hover:bg-surface-container-low transition-all cursor-pointer">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-bold">Maintenance IT</span>
+<span class="material-symbols-outlined text-text-inactive text-lg group-hover:text-primary-container">arrow_forward</span>
+</div>
+<p class="text-caption-xs text-text-gray">Contrat de support mensuel</p>
+<div class="mt-3 flex items-center gap-2">
+<span class="px-2 py-0.5 bg-success/10 text-success text-[10px] rounded font-bold" style="background-color: #dcfce7; color: #15803d;">50,000 FCFA</span>
+<span class="px-2 py-0.5 bg-surface-container-high text-text-gray text-[10px] rounded">Email</span>
+</div>
+</div>
+<div class="group p-4 rounded-lg border border-border hover:border-primary-container/30 hover:bg-surface-container-low transition-all cursor-pointer">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-bold">Livraison Marchandise</span>
+<span class="material-symbols-outlined text-text-inactive text-lg group-hover:text-primary-container">arrow_forward</span>
+</div>
+<p class="text-caption-xs text-text-gray">Facturation variable logistique</p>
+<div class="mt-3 flex items-center gap-2">
+<span class="px-2 py-0.5 bg-warning/10 text-warning text-[10px] rounded font-bold" style="background-color: #fef9c3; color: #a16207;">Variable</span>
+<span class="px-2 py-0.5 bg-surface-container-high text-text-gray text-[10px] rounded">SMS</span>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-8">
+<div class="p-4 bg-primary-container rounded-xl text-on-primary-container relative overflow-hidden">
+<div class="relative z-10">
+<p class="text-caption-xs font-bold uppercase tracking-widest mb-1 opacity-70">Astuce Innov Pay</p>
+<p class="text-label-sm leading-relaxed mb-3">Saviez-vous que les liens WhatsApp ont un taux de conversion 40% plus élevé ?</p>
+<button class="text-xs font-bold py-1.5 px-3 bg-white/20 rounded-lg hover:bg-white/30 transition-colors">En savoir plus</button>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-8xl opacity-10">whatshot</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Recent Links Table -->
+<div class="col-span-12">
+<section class="bg-card-bg rounded-xl border border-border shadow-sm overflow-hidden">
+<div class="p-6 border-b border-border flex items-center justify-between">
+<h3 class="text-label-sm font-bold text-primary uppercase tracking-wider">Liens de paiement récents</h3>
+<div class="flex gap-2">
+<button class="p-2 rounded hover:bg-surface-container-low text-text-gray"><span class="material-symbols-outlined">filter_list</span></button>
+<button class="p-2 rounded hover:bg-surface-container-low text-text-gray"><span class="material-symbols-outlined">download</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-4 text-caption-xs font-bold text-text-gray uppercase">Titre</th>
+<th class="px-6 py-4 text-caption-xs font-bold text-text-gray uppercase">Montant</th>
+<th class="px-6 py-4 text-caption-xs font-bold text-text-gray uppercase">Date</th>
+<th class="px-6 py-4 text-caption-xs font-bold text-text-gray uppercase">Statut</th>
+<th class="px-6 py-4 text-caption-xs font-bold text-text-gray uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border">
+<tr class="hover:bg-surface transition-colors">
+<td class="px-6 py-4">
+<div class="font-label-sm font-bold">Services de Design - Logo</div>
+<div class="text-caption-xs text-text-gray">Dest: +235 66 00 00 01</div>
+</td>
+<td class="px-6 py-4 font-label-sm font-bold">250,000 FCFA</td>
+<td class="px-6 py-4 text-label-sm">24 Oct, 2023</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-success/10 text-success text-[10px] rounded-full font-bold" style="background-color: #dcfce7; color: #15803d;">Payé</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex justify-end gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-border hover:bg-surface-container-low transition-colors text-text-gray" title="Copier le lien"><span class="material-symbols-outlined text-lg">content_copy</span></button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-border hover:bg-surface-container-low transition-colors text-success" title="Partager WhatsApp"><span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">share</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors">
+<td class="px-6 py-4">
+<div class="font-label-sm font-bold">Frais de Consultation IT</div>
+<div class="text-caption-xs text-text-gray">Dest: mahamat@email.com</div>
+</td>
+<td class="px-6 py-4 font-label-sm font-bold">75,000 FCFA</td>
+<td class="px-6 py-4 text-label-sm">22 Oct, 2023</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-warning/10 text-warning text-[10px] rounded-full font-bold" style="background-color: #fef9c3; color: #a16207;">En attente</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex justify-end gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-border hover:bg-surface-container-low transition-colors text-text-gray"><span class="material-symbols-outlined text-lg">content_copy</span></button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-border hover:bg-surface-container-low transition-colors text-success"><span class="material-symbols-outlined text-lg">share</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors">
+<td class="px-6 py-4">
+<div class="font-label-sm font-bold">Abonnement Bureau</div>
+<div class="text-caption-xs text-text-gray">Dest: +235 99 12 34 56</div>
+</td>
+<td class="px-6 py-4 font-label-sm font-bold">12,500 FCFA</td>
+<td class="px-6 py-4 text-label-sm">15 Oct, 2023</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-error/10 text-error text-[10px] rounded-full font-bold" style="background-color: #fee2e2; color: #b91c1c;">Expiré</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex justify-end gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-border hover:bg-surface-container-low transition-colors text-text-gray"><span class="material-symbols-outlined text-lg">refresh</span></button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-border hover:bg-surface-container-low transition-colors text-text-gray"><span class="material-symbols-outlined text-lg">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-border flex items-center justify-center">
+<button class="text-primary-container font-bold text-label-sm hover:underline">Voir tout l'historique</button>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<!-- Overlay for mobile/sidebar interaction if needed -->
+<div class="fixed inset-0 bg-black/50 hidden z-40" id="sidebar-overlay"></div>
+<script>
+        // Simple micro-interactions
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.98)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = 'scale(1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'scale(1)';
+            });
+        });
+
+        // Toggle handling for mobile (not active in this layout but good for scalability)
+        const toggleSidebar = () => {
+            console.log('Sidebar toggle logic');
+        };
+    </script>
+</body></html>

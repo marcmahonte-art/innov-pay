@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Innov Pay - Gestion des rôles</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#571a00",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "border": "#E5E7EB",
+                        "primary-fixed": "#dce1ff",
+                        "tertiary-fixed-dim": "#79db8d",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f7f9fb",
+                        "error": "#B91C1C",
+                        "card-bg": "#FFFFFF",
+                        "text-inactive": "#9CA3AF",
+                        "on-tertiary-fixed-variant": "#005323",
+                        "surface-dim": "#d8dadc",
+                        "on-primary-fixed": "#00164d",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-container": "#0a2463",
+                        "success": "#15803D",
+                        "secondary": "#a73a00",
+                        "sidebar-hover": "#1E3A8A",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "outline-variant": "#c5c6d2",
+                        "tertiary-fixed": "#95f8a7",
+                        "admin-sidebar": "#0F172A",
+                        "background": "#f7f9fb",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#2e4382",
+                        "on-secondary-fixed": "#370e00",
+                        "on-primary": "#ffffff",
+                        "text-gray": "#6B7280",
+                        "surface-container-high": "#e6e8ea",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#ffdbce",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#7a8ed2",
+                        "tertiary-container": "#003112",
+                        "secondary-container": "#fd651e",
+                        "on-tertiary-container": "#41a35b",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-fixed": "#00210a",
+                        "inverse-primary": "#b5c4ff",
+                        "on-secondary-fixed-variant": "#7f2b00",
+                        "primary": "#00103e",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed-dim": "#ffb599",
+                        "on-background": "#191c1e",
+                        "surface-tint": "#475b9c",
+                        "surface-container-highest": "#e0e3e5",
+                        "warning": "#92400E",
+                        "on-surface-variant": "#444650",
+                        "tertiary": "#001a06",
+                        "outline": "#757681",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container": "#eceef0",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "24px",
+                        "sidebar-width": "220px",
+                        "stack-sm": "8px",
+                        "grid-gap": "12px",
+                        "topbar-height": "48px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "hero-h1": ["Inter"],
+                        "code-mono": ["Courier Prime"],
+                        "caption-xs": ["Inter"],
+                        "body-base": ["Inter"],
+                        "dashboard-amount": ["Inter"],
+                        "hero-h1-mobile": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "sidebar-brand": ["Inter"],
+                        "hero-subtitle": ["Inter"]
+                    },
+                    "fontSize": {
+                        "hero-h1": ["60px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-mono": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "caption-xs": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "body-base": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "dashboard-amount": ["22px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "hero-h1-mobile": ["36px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-sm": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "sidebar-brand": ["20px", { "lineHeight": "24px", "fontWeight": "700" }],
+                        "hero-subtitle": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .modal-overlay {
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="flex">
+<!-- Sidebar Navigation -->
+<aside class="fixed h-full w-[220px] left-0 top-0 bg-admin-sidebar flex flex-col py-6 transition-all duration-200 ease-in-out z-50">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-8 h-8 bg-on-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h1 class="text-on-primary font-sidebar-brand text-sidebar-brand leading-none">Innov Pay</h1>
+<p class="text-text-inactive text-[10px] uppercase tracking-widest mt-1">Fintech Solutions</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto custom-scrollbar">
+<div class="space-y-1">
+<!-- Navigation Items -->
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="text-label-sm font-label-sm">Tableau de bord</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">storefront</span>
+<span class="text-label-sm font-label-sm">Gérer ma boutique</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">send</span>
+<span class="text-label-sm font-label-sm">Envoyer de l'argent</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">request_quote</span>
+<span class="text-label-sm font-label-sm">Demander un paiement</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">payments</span>
+<span class="text-label-sm font-label-sm">Collecter des paiements</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">account_balance_wallet</span>
+<span class="text-label-sm font-label-sm">Débourser des paiements</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">qr_code_2</span>
+<span class="text-label-sm font-label-sm">InnovQR</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">api</span>
+<span class="text-label-sm font-label-sm">Intégrez notre API</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span>
+<span class="text-label-sm font-label-sm">Analytics</span>
+</a>
+<!-- Active Tab: Gestion des rôles -->
+<a class="flex items-center bg-sidebar-hover text-on-primary rounded-lg mx-2 my-1 transition-colors px-4 py-2" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">manage_accounts</span>
+<span class="text-label-sm font-label-sm">Gestion des rôles</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">add_card</span>
+<span class="text-label-sm font-label-sm">Recharger le compte</span>
+</a>
+<a class="flex items-center text-text-inactive hover:text-on-primary transition-colors px-4 py-2 hover:bg-sidebar-hover" href="#">
+<span class="material-symbols-outlined mr-3">output</span>
+<span class="text-label-sm font-label-sm">Retirer l'argent</span>
+</a>
+</div>
+</nav>
+<div class="mt-auto px-4 pt-4 border-t border-slate-700/50">
+<div class="flex items-center gap-3 p-2 hover:bg-slate-800 rounded-lg cursor-pointer transition-colors">
+<img alt="User Avatar" class="w-8 h-8 rounded-full object-cover" data-alt="Close-up professional portrait of a tech executive in a modern workspace, soft cinematic lighting, neutral business environment, high resolution corporate headshot with a friendly yet professional expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBS7VVvpU1agdiHD0iU7TPg4NqAo1YkgLxad01w6DXhuiz8vHEyji3QU0JwmOAU3WA6RB6RdSfbrFfQ9cSXsrB10mUnb4B7U0y3le8U5CtAwVo1OzTOKh7PXFO9TJpiN2bpvBmqrP9jB4Pr3NOxlz_Kn13gkFqsQ8JgCmm-kA4r6z6Y7bTQbZdLQcEnFrQZcBoxNk8X3lDtIp7h5QlSKvXF5Ik4A6LXoDGrAOdKtN2Viwjac6Yu7hj0sXU5XQmTCrRLW36P-cAg8JC6"/>
+<div class="overflow-hidden">
+<p class="text-on-primary text-label-sm font-semibold truncate">Abakar Malloum</p>
+<p class="text-text-inactive text-caption-xs truncate">Super Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-[220px] w-[calc(100%-220px)] min-h-screen">
+<!-- Top Navigation -->
+<header class="fixed top-0 right-0 w-[calc(100%-220px)] h-topbar-height bg-card-bg shadow-sm flex justify-between items-center px-container-padding z-40 border-b border-border">
+<div class="flex items-center flex-1">
+<div class="relative max-w-md w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-gray text-[20px]">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-1.5 text-body-base focus:ring-1 focus:ring-primary-container text-sm transition-all" placeholder="Rechercher un membre ou une action..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-text-gray hover:text-primary transition-opacity cursor-pointer">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-text-gray hover:text-primary transition-opacity cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-6 w-px bg-border mx-2"></div>
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-medium text-primary">N'Djamena Central</span>
+<span class="material-symbols-outlined text-text-gray">expand_more</span>
+</div>
+</div>
+</header>
+<div class="pt-20 px-container-padding pb-12">
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="text-primary font-bold text-3xl tracking-tight">Gestion des rôles</h2>
+<p class="text-text-gray mt-1 font-body-base">Gérez les accès et les permissions de votre équipe Innov Pay.</p>
+</div>
+<button class="bg-[#0A2463] text-white px-6 py-2.5 rounded-lg font-semibold flex items-center gap-2 hover:bg-[#1E3A8A] transition-all shadow-md" onclick="toggleModal('invite-modal')">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+                    Inviter un membre
+                </button>
+</div>
+<!-- Dashboard Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+<div class="bg-white p-6 rounded-xl border border-border shadow-sm">
+<div class="flex justify-between items-start">
+<span class="text-text-gray font-label-sm uppercase tracking-wider text-xs">Total Membres</span>
+<span class="material-symbols-outlined text-primary-container">group</span>
+</div>
+<div class="mt-2">
+<span class="text-3xl font-bold text-primary">12</span>
+<span class="text-success text-xs font-medium ml-2">+2 ce mois</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-border shadow-sm">
+<div class="flex justify-between items-start">
+<span class="text-text-gray font-label-sm uppercase tracking-wider text-xs">Rôles Actifs</span>
+<span class="material-symbols-outlined text-primary-container">shield_person</span>
+</div>
+<div class="mt-2">
+<span class="text-3xl font-bold text-primary">5</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-border shadow-sm">
+<div class="flex justify-between items-start">
+<span class="text-text-gray font-label-sm uppercase tracking-wider text-xs">Invitations en attente</span>
+<span class="material-symbols-outlined text-warning">mail</span>
+</div>
+<div class="mt-2">
+<span class="text-3xl font-bold text-primary">3</span>
+</div>
+</div>
+<div class="bg-white p-6 rounded-xl border border-border shadow-sm">
+<div class="flex justify-between items-start">
+<span class="text-text-gray font-label-sm uppercase tracking-wider text-xs">Dernière activité</span>
+<span class="material-symbols-outlined text-success">history</span>
+</div>
+<div class="mt-2">
+<span class="text-xl font-bold text-primary truncate block">Il y a 2 min</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Member List Section -->
+<div class="lg:col-span-2 space-y-6">
+<div class="bg-white rounded-xl border border-border shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-border flex justify-between items-center">
+<h3 class="text-primary font-bold text-lg">Membres de l'organisation</h3>
+<div class="flex gap-2">
+<button class="p-2 text-text-gray hover:bg-surface-container-low rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+<button class="p-2 text-text-gray hover:bg-surface-container-low rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-3 text-xs font-bold text-text-gray uppercase tracking-wider">Membre</th>
+<th class="px-6 py-3 text-xs font-bold text-text-gray uppercase tracking-wider">Rôle</th>
+<th class="px-6 py-3 text-xs font-bold text-text-gray uppercase tracking-wider">Statut</th>
+<th class="px-6 py-3 text-xs font-bold text-text-gray uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of a young male software developer with a clean, modern aesthetic, professional lighting, corporate office background in soft focus, high resolution digital photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNhrLVxnbA6Cd2JyT0oFg7p0cn1nkTrBM6RY7EQK-xy9HEwFaMbr6PJHdrau63v_srAGT_dNCdXg2JrVJfnPPucbrufV9UrwYYTt_hFb4AuAgEkpHB4CiF2kuAEB9fm-SglSs6mm-u4fumVUKHuykyZ7uRShydAIenJFTGkLHlmMwM_rXRAWd4bvQOrlqYQr8C0eAAwxoC-1fEBBXdKSeFdl0zcXyJKWQKXocYZbE7iOwAsxTB3SJxW0nhek82u4phCr9CL-UWYOLR"/>
+<div>
+<p class="font-semibold text-primary">Idriss Deby</p>
+<p class="text-xs text-text-gray">idriss.d@innovpay.td</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-primary-container/10 text-primary-container">Super Admin</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-success text-xs font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+                                                Actif
+                                            </div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-gray hover:text-primary-container transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="p-1.5 text-text-gray hover:text-warning transition-colors"><span class="material-symbols-outlined text-[18px]">block</span></button>
+<button class="p-1.5 text-text-gray hover:text-error transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Close-up portrait of a professional African woman working in finance, warm office lighting, natural professional look, soft cinematic bokeh background of a modern workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOZe-uG4ilY9tsHxl2vr_8wfkjK-tzLxc5jbp5leDjQ-9ZDhYyaU5BFx6st1xnCDCtvWEPh-L_dmcx81jpbALTEA5N32UpK7mGrf86L109wRrSwWemOz8jf2ZjTc9MFhpQUhJUHqod452IqfRsV2vA3MUdBFicftJtbk6tW9NvANkTcefrjgIqF5OZ057RLPwZUnr2TcafNUpKofBaZj_2ytdMtk2hzxBcDWWG8Uth0peXyCuDIgYQz4d9fUDee1sCHWUL0GelPHHS"/>
+<div>
+<p class="font-semibold text-primary">Fatime Zara</p>
+<p class="text-xs text-text-gray">f.zara@innovpay.td</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-secondary-container/10 text-secondary">Comptable</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-success text-xs font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-success"></span>
+                                                Actif
+                                            </div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-gray hover:text-primary-container transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="p-1.5 text-text-gray hover:text-warning transition-colors"><span class="material-symbols-outlined text-[18px]">block</span></button>
+<button class="p-1.5 text-text-gray hover:text-error transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<img alt="Avatar" class="w-10 h-10 rounded-full object-cover" data-alt="Portrait of a young male financial analyst with eyeglasses, sharp business attire, professional corporate studio lighting, clean minimal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxo01OU-yUYSDkLl8Up0wVkEnFeLIttfNGeoAM7jAys4mmeLXX_tMxIr8zMiFyITdoizJGDshQvD71MIcjQufvRPBaQvhb1euJmGh1gxRlq7SnP4tpzuVk9VM-_LZMpgLkKJfQg3URalQgI1eWwFkvyezrim87doNZvrgMfh9EeDFtjK08a7rJXZuWbE2SNuw9WhP8KKVEyL5jdsvgUIJ_MX3reO6IOjkxEqCB69QICas4jsKGBur15kztv5dTjpbpXUr7S5xU_ztA"/>
+<div>
+<p class="font-semibold text-primary">Mahamat Saleh</p>
+<p class="text-xs text-text-gray">m.saleh@innovpay.td</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-tertiary-container/10 text-on-tertiary-container">Développeur</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-warning text-xs font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-warning"></span>
+                                                Suspendu
+                                            </div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 text-text-gray hover:text-primary-container transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="p-1.5 text-text-gray hover:text-success transition-colors"><span class="material-symbols-outlined text-[18px]">check_circle</span></button>
+<button class="p-1.5 text-text-gray hover:text-error transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-surface-container-lowest flex items-center justify-between border-t border-border">
+<p class="text-xs text-text-gray font-medium">Affichage de 1 à 3 sur 12 membres</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-xs font-semibold rounded border border-border bg-white text-primary opacity-50 cursor-not-allowed">Précédent</button>
+<button class="px-3 py-1 text-xs font-semibold rounded border border-border bg-white text-primary hover:bg-surface-container-low transition-colors">Suivant</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Audit Log Section -->
+<div class="lg:col-span-1">
+<div class="bg-white rounded-xl border border-border shadow-sm h-full flex flex-col">
+<div class="px-6 py-4 border-b border-border">
+<h3 class="text-primary font-bold text-lg">Journal d'audit</h3>
+<p class="text-text-gray text-xs mt-0.5">Dernières actions administratives</p>
+</div>
+<div class="p-0 flex-1 overflow-y-auto custom-scrollbar max-h-[600px]">
+<div class="divide-y divide-border">
+<!-- Log Item 1 -->
+<div class="px-6 py-4 hover:bg-surface-container-low transition-colors">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-primary">Idriss Deby</span>
+<span class="text-[10px] text-text-gray">Aujourd'hui, 14:23</span>
+</div>
+<p class="text-sm font-medium text-on-surface">Modification de rôle</p>
+<p class="text-xs text-text-gray mt-1 italic">A changé le rôle de Mahamat Saleh de 'Admin' à 'Développeur'.</p>
+<div class="mt-2 flex items-center gap-1 text-[10px] text-text-inactive">
+<span class="material-symbols-outlined text-[14px]">lan</span>
+                                        IP: 197.231.144.12
+                                    </div>
+</div>
+<!-- Log Item 2 -->
+<div class="px-6 py-4 hover:bg-surface-container-low transition-colors">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-primary">Fatime Zara</span>
+<span class="text-[10px] text-text-gray">Aujourd'hui, 09:15</span>
+</div>
+<p class="text-sm font-medium text-on-surface">Nouvelle Invitation</p>
+<p class="text-xs text-text-gray mt-1 italic">A invité moussa.t@innovpay.td comme 'Caissier'.</p>
+<div class="mt-2 flex items-center gap-1 text-[10px] text-text-inactive">
+<span class="material-symbols-outlined text-[14px]">lan</span>
+                                        IP: 197.231.144.56
+                                    </div>
+</div>
+<!-- Log Item 3 -->
+<div class="px-6 py-4 hover:bg-surface-container-low transition-colors">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-primary">Système</span>
+<span class="text-[10px] text-text-gray">Hier, 18:45</span>
+</div>
+<p class="text-sm font-medium text-on-surface">Connexion sécurisée</p>
+<p class="text-xs text-text-gray mt-1 italic">Tentative de connexion bloquée pour id: admin_test.</p>
+<div class="mt-2 flex items-center gap-1 text-[10px] text-error font-medium">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                                        Alerte sécurité
+                                    </div>
+</div>
+<!-- Log Item 4 -->
+<div class="px-6 py-4 hover:bg-surface-container-low transition-colors">
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-primary">Idriss Deby</span>
+<span class="text-[10px] text-text-gray">Hier, 10:20</span>
+</div>
+<p class="text-sm font-medium text-on-surface">Mise à jour paramètres</p>
+<p class="text-xs text-text-gray mt-1 italic">A mis à jour les seuils de retrait journaliers.</p>
+<div class="mt-2 flex items-center gap-1 text-[10px] text-text-inactive">
+<span class="material-symbols-outlined text-[14px]">lan</span>
+                                        IP: 197.231.144.12
+                                    </div>
+</div>
+</div>
+</div>
+<div class="px-6 py-4 bg-surface-container-lowest border-t border-border">
+<button class="w-full py-2 text-xs font-bold text-primary-container hover:bg-primary-container/5 rounded transition-all">Voir tout le journal</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Invitation Modal -->
+<div class="fixed inset-0 z-[100] hidden" id="invite-modal">
+<div class="modal-overlay absolute inset-0 bg-primary/40 backdrop-blur-sm" onclick="toggleModal('invite-modal')"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-border">
+<div class="px-8 py-6 border-b border-border flex justify-between items-center">
+<h3 class="text-primary font-bold text-xl">Inviter un membre</h3>
+<button class="text-text-gray hover:text-error transition-colors" onclick="toggleModal('invite-modal')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form class="p-8 space-y-6">
+<div>
+<label class="block text-sm font-bold text-primary mb-2">Adresse Email</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-gray text-[20px]">mail</span>
+<input class="w-full bg-white border border-border rounded-lg pl-10 pr-4 py-2.5 focus:border-[#0A2463] focus:ring-0 transition-all text-sm" placeholder="exemple@innovpay.td" type="email"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-bold text-primary mb-2">Rôle assigné</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-gray text-[20px]">shield_person</span>
+<select class="w-full bg-white border border-border rounded-lg pl-10 pr-4 py-2.5 focus:border-[#0A2463] focus:ring-0 appearance-none transition-all text-sm">
+<option value="super_admin">Super Admin</option>
+<option value="admin">Admin</option>
+<option value="comptable">Comptable</option>
+<option value="caissier">Caissier</option>
+<option value="developpeur">Développeur</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-gray pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg flex gap-3">
+<span class="material-symbols-outlined text-primary-container">info</span>
+<p class="text-xs text-text-gray leading-relaxed">L'invité recevra un e-mail pour activer son compte et configurer son mot de passe sécurisé.</p>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 px-4 py-2.5 border border-border rounded-lg font-bold text-primary hover:bg-surface-container-low transition-all" onclick="toggleModal('invite-modal')" type="button">Annuler</button>
+<button class="flex-1 px-4 py-2.5 bg-[#0A2463] text-white rounded-lg font-bold hover:bg-[#1E3A8A] transition-all shadow-lg shadow-primary/20" type="submit">Envoyer l'invitation</button>
+</div>
+</form>
+</div>
+</div>
+<script>
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Search highlight logic (placeholder interaction)
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-2', 'ring-primary-container/20');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-2', 'ring-primary-container/20');
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('invite-modal');
+                if (!modal.classList.contains('hidden')) toggleModal('invite-modal');
+            }
+        });
+    </script>
+</body></html>

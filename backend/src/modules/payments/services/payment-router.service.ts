@@ -38,7 +38,7 @@ export class PaymentRouter {
       return PaymentMethod.MOOV_MONEY;
     }
     if (['90', '91', '92', '93', '94', '95'].includes(prefix)) {
-      return PaymentMethod.ORANGE_MONEY;
+      return PaymentMethod.KONOOM_MONEY;
     }
 
     return null;
@@ -62,7 +62,7 @@ export class PaymentRouter {
     let targetMethod = method;
     const detected = this.detectOperatorFromPhone(payment.customerPhone);
     
-    if (detected && ([PaymentMethod.AIRTEL_MONEY, PaymentMethod.MOOV_MONEY, PaymentMethod.ORANGE_MONEY] as PaymentMethod[]).includes(method)) {
+    if (detected && ([PaymentMethod.AIRTEL_MONEY, PaymentMethod.MOOV_MONEY, PaymentMethod.KONOOM_MONEY] as PaymentMethod[]).includes(method)) {
       if (detected !== method) {
         this.logger.warn(`Overriding payment method: phone prefix detected as ${detected} but requested method was ${method}`);
         targetMethod = detected;

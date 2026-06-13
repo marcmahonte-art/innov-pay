@@ -11,6 +11,8 @@ enum UserRole {
   ADMIN
   MERCHANT_OWNER
   MERCHANT_ADMIN
+  COMPTABLE
+  CAISSIER
   DEVELOPER
   SUPPORT
 }
@@ -25,7 +27,6 @@ enum PaymentStatus {
 
 enum PaymentMethod {
   AIRTEL_MONEY
-  ORANGE_MONEY
   MOOV_MONEY
   KONOOM_MONEY
   VISA
@@ -106,6 +107,10 @@ model Merchant {
   kycDocs      KycDocument[]
   payLinks     PayLink[]
   bulkPayouts  BulkPayout[]
+  collections  Collection[]
+  payLinkTemplates PayLinkTemplate[]
+  qrCode       MerchantQrCode?
+  qrScans      QrScan[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -302,4 +307,78 @@ model PayoutItem {
   updatedAt       DateTime         @updatedAt
 
   @@index([bulkPayoutId])
+}
+
+model PayLinkTemplate {
+  id          String    @id @default(uuid())
+  merchantId  String
+  merchant    Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  name        String
+  title       String
+  description String?
+  amount      Decimal   @db.Decimal(18, 2)
+  currency    String    @default("XAF")
+  isReusable  Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([merchantId])
+}
+
+model Collection {
+  id          String             @id @default(uuid())
+  merchantId  String
+  merchant    Merchant           @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  name        String
+  type        String             // SINGLE, MONTHLY, TRIMESTRIAL, FREE
+  amount      Decimal?           @db.Decimal(18, 2)
+  currency    String             @default("XAF")
+  startDate   DateTime           @default(now())
+  endDate     DateTime?
+  reminderMsg String?
+  frequency   String             // e.g. "7_DAYS_BEFORE,3_DAYS_BEFORE,D_DAY"
+  members     CollectionMember[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([merchantId])
+}
+
+model CollectionMember {
+  id           String           @id @default(uuid())
+  collectionId String
+  collection   Collection       @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  name         String
+  phone        String
+  email        String?
+  amount       Decimal          @db.Decimal(18, 2)
+  status       String           // PAID, PENDING, OVERDUE, EXEMPTED
+  paidAt       DateTime?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@index([collectionId])
+}
+
+model MerchantQrCode {
+  id           String   @id @default(uuid())
+  merchantId   String   @unique
+  merchant     Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  logoUrl      String?
+  primaryColor String   @default("#0A2463")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model QrScan {
+  id         String   @id @default(uuid())
+  merchantId String
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  scannedAt  DateTime @default(now())
+  ipAddress  String?
+  userAgent  String?
+  paid       Boolean  @default(false)
+  paymentId  String?
+
+  @@index([merchantId])
 }

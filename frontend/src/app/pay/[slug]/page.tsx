@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
-import { CreditCard, ShieldCheck, CheckCircle2, AlertCircle, RefreshCw, Smartphone } from 'lucide-react';
+import { CreditCard, ShieldCheck, CheckCircle2, AlertCircle, RefreshCw, Smartphone, ChevronRight } from 'lucide-react';
 import axios from 'axios';
 
 // Public API client that doesn't need Bearer token
 const publicApi = axios.create({
-  baseURL: 'http://localhost:5000/api/v1', // Backend base URL
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1',
 });
 
 export default function PayLinkCheckoutPage() {
@@ -47,7 +47,6 @@ export default function PayLinkCheckoutPage() {
       } else if (data.instructions) {
         setPaymentInstructions(data.instructions);
       } else {
-        // If pending/processing redirect url is supplied
         if (data.redirectUrl) {
           window.location.href = data.redirectUrl;
         } else {
@@ -62,8 +61,8 @@ export default function PayLinkCheckoutPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-400 space-y-4">
-        <RefreshCw className="h-8 w-8 animate-spin text-indigo-500" />
+      <div className="min-h-screen bg-[#f5f7fa] flex flex-col items-center justify-center text-[#5c6470] space-y-4 font-webpay">
+        <RefreshCw className="h-8 w-8 animate-spin text-[#0a2463]" />
         <p className="text-sm font-semibold">Chargement de la page de paiement sécurisée...</p>
       </div>
     );
@@ -71,19 +70,19 @@ export default function PayLinkCheckoutPage() {
 
   if (error || !payLink) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center px-6 text-center space-y-6">
-        <div className="h-16 w-16 bg-rose-500/10 border border-rose-500/20 rounded-full flex items-center justify-center text-rose-500">
+      <div className="min-h-screen bg-[#f5f7fa] flex flex-col items-center justify-center px-6 text-center space-y-6 font-webpay">
+        <div className="h-16 w-16 bg-[#ffdad6] rounded-full flex items-center justify-center text-[#B91C1C]">
           <AlertCircle className="h-8 w-8" />
         </div>
         <div className="space-y-2 max-w-md">
-          <h2 className="text-xl font-bold text-white">Lien de paiement invalide ou expiré</h2>
-          <p className="text-sm text-slate-400">
+          <h2 className="text-xl font-bold text-[#00103e]">Lien de paiement invalide ou expiré</h2>
+          <p className="text-sm text-[#5c6470]">
             Ce lien de paiement n'existe pas ou a été désactivé par le marchand. Veuillez le contacter pour obtenir un lien valide.
           </p>
         </div>
         <button
           onClick={() => router.push('/')}
-          className="py-3 px-6 bg-slate-900 border border-slate-800 hover:text-white rounded-xl text-slate-400 transition"
+          className="py-3 px-6 bg-white border border-[#e2e5ea] hover:bg-[#f0f2f5] rounded-xl text-[#0a2463] font-bold transition"
         >
           Retour à l'accueil
         </button>
@@ -94,69 +93,68 @@ export default function PayLinkCheckoutPage() {
   const amountFormatted = parseFloat(payLink.amount).toLocaleString('fr-FR');
 
   const methods = [
-    { id: 'KONOOM_MONEY', name: 'Konoom Mobile Money (Tchad)', icon: Smartphone, color: 'border-emerald-500/20 text-emerald-400 bg-emerald-500/5' },
-    { id: 'AIRTEL_MONEY', name: 'Airtel Money', icon: Smartphone, color: 'border-red-500/20 text-red-400 bg-red-500/5' },
-    { id: 'ORANGE_MONEY', name: 'Orange Money', icon: Smartphone, color: 'border-orange-500/20 text-orange-400 bg-orange-500/5' },
-    { id: 'MOOV_MONEY', name: 'Moov Money', icon: Smartphone, color: 'border-blue-500/20 text-blue-400 bg-blue-500/5' },
-    { id: 'VISA', name: 'Carte Visa', icon: CreditCard, color: 'border-indigo-500/20 text-indigo-400 bg-indigo-500/5' },
-    { id: 'MASTERCARD', name: 'Carte Mastercard', icon: CreditCard, color: 'border-orange-400/20 text-orange-300 bg-orange-400/5' },
+    { id: 'KONOOM_MONEY', name: 'Konoom Mobile Money (Tchad)', operator: 'KONOOM', logo: '/operators/konoom.png', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+    { id: 'AIRTEL_MONEY', name: 'Airtel Money', operator: 'AIRTEL', logo: '/operators/airtel.png', color: 'bg-red-50 text-red-600 border-red-200' },
+    { id: 'MOOV_MONEY', name: 'Moov Money', operator: 'MOOV', logo: '/operators/moov.png', color: 'bg-blue-50 text-blue-600 border-blue-200' },
+    { id: 'VISA', name: 'Carte Visa', operator: 'VISA/GIMAC', logo: '/operators/visa.png', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
+    { id: 'MASTERCARD', name: 'Carte Mastercard', operator: 'MASTERCARD', logo: '/operators/mastercard.svg', color: 'bg-orange-50 text-orange-700 border-orange-200' },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 lg:p-10 font-sans selection:bg-indigo-600/30">
-      <div className="absolute top-0 inset-x-0 h-80 bg-gradient-to-b from-indigo-500/5 via-transparent to-transparent pointer-events-none" />
-
-      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-slate-900 border border-slate-850 rounded-[32px] overflow-hidden shadow-2xl relative z-10">
+    <div className="min-h-screen bg-[#f5f7fa] flex items-center justify-center p-4 lg:p-10 font-webpay">
+      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-white border border-[#e2e5ea] rounded-[24px] overflow-hidden shadow-modal relative">
         
         {/* Left Side: Order Summary */}
-        <div className="p-8 lg:p-12 bg-slate-950/40 border-r border-slate-850 flex flex-col justify-between space-y-8">
+        <div className="p-8 lg:p-12 bg-[#f5f7fa] border-r border-[#e2e5ea] flex flex-col justify-between space-y-8">
           <div className="space-y-6">
             <div>
-              <span className="text-xs font-bold text-indigo-400 tracking-widest uppercase">Paiement Sécurisé via Innov Pay</span>
-              <h1 className="text-xl font-black text-white mt-1">{payLink.merchant?.businessName || 'Merchant'}</h1>
+              <span className="text-xs font-bold text-[#ea580c] tracking-widest uppercase">Paiement Sécurisé via Innov Pay</span>
+              <h1 className="text-xl font-black text-[#00103e] mt-1">{payLink.merchant?.businessName || 'Marchand Innov Pay'}</h1>
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-2xl font-extrabold text-white leading-tight">{payLink.title}</h2>
-              {payLink.description && <p className="text-slate-400 text-sm leading-relaxed">{payLink.description}</p>}
+              <h2 className="text-2xl font-extrabold text-[#00103e] leading-tight">{payLink.title}</h2>
+              {payLink.description && <p className="text-[#5c6470] text-sm leading-relaxed">{payLink.description}</p>}
             </div>
           </div>
 
-          <div className="space-y-6 pt-6 border-t border-slate-850">
+          <div className="space-y-6 pt-6 border-t border-[#e2e5ea]">
             <div>
-              <span className="text-xs text-slate-500">Montant total à payer</span>
-              <h3 className="text-4xl font-black text-white mt-1">{amountFormatted} <span className="text-xl font-normal text-slate-400">{payLink.currency}</span></h3>
+              <span className="text-xs text-[#5c6470]">Montant total à payer</span>
+              <h3 className="text-3xl font-black text-[#00103e] mt-1 tabular-nums">
+                {amountFormatted} <span className="text-xl font-normal text-[#5c6470]">{payLink.currency}</span>
+              </h3>
             </div>
 
-            <div className="flex items-center space-x-2 text-slate-500 text-xs">
-              <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />
+            <div className="flex items-center space-x-2 text-[#5c6470] text-xs">
+              <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
               <span>Données cryptées de bout en bout (SSL standard)</span>
             </div>
           </div>
         </div>
 
         {/* Right Side: Checkout Form */}
-        <div className="p-8 lg:p-12 bg-slate-900 flex flex-col justify-center">
+        <div className="p-8 lg:p-12 bg-white flex flex-col justify-center">
           {isSuccess ? (
             <div className="text-center space-y-6 py-8">
-              <div className="h-16 w-16 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center text-emerald-400 mx-auto">
+              <div className="h-16 w-16 bg-[#dcfce7] border border-emerald-250 rounded-full flex items-center justify-center text-[#15803D] mx-auto">
                 <CheckCircle2 className="h-10 w-10 animate-bounce" />
               </div>
               <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white">Paiement effectué !</h3>
-                <p className="text-sm text-slate-400">
+                <h3 className="text-xl font-bold text-[#00103e]">Paiement effectué !</h3>
+                <p className="text-sm text-[#5c6470]">
                   Votre paiement de {amountFormatted} {payLink.currency} a été traité avec succès.
                 </p>
               </div>
             </div>
           ) : paymentInstructions ? (
             <div className="space-y-6">
-              <div className="h-12 w-12 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-400">
+              <div className="h-12 w-12 bg-[#0a2463]/10 border border-[#0a2463]/20 rounded-2xl flex items-center justify-center text-[#0a2463]">
                 <Smartphone className="h-6 w-6" />
               </div>
               <div className="space-y-3">
-                <h3 className="text-lg font-bold text-white">Instructions de paiement</h3>
-                <p className="text-sm text-slate-450 leading-relaxed bg-slate-950 p-4 border border-slate-850 rounded-2xl font-mono">
+                <h3 className="text-lg font-bold text-[#00103e]">Instructions de paiement</h3>
+                <p className="text-sm text-[#5c6470] leading-relaxed bg-[#f5f7fa] p-4 border border-[#e2e5ea] rounded-xl font-mono">
                   {paymentInstructions}
                 </p>
               </div>
@@ -165,7 +163,7 @@ export default function PayLinkCheckoutPage() {
                   setPaymentInstructions(null);
                   setIsSuccess(true);
                 }}
-                className="w-full py-4 bg-indigo-600 hover:bg-indigo-550 text-white font-bold rounded-2xl text-sm transition"
+                className="w-full py-4 bg-[#ea580c] hover:bg-[#c94400] text-white font-bold rounded-xl text-sm transition shadow-md"
               >
                 J'ai validé sur mon téléphone
               </button>
@@ -173,29 +171,40 @@ export default function PayLinkCheckoutPage() {
           ) : (
             <div className="space-y-6">
               {errorMessage && (
-                <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 p-4 rounded-2xl text-xs flex items-start space-x-2">
+                <div className="bg-rose-55 border border-rose-200 text-[#B91C1C] p-4 rounded-xl text-xs flex items-start space-x-2">
                   <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
                   <span>{errorMessage}</span>
                 </div>
               )}
 
               <div className="space-y-4">
-                <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">1. Choisir le moyen de paiement</h3>
-                <div className="grid grid-cols-2 gap-3">
+                <h3 className="text-xs font-bold text-[#5c6470] uppercase tracking-wider">1. Choisir le moyen de paiement</h3>
+                <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
                   {methods.map((method) => {
                     const isSelected = selectedMethod === method.id;
                     return (
                       <button
                         key={method.id}
                         onClick={() => setSelectedMethod(method.id)}
-                        className={`p-3 rounded-2xl border text-left flex flex-col justify-between h-20 transition ${
+                        className={`w-full p-3 rounded-xl border text-left flex items-center justify-between transition ${
                           isSelected
-                            ? 'bg-indigo-600/10 border-indigo-500'
-                            : 'bg-slate-950 border-slate-850 hover:border-slate-800'
+                            ? 'bg-[#0a2463]/5 border-[#0a2463]'
+                            : 'bg-white border-[#e2e5ea] hover:border-[#8b919d]'
                         }`}
                       >
-                        <method.icon className={`h-5 w-5 ${isSelected ? 'text-indigo-400' : 'text-slate-500'}`} />
-                        <span className="text-[11px] font-bold text-white truncate w-full">{method.name}</span>
+                        <div className="flex items-center space-x-3">
+                          {method.logo ? (
+                            <div className="w-10 h-10 rounded-lg flex items-center justify-center border border-[#e2e5ea] bg-white overflow-hidden p-1">
+                              <img src={method.logo} alt={method.name} className="max-w-full max-h-full object-contain" />
+                            </div>
+                          ) : (
+                            <span className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-[10px] uppercase border ${method.color}`}>
+                              {method.operator.substring(0, 4)}
+                            </span>
+                          )}
+                          <span className="text-xs font-bold text-[#00103e]">{method.name}</span>
+                        </div>
+                        <ChevronRight className={`h-4 w-4 ${isSelected ? 'text-[#0a2463]' : 'text-[#8b919d]'}`} />
                       </button>
                     );
                   })}
@@ -203,31 +212,31 @@ export default function PayLinkCheckoutPage() {
               </div>
 
               {selectedMethod && (
-                <div className="space-y-4 pt-2">
-                  <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">2. Informations client</h3>
+                <div className="space-y-4 pt-4 border-t border-[#e2e5ea]">
+                  <h3 className="text-xs font-bold text-[#5c6470] uppercase tracking-wider">2. Informations client</h3>
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Email</label>
+                      <label className="block text-[10px] font-bold text-[#5c6470] uppercase tracking-wider mb-1">Email</label>
                       <input
                         type="email"
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="exemple@mail.com"
-                        className="w-full bg-slate-950 border border-slate-850 rounded-xl py-3 px-4 text-white text-sm focus:border-indigo-500 focus:outline-none transition"
+                        className="w-full bg-[#f5f7fa] border border-[#e2e5ea] rounded-xl py-2 px-3 text-[#0f1214] text-sm focus:border-[#0a2463] focus:outline-none transition"
                       />
                     </div>
 
                     {selectedMethod.endsWith('_MONEY') && (
                       <div>
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Téléphone Mobile Money</label>
+                        <label className="block text-[10px] font-bold text-[#5c6470] uppercase tracking-wider mb-1">Téléphone Mobile Money</label>
                         <input
                           type="tel"
                           required
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="+235 60 00 00 00"
-                          className="w-full bg-slate-950 border border-slate-850 rounded-xl py-3 px-4 text-white text-sm focus:border-indigo-500 focus:outline-none transition font-mono"
+                          className="w-full bg-[#f5f7fa] border border-[#e2e5ea] rounded-xl py-2 px-3 text-[#0f1214] text-sm focus:border-[#0a2463] focus:outline-none transition font-mono"
                         />
                       </div>
                     )}
@@ -236,7 +245,7 @@ export default function PayLinkCheckoutPage() {
                   <button
                     onClick={() => payMutation.mutate()}
                     disabled={!email || (selectedMethod.endsWith('_MONEY') && !phone) || payMutation.isPending}
-                    className="w-full mt-2 py-4 bg-indigo-600 hover:bg-indigo-550 disabled:bg-slate-800 text-white font-bold rounded-2xl text-sm transition shadow-lg shadow-indigo-600/10 flex items-center justify-center"
+                    className="w-full mt-2 py-3.5 bg-[#ea580c] hover:bg-[#c94400] disabled:bg-[#b8bcc5] text-white font-bold rounded-xl text-sm transition shadow-md flex items-center justify-center"
                   >
                     {payMutation.isPending ? (
                       <>

@@ -41,31 +41,31 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex-1 flex flex-col justify-center min-h-screen bg-radial from-slate-900 to-slate-950 px-6 py-12 lg:px-8">
+    <main className="flex-1 flex flex-col justify-center min-h-screen bg-[#f5f7fa] px-6 py-12 lg:px-8 font-sans">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-indigo-600/10 border border-indigo-500/20 mb-6">
-          <CreditCard className="h-10 w-10 text-indigo-500 animate-pulse" />
+        <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-[#0a2463]/5 border border-[#0a2463]/10 mb-6">
+          <CreditCard className="h-10 w-10 text-[#0a2463]" />
         </div>
-        <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          Innov Pay
+        <h2 className="text-3xl font-extrabold tracking-tight text-[#00103e] sm:text-4xl">
+          Innov<span className="text-[#ea580c]">Pay</span>
         </h2>
-        <p className="mt-2 text-sm text-slate-400">
+        <p className="mt-2 text-sm text-[#5c6470]">
           Connectez-vous à votre portail marchand
         </p>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <div className="bg-slate-900/60 backdrop-blur-xl px-6 py-12 shadow-2xl ring-1 ring-white/10 rounded-3xl sm:px-12 border border-slate-800/80">
+        <div className="bg-white px-6 py-12 shadow-card border border-[#e2e5ea] rounded-2xl sm:px-12">
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="rounded-xl bg-rose-500/10 border border-rose-500/20 p-4 flex items-start space-x-3 text-rose-400 text-sm">
+              <div className="rounded-xl bg-rose-50 border border-rose-200 p-4 flex items-start space-x-3 text-rose-700 text-sm">
                 <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-300">
+              <label htmlFor="email" className="block text-xs font-bold text-[#5c6470] uppercase tracking-wider">
                 Adresse email
               </label>
               <div className="mt-2">
@@ -77,7 +77,7 @@ export default function LoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-xl border-0 bg-slate-950/80 py-3 text-white shadow-sm ring-1 ring-inset ring-slate-800 placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm"
+                  className="block w-full rounded-xl bg-[#f5f7fa] border border-[#e2e5ea] py-3 px-4 text-[#0f1214] placeholder-[#8b919d] focus:border-[#0a2463] focus:outline-none transition sm:text-sm"
                   placeholder="admin@eshop.td"
                 />
               </div>
@@ -85,7 +85,7 @@ export default function LoginPage() {
 
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium text-slate-300">
+                <label htmlFor="password" className="block text-xs font-bold text-[#5c6470] uppercase tracking-wider">
                   Mot de passe
                 </label>
               </div>
@@ -98,7 +98,7 @@ export default function LoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-xl border-0 bg-slate-950/80 py-3 text-white shadow-sm ring-1 ring-inset ring-slate-800 placeholder:text-slate-500 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm"
+                  className="block w-full rounded-xl bg-[#f5f7fa] border border-[#e2e5ea] py-3 px-4 text-[#0f1214] placeholder-[#8b919d] focus:border-[#0a2463] focus:outline-none transition sm:text-sm"
                   placeholder="••••••••"
                 />
               </div>
@@ -108,7 +108,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex w-full justify-center items-center rounded-xl bg-indigo-600 px-3 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition duration-200 disabled:opacity-50"
+                className="flex w-full justify-center items-center rounded-xl bg-[#0a2463] hover:bg-[#1a3a72] px-3 py-3 text-sm font-semibold text-white shadow-md transition duration-200 disabled:opacity-50"
               >
                 {loading ? (
                   <Loader2 className="h-5 w-5 animate-spin mr-2" />
@@ -122,9 +122,9 @@ export default function LoginPage() {
             </div>
           </form>
 
-          <p className="mt-10 text-center text-sm text-slate-400">
+          <p className="mt-8 text-center text-sm text-[#5c6470]">
             Nouveau sur Innov Pay ?{' '}
-            <Link href="/register" className="font-semibold text-indigo-400 hover:text-indigo-300">
+            <Link href="/register" className="font-semibold text-[#ea580c] hover:underline">
               Créer un compte marchand
             </Link>
           </p>

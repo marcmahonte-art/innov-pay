@@ -27,13 +27,7 @@ async function main() {
       weight: 100,
       credentials: { secretKey: 'moov_mock_secret', appId: 'moov_app_id' },
     },
-    {
-      name: 'orange',
-      method: PaymentMethod.ORANGE_MONEY,
-      priority: 1,
-      weight: 100,
-      credentials: { merchantKey: 'orange_mock_secret', authHeader: 'orange_auth_val' },
-    },
+
     {
       name: 'visa',
       method: PaymentMethod.VISA,

@@ -18,7 +18,7 @@ export class PayoutItemDto {
   @IsNotEmpty()
   amount: number;
 
-  @ApiProperty({ example: 'airtel', description: 'Opérateur du bénéficiaire: airtel, orange, moov, konoom' })
+  @ApiProperty({ example: 'airtel', description: 'Opérateur du bénéficiaire: airtel, moov, konoom' })
   @IsString()
   @IsNotEmpty()
   provider: string;

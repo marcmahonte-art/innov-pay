@@ -15,6 +15,8 @@ import { PayLinksModule } from './modules/paylinks/paylinks.module';
 import { BulkPayoutsModule } from './modules/bulk-payouts/bulk-payouts.module';
 import { CheckoutModule } from './modules/checkout/checkout.module';
 import { MailModule } from './modules/mail/mail.module';
+import { QrModule } from './modules/qr/qr.module';
+import { AutoCollectModule } from './modules/autocollect/autocollect.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -65,6 +67,8 @@ import { AppService } from './app.service';
     BulkPayoutsModule,
     CheckoutModule,
     MailModule,
+    QrModule,
+    AutoCollectModule,
   ],
   controllers: [AppController],
   providers: [AppService],

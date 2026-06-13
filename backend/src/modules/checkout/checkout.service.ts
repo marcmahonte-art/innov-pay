@@ -121,8 +121,8 @@ export class CheckoutService {
 
     session.paymentId = paymentResult.paymentId;
 
-    // Simulate OTP flow for Mobile Money channels (Airtel, Orange, Moov)
-    const isMobileMoney = ['AIRTEL_MONEY', 'ORANGE_MONEY', 'MOOV_MONEY'].includes(dto.paymentMethod);
+    // Simulate OTP flow for Mobile Money channels (Airtel, Konoom, Moov)
+    const isMobileMoney = ['AIRTEL_MONEY', 'KONOOM_MONEY', 'MOOV_MONEY'].includes(dto.paymentMethod);
     if (isMobileMoney) {
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
       session.otpCode = otp;

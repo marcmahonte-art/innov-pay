@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InnovQR - Innov Pay</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .qr-gradient-border {
+            background: linear-gradient(135deg, #0A2463 0%, #EA580C 100%);
+            padding: 2px;
+        }
+        .heatmap-cell:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-container": "#571a00",
+                      "on-tertiary": "#ffffff",
+                      "on-surface": "#191c1e",
+                      "border": "#E5E7EB",
+                      "primary-fixed": "#dce1ff",
+                      "tertiary-fixed-dim": "#79db8d",
+                      "surface-container-lowest": "#ffffff",
+                      "surface": "#f7f9fb",
+                      "error": "#B91C1C",
+                      "card-bg": "#FFFFFF",
+                      "text-inactive": "#9CA3AF",
+                      "on-tertiary-fixed-variant": "#005323",
+                      "surface-dim": "#d8dadc",
+                      "on-primary-fixed": "#00164d",
+                      "surface-container-low": "#f2f4f6",
+                      "primary-container": "#0a2463",
+                      "success": "#15803D",
+                      "secondary": "#a73a00",
+                      "sidebar-hover": "#1E3A8A",
+                      "primary-fixed-dim": "#b5c4ff",
+                      "outline-variant": "#c5c6d2",
+                      "tertiary-fixed": "#95f8a7",
+                      "admin-sidebar": "#0F172A",
+                      "background": "#f7f9fb",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed-variant": "#2e4382",
+                      "on-secondary-fixed": "#370e00",
+                      "on-primary": "#ffffff",
+                      "text-gray": "#6B7280",
+                      "surface-container-high": "#e6e8ea",
+                      "error-container": "#ffdad6",
+                      "secondary-fixed": "#ffdbce",
+                      "inverse-on-surface": "#eff1f3",
+                      "on-error": "#ffffff",
+                      "on-primary-container": "#7a8ed2",
+                      "tertiary-container": "#003112",
+                      "secondary-container": "#fd651e",
+                      "on-tertiary-container": "#41a35b",
+                      "surface-bright": "#f7f9fb",
+                      "on-tertiary-fixed": "#00210a",
+                      "inverse-primary": "#b5c4ff",
+                      "on-secondary-fixed-variant": "#7f2b00",
+                      "primary": "#00103e",
+                      "inverse-surface": "#2d3133",
+                      "secondary-fixed-dim": "#ffb599",
+                      "on-background": "#191c1e",
+                      "surface-tint": "#475b9c",
+                      "surface-container-highest": "#e0e3e5",
+                      "warning": "#92400E",
+                      "on-surface-variant": "#444650",
+                      "tertiary": "#001a06",
+                      "outline": "#757681",
+                      "surface-variant": "#e0e3e5",
+                      "surface-container": "#eceef0",
+                      "on-secondary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding": "24px",
+                      "sidebar-width": "220px",
+                      "stack-sm": "8px",
+                      "grid-gap": "12px",
+                      "topbar-height": "48px",
+                      "stack-md": "16px"
+              },
+              "fontFamily": {
+                      "hero-h1": ["Inter"],
+                      "code-mono": ["Courier Prime"],
+                      "caption-xs": ["Inter"],
+                      "body-base": ["Inter"],
+                      "dashboard-amount": ["Inter"],
+                      "hero-h1-mobile": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "sidebar-brand": ["Inter"],
+                      "hero-subtitle": ["Inter"]
+              },
+              "fontSize": {
+                      "hero-h1": ["60px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "code-mono": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "caption-xs": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "body-base": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "dashboard-amount": ["22px", {"lineHeight": "28px", "fontWeight": "700"}],
+                      "hero-h1-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "label-sm": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "sidebar-brand": ["20px", {"lineHeight": "24px", "fontWeight": "700"}],
+                      "hero-subtitle": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface font-body-base text-on-surface min-h-screen">
+<!-- SideNavBar -->
+<aside class="fixed h-full w-[220px] left-0 top-0 bg-admin-sidebar flex flex-col py-6 transition-all duration-200 ease-in-out z-50">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-8 h-8 bg-on-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-admin-sidebar" style="font-variation-settings: 'FILL' 1;">qr_code_2</span>
+</div>
+<div>
+<h1 class="font-sidebar-brand text-sidebar-brand text-on-primary leading-none">Innov Pay</h1>
+<p class="text-[10px] text-text-inactive uppercase tracking-widest mt-1">Fintech Solutions</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto px-2">
+<a class="flex items-center gap-3 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors px-4 py-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-sm">Tableau de bord</span>
+</a>
+<a class="flex items-center gap-3 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors px-4 py-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="text-label-sm">Gérer ma boutique</span>
+</a>
+<a class="flex items-center gap-3 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors px-4 py-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">send</span>
+<span class="text-label-sm">Envoyer de l'argent</span>
+</a>
+<a class="flex items-center gap-3 bg-sidebar-hover text-on-primary rounded-lg mx-2 my-1 px-4 py-2" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">qr_code_2</span>
+<span class="text-label-sm">InnovQR</span>
+</a>
+<a class="flex items-center gap-3 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors px-4 py-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-label-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 text-text-inactive hover:text-on-primary hover:bg-sidebar-hover transition-colors px-4 py-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">manage_accounts</span>
+<span class="text-label-sm">Gestion des rôles</span>
+</a>
+</nav>
+<div class="mt-auto px-4">
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<p class="text-[11px] text-text-inactive mb-2">Support Prioritaire</p>
+<button class="w-full bg-secondary-container text-on-secondary-container py-2 rounded-lg text-label-sm font-bold">Aide 24/7</button>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-220px)] h-topbar-height bg-card-bg shadow-sm flex justify-between items-center px-container-padding z-40 border-b border-border">
+<div class="flex items-center flex-1 max-w-xl relative">
+<span class="material-symbols-outlined absolute left-3 text-text-gray">search</span>
+<input class="w-full pl-10 pr-4 py-1.5 bg-surface-container-low border-none rounded-full text-label-sm focus:ring-2 focus:ring-primary-container" placeholder="Rechercher une transaction..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4">
+<button class="relative p-1 text-text-gray hover:bg-surface-container-low rounded-full transition-all">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-1 text-text-gray hover:bg-surface-container-low rounded-full transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-6 border-l border-border">
+<div class="text-right">
+<p class="text-label-sm font-bold text-primary">Salami Enterprise</p>
+<p class="text-caption-xs text-text-gray">Commerçant Vérifié</p>
+</div>
+<img alt="Profile" class="w-8 h-8 rounded-full border-2 border-primary-fixed" data-alt="A professional headshot of a Middle Eastern male entrepreneur in a modern office environment, soft natural lighting, high-end corporate aesthetic with a professional and friendly expression. The background is slightly blurred showing a clean minimalist office space in Ndjamena with subtle blue and white tones matching the fintech brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDI4QSbMg5bMyQvHyRoP0nvsCwBkJ9-E9fDE66JcJOsWQkS9u-CITcWQSsVnoSB_RfM4VXB5bUXaSIwI7P025XABZLEkW6PqrWspAM6AQuCgQXAxzhVOySxHwk3RV_AcOQcA2KpGgZ5i2G6UPb8LmKYBs3y3Hrga9bcsWU8fPTB5GASr2V4ppjZe_eH2q2od6hoC76lsozpNaa69Kx6tBjUJwbUeMFhxNqEzijre2Rz0hQP98qsvd47cMhBZRLN83VhxI5IIo741np4"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[220px] pt-[72px] p-container-padding max-w-[1400px] mx-auto">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h2 class="font-hero-h1 text-[32px] text-primary">InnovQR</h2>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-0.5 rounded-full text-[12px] font-bold tracking-wider uppercase">New</span>
+</div>
+<p class="text-text-gray">Générez et personnalisez votre point de paiement instantané.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 border border-border bg-white text-primary px-4 py-2 rounded-lg font-bold hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[20px]">history</span>
+                    Historique des scans
+                </button>
+<button class="flex items-center gap-2 bg-primary-container text-on-primary px-6 py-2 rounded-lg font-bold shadow-md hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    Nouveau QR
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-grid-gap">
+<!-- Left Column: Customization & Preview -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-grid-gap">
+<!-- QR Creator Card (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-grid-gap bg-card-bg p-8 rounded-xl border border-border shadow-sm">
+<!-- Preview Area -->
+<div class="flex flex-col items-center justify-center p-6 bg-surface-container-lowest rounded-2xl border-2 border-dashed border-border relative overflow-hidden group">
+<div class="qr-gradient-border rounded-2xl mb-6 shadow-xl">
+<div class="bg-white p-4 rounded-[14px] relative">
+<img alt="Merchant QR" class="w-[200px] h-[200px]" data-alt="A clean, high-resolution QR code designed for a professional financial transaction. The QR code uses a deep navy blue color on a pristine white background. In the center of the QR code, there is a small, perfectly circular logo of a fintech company featuring a stylized eagle or globe. The surrounding frame is sleek and modern." id="qrPreviewImage" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0334w6s47V1m4mlNjSUoDAyv0bacjkvZySfkAYCCzS5VsxJb2MhIREbIWekQmTAw4ynVt5JfJGfiKoPDp_SED7CTVXX4cEBLnoxgYnoV790PWpmbL-cG8pvUVN8zOFEF7xJGnIDAjP7BfyzbRh0VkzlfdVywcQofVMZyUHb1XVTIzqCfiJtQHuzNEIoSlJXpkes1KzWrggy2WLT3Qbd38tRstXdO9quG39vDGKV_U-noPCX4Z1D4B9WzZSzt0ch0fhxG2HC93-Ex6"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-10 h-10 bg-white rounded-lg shadow-md border border-border flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[24px]" style="font-variation-settings: 'FILL' 1;">qr_code_2</span>
+</div>
+</div>
+</div>
+</div>
+<h3 class="text-dashboard-amount text-primary font-bold mb-1" id="merchantDisplay">Salami Enterprise</h3>
+<p class="text-caption-xs text-text-gray uppercase tracking-widest">Scannez pour payer</p>
+<!-- Overlay controls -->
+<div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4 backdrop-blur-sm">
+<button class="bg-white p-3 rounded-full text-primary hover:scale-110 transition-transform shadow-lg">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+<button class="bg-white p-3 rounded-full text-primary hover:scale-110 transition-transform shadow-lg">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+</div>
+</div>
+<!-- Options Area -->
+<div class="flex flex-col gap-6">
+<div>
+<label class="text-label-sm font-bold text-primary block mb-3">Couleur du QR</label>
+<div class="flex gap-3">
+<button class="w-10 h-10 rounded-full border-4 border-white shadow-sm ring-2 ring-primary-container bg-[#0A2463]"></button>
+<button class="w-10 h-10 rounded-full border-4 border-white shadow-sm hover:ring-2 hover:ring-outline-variant transition-all bg-[#EA580C]"></button>
+<button class="w-10 h-10 rounded-full border-4 border-white shadow-sm hover:ring-2 hover:ring-outline-variant transition-all bg-[#15803D]"></button>
+<button class="w-10 h-10 rounded-full border-4 border-white shadow-sm hover:ring-2 hover:ring-outline-variant transition-all bg-[#000000]"></button>
+<button class="w-10 h-10 rounded-full border-4 border-white shadow-sm border-dashed flex items-center justify-center bg-white">
+<span class="material-symbols-outlined text-[18px] text-text-gray">colorize</span>
+</button>
+</div>
+</div>
+<div>
+<label class="text-label-sm font-bold text-primary block mb-3">Affichage marchand</label>
+<input class="w-full px-4 py-2 border border-border rounded-lg text-body-base focus:ring-primary-container focus:border-primary-container" id="merchantInput" oninput="document.getElementById('merchantDisplay').innerText = this.value" type="text" value="Salami Enterprise"/>
+</div>
+<div>
+<label class="text-label-sm font-bold text-primary block mb-3">Logo Central</label>
+<div class="flex items-center gap-4 p-4 border border-dashed border-border rounded-lg bg-surface hover:bg-surface-container-low transition-all cursor-pointer">
+<div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-text-gray">upload</span>
+</div>
+<div>
+<p class="text-label-sm font-bold">Changer le logo</p>
+<p class="text-caption-xs text-text-gray">SVG, PNG, JPG (Max 500kb)</p>
+</div>
+</div>
+</div>
+<div class="mt-auto grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 border border-border py-2.5 rounded-lg text-label-sm font-bold text-primary hover:bg-surface transition-all">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                                PNG / SVG
+                            </button>
+<button class="flex items-center justify-center gap-2 bg-secondary text-on-primary py-2.5 rounded-lg text-label-sm font-bold shadow-md hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[20px]">print</span>
+                                Imprimer A4
+                            </button>
+</div>
+</div>
+</div>
+<!-- Main Analytics Chart -->
+<div class="bg-card-bg p-6 rounded-xl border border-border shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-bold text-primary">Activité des scans (30 derniers jours)</h3>
+<div class="flex bg-surface rounded-lg p-1">
+<button class="px-3 py-1 text-caption-xs font-bold bg-white rounded shadow-sm text-primary">Journalier</button>
+<button class="px-3 py-1 text-caption-xs font-bold text-text-gray">Hebdomadaire</button>
+</div>
+</div>
+<div class="h-[280px] w-full" id="scansChart">
+<!-- Chart will be rendered here by script -->
+</div>
+</div>
+</div>
+<!-- Right Column: Stats & Heatmap -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-grid-gap">
+<!-- Quick Stats -->
+<div class="grid grid-cols-1 gap-grid-gap">
+<div class="bg-card-bg p-5 rounded-xl border border-border shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+</div>
+<div>
+<p class="text-caption-xs text-text-gray uppercase font-bold tracking-wider">Total Scans</p>
+<h4 class="text-dashboard-amount text-primary">12,482</h4>
+<p class="text-caption-xs text-success flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12% cette semaine
+                            </p>
+</div>
+</div>
+<div class="bg-card-bg p-5 rounded-xl border border-border shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 bg-tertiary-fixed rounded-full flex items-center justify-center text-on-tertiary-fixed-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+<div>
+<p class="text-caption-xs text-text-gray uppercase font-bold tracking-wider">Montant QR</p>
+<h4 class="text-dashboard-amount text-primary">4,850,200 FCFA</h4>
+<p class="text-caption-xs text-success flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +8% cette semaine
+                            </p>
+</div>
+</div>
+<div class="bg-card-bg p-5 rounded-xl border border-border shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary-fixed rounded-full flex items-center justify-center text-on-secondary-fixed-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">ads_click</span>
+</div>
+<div>
+<p class="text-caption-xs text-text-gray uppercase font-bold tracking-wider">Taux Conversion</p>
+<h4 class="text-dashboard-amount text-primary">64.2%</h4>
+<p class="text-caption-xs text-error flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">trending_down</span> -2% vs mois dernier
+                            </p>
+</div>
+</div>
+</div>
+<!-- Heatmap Section -->
+<div class="bg-card-bg p-6 rounded-xl border border-border shadow-sm flex-1">
+<h3 class="font-bold text-primary mb-6">Pics de fréquentation</h3>
+<div class="space-y-4">
+<div class="flex justify-between text-caption-xs text-text-gray mb-1">
+<span>Lundi - Dimanche</span>
+<span>08h - 22h</span>
+</div>
+<!-- Mock Heatmap -->
+<div class="grid grid-cols-7 gap-2">
+<!-- JS will populate or we manually create a dense enough grid -->
+<script>
+                                const days = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+                                document.write(days.map(d => `<div class="text-[10px] text-center font-bold text-text-gray mb-1">${d}</div>`).join(''));
+                                for(let i=0; i<35; i++) {
+                                    const intensity = Math.random();
+                                    const opacity = intensity > 0.8 ? 'bg-primary-container' : 
+                                                    intensity > 0.5 ? 'bg-on-primary-container' : 
+                                                    intensity > 0.2 ? 'bg-primary-fixed' : 'bg-surface-container-low';
+                                    document.write(`<div class="aspect-square rounded-sm ${opacity} heatmap-cell transition-all cursor-help" title="Forte activité"></div>`);
+                                }
+                            </script>
+</div>
+<div class="flex items-center gap-2 mt-4">
+<span class="text-[10px] text-text-gray">Moins</span>
+<div class="flex flex-1 h-2 rounded-full overflow-hidden">
+<div class="w-1/4 bg-surface-container-low"></div>
+<div class="w-1/4 bg-primary-fixed"></div>
+<div class="w-1/4 bg-on-primary-container"></div>
+<div class="w-1/4 bg-primary-container"></div>
+</div>
+<span class="text-[10px] text-text-gray">Plus</span>
+</div>
+</div>
+<div class="mt-8 p-4 bg-surface rounded-lg border border-border">
+<h4 class="text-label-sm font-bold text-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">lightbulb</span>
+                            Conseil IA
+                        </h4>
+<p class="text-caption-xs text-text-gray leading-relaxed">
+                            Votre pic d'activité se situe le <b>Samedi entre 14h et 17h</b>. Prévoyez du personnel supplémentaire pour fluidifier les encaissements via QR.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Success Toast (Hidden by default) -->
+<div class="fixed bottom-8 right-8 bg-admin-sidebar text-on-primary px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 translate-y-20 opacity-0 transition-all duration-300 z-[100]" id="toast">
+<div class="w-8 h-8 bg-success rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[20px]">check</span>
+</div>
+<div>
+<p class="text-label-sm font-bold">QR Code Sauvegardé</p>
+<p class="text-caption-xs text-text-inactive">Les modifications ont été appliquées avec succès.</p>
+</div>
+</div>
+<script>
+        // Data for Recharts scan chart
+        const scanData = [
+            { day: '01', scans: 400 }, { day: '04', scans: 300 }, { day: '07', scans: 600 },
+            { day: '10', scans: 800 }, { day: '13', scans: 500 }, { day: '16', scans: 900 },
+            { day: '19', scans: 1100 }, { day: '22', scans: 950 }, { day: '25', scans: 1200 },
+            { day: '28', scans: 1400 }, { day: '30', scans: 1350 }
+        ];
+
+        // Wait for DOM to load chart
+        window.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('scansChart');
+            if (window.Recharts && container) {
+                const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = window.Recharts;
+                
+                const Chart = React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
+                    React.createElement(LineChart, { data: scanData },
+                        React.createElement(CartesianGrid, { strokeDasharray: '3 3', vertical: false, stroke: '#E5E7EB' }),
+                        React.createElement(XAxis, { dataKey: 'day', axisLine: false, tickLine: false, tick: { fill: '#9CA3AF', fontSize: 12 } }),
+                        React.createElement(YAxis, { axisLine: false, tickLine: false, tick: { fill: '#9CA3AF', fontSize: 12 } }),
+                        React.createElement(Tooltip, { 
+                            contentStyle: { borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' },
+                            itemStyle: { color: '#0A2463', fontWeight: 'bold' }
+                        }),
+                        React.createElement(Line, { 
+                            type: 'monotone', 
+                            dataKey: 'scans', 
+                            stroke: '#0A2463', 
+                            strokeWidth: 3, 
+                            dot: { r: 4, fill: '#0A2463', strokeWidth: 2, stroke: '#FFF' },
+                            activeDot: { r: 6 } 
+                        })
+                    )
+                );
+                // Simple rendering mock as actual React might not be available
+                // In a real environment, we'd use ReactDOM.render
+            }
+        });
+
+        // Toggle Toast Notification
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Add some basic interactivity
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if(btn.innerText.includes('Imprimer') || btn.innerText.includes('PNG')) {
+                    showToast();
+                }
+            });
+        });
+    </script>
+</body></html>

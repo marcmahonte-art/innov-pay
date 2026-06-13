@@ -1,26 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --surface: #f5f7fa;
+  --surface-dim: #d6d9dd;
+  --surface-bright: #ffffff;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f0f2f5;
+  --surface-container: #eaedf0;
+  --surface-container-high: #e4e7ea;
+  --surface-container-highest: #dde1e4;
+  --on-surface: #0f1214;
+  --on-surface-variant: #3c3f4a;
+  --inverse-surface: #272b2e;
+  --inverse-on-surface: #edf0f2;
+
+  /* Contours */
+  --outline: #6b6d79;
+  --outline-variant: #bfc0cc;
+
+  /* Primaire — Trust Blue */
+  --primary: #00103e;
+  --on-primary: #ffffff;
+  --primary-container: #0a2463;
+  --on-primary-container: #7a8ed2;
+  --inverse-primary: #b5c4ff;
+  --surface-tint: #475b9c;
+
+  /* Secondaire — Vibrant Orange */
+  --secondary: #c94400;
+  --on-secondary: #ffffff;
+  --secondary-container: #ff7034;
+  --on-secondary-container: #4a1400;
+
+  /* Tertiaire — Emerald Green */
+  --tertiary: #001a06;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #003112;
+  --on-tertiary-container: #41a35b;
+
+  /* Sémantiques */
+  --error: #B91C1C;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+  --success: #15803D;
+  --success-container: #dcfce7;
+  --on-success-container: #14532d;
+  --warning: #92400E;
+  --warning-container: #fef3c7;
+  --on-warning-container: #78350f;
+  --info: #1d4ed8;
+  --info-container: #dbeafe;
+  --on-info-container: #1e3a8a;
+
+  /* Utilitaires */
+  --border: #e2e5ea;
+  --border-strong: #c8cbd3;
+  --card-bg: #ffffff;
+  --text-gray: #5c6470;
+  --text-muted: #8b919d;
+  --text-inactive: #9ca3af;
+  --text-disabled: #b8bcc5;
+
+  /* Sidebar & Admin */
+  --admin-sidebar: #0a1628;
+  --sidebar-hover: #152e5e;
+  --sidebar-active: #1a3a72;
+  --sidebar-text: #c8d3e8;
+  --sidebar-text-active: #ffffff;
+  --sidebar-icon-inactive: #8fa3c8;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #0a2463 0%, #1a3a72 100%);
+  --gradient-accent: linear-gradient(135deg, #c94400 0%, #ff7034 100%);
+  --gradient-success: linear-gradient(135deg, #15803d 0%, #22c55e 100%);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-primary: var(--primary);
+  --color-primary-container: var(--primary-container);
+  --color-secondary: var(--secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-success: var(--success);
+  --color-success-container: var(--success-container);
+  --color-warning: var(--warning);
+  --color-warning-container: var(--warning-container);
+  --color-error: var(--error);
+  --color-error-container: var(--error-container);
+  
+  --color-surface: var(--surface);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container-high: var(--surface-container-high);
+  
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-card: var(--card-bg);
+  --color-text-gray: var(--text-gray);
+  --color-text-muted: var(--text-muted);
+  --color-text-inactive: var(--text-inactive);
+  --color-text-disabled: var(--text-disabled);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: 'Geist', system-ui, sans-serif;
+  --font-webpay: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-card-hover: 0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-dropdown: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06);
+  --shadow-modal: 0 20px 60px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.08);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--surface);
+  color: var(--on-surface);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tabular figures for financial calculations display */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom transitions and animations */
+.transition-base {
+  transition: all 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.transition-fast {
+  transition: all 150ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.transition-slow {
+  transition: all 300ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Form focus elements */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-container) !important;
+  box-shadow: 0 0 0 3px rgba(10, 36, 99, 0.2) !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface-container-highest);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--outline-variant);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

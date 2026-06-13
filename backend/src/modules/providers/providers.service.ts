@@ -3,7 +3,6 @@ import { PrismaService } from '../prisma/prisma.service';
 import { PaymentMethod } from '@prisma/client';
 import { AirtelProvider } from './airtel/airtel.provider';
 import { MoovProvider } from './moov/moov.provider';
-import { OrangeProvider } from './orange/orange.provider';
 import { VisaProvider } from './visa/visa.provider';
 import { MastercardProvider } from './mastercard/mastercard.provider';
 import { KonoomProvider } from './konoom/konoom.provider';
@@ -58,8 +57,6 @@ export class ProvidersService {
         return new AirtelProvider(credentials);
       case 'moov':
         return new MoovProvider(credentials);
-      case 'orange':
-        return new OrangeProvider(credentials);
       case 'visa':
         return new VisaProvider(credentials);
       case 'mastercard':
