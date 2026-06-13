@@ -26,3 +26,5 @@ yarn-error.log*
 
 # Prisma generated sources (optional, usually generated on npm install)
 # /backend/node_modules/@prisma/client
+
+.vercel

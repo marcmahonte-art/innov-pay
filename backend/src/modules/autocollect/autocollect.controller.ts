@@ -5,7 +5,7 @@ import { AutoCollectService } from './autocollect.service';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
 
-@Controller('v1/collections')
+@Controller('autocollect')
 export class AutoCollectController {
   constructor(private readonly autocollectService: AutoCollectService) {}
 

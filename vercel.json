@@ -7,5 +7,17 @@
   "env": {
     "NEXT_PUBLIC_API_URL": "<YOUR_BACKEND_URL>",
     "FRONTEND_URL": "https://polo6.vercel.app"
+  },
+  "experimentalServices": {
+    "frontend": {
+      "root": "frontend",
+      "routePrefix": "/",
+      "framework": "nextjs"
+    },
+    "backend": {
+      "root": "backend",
+      "entrypoint": "src/main.ts",
+      "routePrefix": "/_/backend"
+    }
   }
 }

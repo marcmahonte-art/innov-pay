@@ -7,6 +7,7 @@ import DashboardLayout from '@/components/DashboardLayout';
 import { apiClient } from '@/lib/api';
 
 export default function AutoCollectPage() {
+  const [user, setUser] = useState<any>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
   const [copiedLink, setCopiedLink] = useState<string | null>(null);
@@ -25,6 +26,11 @@ export default function AutoCollectPage() {
   const [hideBalances, setHideBalances] = useState(false);
 
   useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+
     const checkVisibility = () => {
       setHideBalances(localStorage.getItem('hideBalances') === 'true');
     };
@@ -37,11 +43,12 @@ export default function AutoCollectPage() {
 
   // Fetch campaigns
   const { data: campaigns, isLoading, refetch } = useQuery({
-    queryKey: ['campaigns'],
+    queryKey: ['campaigns', user?.merchantId],
     queryFn: async () => {
       const res = await apiClient.get(`/autocollect?merchantId=${user?.merchantId}`);
       return res.data;
     },
+    enabled: !!user?.merchantId,
   });
 
   // Create Campaign Mutation
