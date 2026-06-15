@@ -271,6 +271,15 @@ export default function SettingsPage() {
                       />
                     </div>
                     <div className="space-y-1">
+                      <label className="text-xs font-bold text-[#5c6470] uppercase">ID Marchand Unique</label>
+                      <input
+                        type="text"
+                        disabled
+                        value={profile?.id || ''}
+                        className="w-full px-4 py-2 bg-[#f5f7fa] border border-[#e2e5ea] rounded-xl text-xs text-[#8b919d] cursor-not-allowed font-mono"
+                      />
+                    </div>
+                    <div className="space-y-1">
                       <label className="text-xs font-bold text-[#5c6470] uppercase">Téléphone</label>
                       <input
                         type="tel"
