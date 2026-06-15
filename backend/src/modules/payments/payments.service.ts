@@ -20,7 +20,7 @@ export class PaymentsService {
   /**
    * Public API: Create a payment
    */
-  async createPayment(merchantId: string, dto: CreatePaymentDto) {
+  async createPayment(merchantId: string, dto: CreatePaymentDto, isLive = false) {
     // 1. Verify merchant order ID uniqueness
     const existing = await this.prisma.payment.findUnique({
       where: {
@@ -58,6 +58,7 @@ export class PaymentsService {
     const paymentRecord = await this.prisma.payment.create({
       data: {
         merchantId,
+        isLive,
         amount: dto.amount,
         currency: dto.currency,
         paymentMethod: dto.paymentMethod,
@@ -79,7 +80,7 @@ export class PaymentsService {
 
     // If status resolves instantly (e.g. mock instant success), update balances
     if (paymentRecord.status === PaymentStatus.SUCCESS) {
-      await this.creditMerchantBalance(merchantId, netAmount);
+      await this.creditMerchantBalance(merchantId, netAmount, isLive);
       this.mailService.sendPaymentReceivedEmail(
         paymentRecord.merchant.email,
         paymentRecord.customerEmail || paymentRecord.customerPhone || 'Client',
@@ -127,7 +128,7 @@ export class PaymentsService {
 
           // If payment succeeded, credit merchant balance
           if (updatedPayment.status === PaymentStatus.SUCCESS) {
-            await this.creditMerchantBalance(merchantId, Number(updatedPayment.netAmount));
+            await this.creditMerchantBalance(merchantId, Number(updatedPayment.netAmount), updatedPayment.isLive);
             this.mailService.sendPaymentReceivedEmail(
               updatedPayment.merchant.email,
               updatedPayment.customerEmail || updatedPayment.customerPhone || 'Client',
@@ -204,7 +205,7 @@ export class PaymentsService {
       });
 
       // Deduct from merchant balance
-      await this.deductMerchantBalance(merchantId, Number(payment.netAmount));
+      await this.deductMerchantBalance(merchantId, Number(payment.netAmount), payment.isLive);
 
       // Queue webhook
       this.webhooksService.queueWebhook(
@@ -242,9 +243,14 @@ export class PaymentsService {
       endDate?: string;
       limit?: number;
       offset?: number;
+      isLive?: boolean;
     },
   ) {
     const whereClause: any = { merchantId };
+
+    if (filters.isLive !== undefined) {
+      whereClause.isLive = String(filters.isLive) === 'true' || filters.isLive === true;
+    }
 
     if (filters.status) {
       whereClause.status = filters.status;
@@ -292,20 +298,20 @@ export class PaymentsService {
 
   // --- Ledgers & Balances Helpers ---
 
-  private async creditMerchantBalance(merchantId: string, amount: number) {
+  private async creditMerchantBalance(merchantId: string, amount: number, isLive = false) {
     await this.prisma.merchant.update({
       where: { id: merchantId },
       data: {
-        balance: { increment: amount },
+        [isLive ? 'balance' : 'sandboxBalance']: { increment: amount },
       },
     });
   }
 
-  private async deductMerchantBalance(merchantId: string, amount: number) {
+  private async deductMerchantBalance(merchantId: string, amount: number, isLive = false) {
     await this.prisma.merchant.update({
       where: { id: merchantId },
       data: {
-        balance: { decrement: amount },
+        [isLive ? 'balance' : 'sandboxBalance']: { decrement: amount },
       },
     });
   }
@@ -337,7 +343,7 @@ export class PaymentsService {
     });
 
     // Credit merchant balance
-    await this.creditMerchantBalance(merchantId, Number(updatedPayment.netAmount));
+    await this.creditMerchantBalance(merchantId, Number(updatedPayment.netAmount), updatedPayment.isLive);
 
     // Send email notification
     this.mailService.sendPaymentReceivedEmail(

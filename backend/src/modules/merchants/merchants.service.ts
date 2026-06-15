@@ -117,9 +117,13 @@ export class MerchantsService {
 
   // --- Dashboard Aggregations ---
 
-  async getDashboardStats(merchantId: string) {
+  async getDashboardStats(merchantId: string, isLive?: boolean) {
+    const isLiveBool = isLive !== undefined ? (String(isLive) === 'true' || isLive === true) : false;
+    const whereClause: any = { merchantId };
+    whereClause.isLive = isLiveBool;
+
     const payments = await this.prisma.payment.findMany({
-      where: { merchantId },
+      where: whereClause,
       select: {
         amount: true,
         status: true,
@@ -161,7 +165,7 @@ export class MerchantsService {
     // Merchant balances
     const merchant = await this.prisma.merchant.findUnique({
       where: { id: merchantId },
-      select: { balance: true, pendingBal: true, currency: true },
+      select: { balance: true, pendingBal: true, sandboxBalance: true, sandboxPendingBal: true, currency: true },
     });
 
     return {
@@ -169,8 +173,8 @@ export class MerchantsService {
         totalVolume,
         totalTransactions,
         successRate,
-        balance: merchant?.balance || 0,
-        pendingBalance: merchant?.pendingBal || 0,
+        balance: isLiveBool ? Number(merchant?.balance || 0) : Number(merchant?.sandboxBalance || 0),
+        pendingBalance: isLiveBool ? Number(merchant?.pendingBal || 0) : Number(merchant?.sandboxPendingBal || 0),
         currency: merchant?.currency || 'XAF',
       },
       dailyVolume,
@@ -394,7 +398,7 @@ export class MerchantsService {
     return this.prisma.merchant.update({
       where: { id: merchantId },
       data: {
-        balance: {
+        sandboxBalance: {
           increment: amount,
         },
       },

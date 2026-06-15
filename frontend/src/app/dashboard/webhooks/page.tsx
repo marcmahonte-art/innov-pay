@@ -12,6 +12,25 @@ export default function WebhooksPage() {
   const [copied, setCopied] = useState(false);
   const [urlError, setUrlError] = useState('');
 
+  // Simulator State
+  const [showSimulator, setShowSimulator] = useState(false);
+  const [simulationEvent, setSimulationEvent] = useState('payment.success');
+  const [simulating, setSimulating] = useState(false);
+
+  const handleTriggerSimulation = async () => {
+    setSimulating(true);
+    try {
+      await apiClient.post('/webhooks/simulate', { event: simulationEvent });
+      refetchLogs();
+      setShowSimulator(false);
+      alert(`Simulation de l'événement '${simulationEvent}' déclenchée avec succès !`);
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Erreur lors du déclenchement du webhook');
+    } finally {
+      setSimulating(false);
+    }
+  };
+
   // Fetch Webhook Configuration
   const { data: config, isLoading: configLoading, refetch: refetchConfig } = useQuery({
     queryKey: ['webhookConfig'],
@@ -154,13 +173,59 @@ export default function WebhooksPage() {
                 <h3 className="text-lg font-bold text-[#00103e]">Historique de Livraison</h3>
                 <p className="text-xs text-[#5c6470] mt-1">Logs de tentatives de transmission HTTP en arrière-plan.</p>
               </div>
-              <button 
-                onClick={() => refetchLogs()}
-                className="p-2 border border-[#e2e5ea] rounded-xl hover:bg-[#f0f2f5] transition text-[#5c6470] hover:text-[#00103e]"
-              >
-                <RefreshCw className="h-4 w-4" />
-              </button>
+              <div className="flex items-center space-x-2">
+                {config?.url && (
+                  <button 
+                    onClick={() => setShowSimulator(!showSimulator)}
+                    className="flex items-center text-xs font-bold bg-[#f5f7fa] hover:bg-[#e4e7ea] text-[#0a2463] border border-[#e2e5ea] rounded-xl px-3 py-2 transition cursor-pointer"
+                  >
+                    Simuler un événement
+                  </button>
+                )}
+                <button 
+                  onClick={() => refetchLogs()}
+                  className="p-2 border border-[#e2e5ea] rounded-xl hover:bg-[#f0f2f5] transition text-[#5c6470] hover:text-[#00103e] cursor-pointer"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </button>
+              </div>
             </div>
+
+            {showSimulator && (
+              <div className="bg-slate-50 border border-[#e2e5ea] rounded-2xl p-4 space-y-3 transition">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-extrabold text-[#00103e] uppercase tracking-wider">Simulateur d'Événement Webhook</span>
+                  <button 
+                    onClick={() => setShowSimulator(false)} 
+                    className="text-xs font-bold text-slate-500 hover:text-slate-700 cursor-pointer"
+                  >
+                    Fermer
+                  </button>
+                </div>
+                <p className="text-xs text-[#5c6470] leading-relaxed">
+                  Choisissez un événement à simuler. Le serveur Innov Pay enverra une requête POST signée avec votre secret HMAC vers : <strong className="break-all font-mono text-[#0a2463]">{config?.url}</strong>
+                </p>
+                <div className="flex flex-wrap gap-3 items-center">
+                  <select 
+                    value={simulationEvent}
+                    onChange={(e) => setSimulationEvent(e.target.value)}
+                    className="bg-white border border-[#e2e5ea] text-xs font-bold text-[#00103e] rounded-xl px-3 py-2.5 focus:outline-none focus:border-[#0a2463] transition"
+                  >
+                    <option value="payment.success">payment.success (Paiement Réussi)</option>
+                    <option value="payment.failed">payment.failed (Paiement Échoué)</option>
+                    <option value="payment.refunded">payment.refunded (Paiement Remboursé)</option>
+                  </select>
+                  <button
+                    onClick={handleTriggerSimulation}
+                    disabled={simulating}
+                    className="flex items-center bg-[#0a2463] hover:bg-[#1a3a72] text-white text-xs font-bold rounded-xl px-4 py-2.5 shadow-md transition disabled:opacity-50 cursor-pointer"
+                  >
+                    {simulating ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" /> : null}
+                    Déclencher le Webhook
+                  </button>
+                </div>
+              </div>
+            )}
 
             {isLoading ? (
               <div className="space-y-4 animate-pulse">

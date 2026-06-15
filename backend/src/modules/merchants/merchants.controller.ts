@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, Post, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Patch, Post, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { MerchantsService } from './merchants.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -38,8 +38,11 @@ export class MerchantsController {
   @Get('dashboard')
   @Roles(UserRole.MERCHANT_OWNER, UserRole.MERCHANT_ADMIN, UserRole.DEVELOPER, UserRole.SUPPORT)
   @ApiOperation({ summary: 'Get dashboard statistics' })
-  getDashboard(@GetUser('merchantId') merchantId: string) {
-    return this.merchantsService.getDashboardStats(merchantId);
+  getDashboard(
+    @GetUser('merchantId') merchantId: string,
+    @Query('isLive') isLive?: boolean,
+  ) {
+    return this.merchantsService.getDashboardStats(merchantId, isLive);
   }
 
   @Get('api-keys')

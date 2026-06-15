@@ -6,7 +6,7 @@ import { ApiKeyGuard } from '../auth/guards/api-key.guard';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { GetMerchant } from '../../modules/merchants/decorators/merchant.decorator';
+import { GetMerchant, IsLiveKey } from '../../modules/merchants/decorators/merchant.decorator';
 import { GetUser } from '../auth/decorators/user.decorator';
 import { PaymentStatus, PaymentMethod, UserRole } from '@prisma/client';
 
@@ -26,8 +26,9 @@ export class PaymentsController {
   createPayment(
     @GetMerchant('id') merchantId: string,
     @Body() dto: CreatePaymentDto,
+    @IsLiveKey() isLive: boolean,
   ) {
-    return this.paymentsService.createPayment(merchantId, dto);
+    return this.paymentsService.createPayment(merchantId, dto, isLive);
   }
 
   @Get('payments/:id')
@@ -70,6 +71,7 @@ export class PaymentsController {
     @Query('endDate') endDate?: string,
     @Query('limit') limit?: number,
     @Query('offset') offset?: number,
+    @Query('isLive') isLive?: boolean,
   ) {
     return this.paymentsService.getPaymentsList(merchantId, {
       status,
@@ -79,6 +81,7 @@ export class PaymentsController {
       endDate,
       limit,
       offset,
+      isLive,
     });
   }
 

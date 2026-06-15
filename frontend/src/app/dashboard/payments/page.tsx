@@ -20,6 +20,7 @@ export default function PaymentsPage() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [refunding, setRefunding] = useState(false);
   const [hideBalances, setHideBalances] = useState(false);
+  const [isSandbox, setIsSandbox] = useState(false);
 
   // Sync balance hiding state from localStorage
   useEffect(() => {
@@ -33,10 +34,22 @@ export default function PaymentsPage() {
     };
   }, []);
 
+  // Sync sandbox mode state from localStorage / custom events
+  useEffect(() => {
+    const checkSandbox = () => {
+      setIsSandbox(localStorage.getItem('isSandbox') === 'true');
+    };
+    checkSandbox();
+    window.addEventListener('sandboxModeChanged', checkSandbox);
+    return () => {
+      window.removeEventListener('sandboxModeChanged', checkSandbox);
+    };
+  }, []);
+
   // Fetch payments
   const offset = (page - 1) * limit;
   const { data: paymentsData, isLoading, refetch } = useQuery({
-    queryKey: ['payments', search, status, method, startDate, endDate, page],
+    queryKey: ['payments', search, status, method, startDate, endDate, page, isSandbox],
     queryFn: async () => {
       const res = await apiClient.get('/dashboard/payments', {
         params: {
@@ -47,6 +60,7 @@ export default function PaymentsPage() {
           endDate: endDate || undefined,
           limit,
           offset,
+          isLive: !isSandbox,
         },
       });
       return res.data;
@@ -130,6 +144,15 @@ export default function PaymentsPage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
+        
+        {/* Sandbox Warning Banner */}
+        {isSandbox && (
+          <div className="bg-amber-500/10 border border-amber-500/20 text-[#ea580c] rounded-2xl p-4 flex items-center space-x-3 text-xs select-none">
+            <span className="font-extrabold uppercase tracking-wider bg-[#ea580c] text-white px-2 py-0.5 rounded-lg text-[9px]">Mode Test</span>
+            <span>Vous visualisez des données factices de simulation. Les paiements réels ne sont pas débités.</span>
+          </div>
+        )}
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <h1 className="text-2xl font-bold text-[#00103e] tracking-tight">Transactions</h1>

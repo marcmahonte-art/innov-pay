@@ -18,6 +18,7 @@ import {
 export default function DashboardOverviewPage() {
   const [selectedCountry, setSelectedCountry] = useState('TD');
   const [hideBalances, setHideBalances] = useState(false);
+  const [isSandbox, setIsSandbox] = useState(false);
 
   // Sync balance hiding state from localStorage / custom events
   useEffect(() => {
@@ -28,6 +29,18 @@ export default function DashboardOverviewPage() {
     window.addEventListener('balanceVisibilityChanged', checkVisibility);
     return () => {
       window.removeEventListener('balanceVisibilityChanged', checkVisibility);
+    };
+  }, []);
+
+  // Sync sandbox mode state from localStorage / custom events
+  useEffect(() => {
+    const checkSandbox = () => {
+      setIsSandbox(localStorage.getItem('isSandbox') === 'true');
+    };
+    checkSandbox();
+    window.addEventListener('sandboxModeChanged', checkSandbox);
+    return () => {
+      window.removeEventListener('sandboxModeChanged', checkSandbox);
     };
   }, []);
 
@@ -42,18 +55,18 @@ export default function DashboardOverviewPage() {
 
   // 1. Fetch dashboard metrics
   const { data: stats, isLoading: statsLoading } = useQuery({
-    queryKey: ['dashboardStats'],
+    queryKey: ['dashboardStats', isSandbox],
     queryFn: async () => {
-      const res = await apiClient.get('/merchants/dashboard');
+      const res = await apiClient.get(`/merchants/dashboard?isLive=${!isSandbox}`);
       return res.data;
     },
   });
 
   // 2. Fetch recent payments
   const { data: recentPayments, isLoading: paymentsLoading } = useQuery({
-    queryKey: ['recentPayments'],
+    queryKey: ['recentPayments', isSandbox],
     queryFn: async () => {
-      const res = await apiClient.get('/dashboard/payments?limit=5');
+      const res = await apiClient.get(`/dashboard/payments?limit=5&isLive=${!isSandbox}`);
       return res.data;
     },
   });
@@ -69,6 +82,14 @@ export default function DashboardOverviewPage() {
     <DashboardLayout>
       <div className="space-y-6">
         
+        {/* Sandbox Warning Banner */}
+        {isSandbox && (
+          <div className="bg-amber-500/10 border border-amber-500/20 text-[#ea580c] rounded-2xl p-4 flex items-center space-x-3 text-xs select-none">
+            <span className="font-extrabold uppercase tracking-wider bg-[#ea580c] text-white px-2 py-0.5 rounded-lg text-[9px]">Mode Test</span>
+            <span>Vous visualisez des données factices de simulation. Les paiements réels ne sont pas débités.</span>
+          </div>
+        )}
+
         {/* Page title and country selector */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-1">

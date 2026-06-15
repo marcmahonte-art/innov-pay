@@ -42,4 +42,15 @@ export class WebhooksController {
   ) {
     return this.webhooksService.getWebhookLogs(merchantId, limit ? Number(limit) : 20, offset ? Number(offset) : 0);
   }
+
+  @Post('simulate')
+  @Roles(UserRole.MERCHANT_OWNER, UserRole.DEVELOPER)
+  @ApiOperation({ summary: 'Simulate a webhook event delivery for developers' })
+  @ApiResponse({ status: 200, description: 'Webhook simulation completed' })
+  simulateWebhook(
+    @GetUser('merchantId') merchantId: string,
+    @Body() body: { event: string },
+  ) {
+    return this.webhooksService.simulateWebhookEvent(merchantId, body.event);
+  }
 }

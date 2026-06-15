@@ -98,6 +98,8 @@ model Merchant {
   kycStatus    KycStatus     @default(UNVERIFIED)
   balance      Decimal       @default(0.00) @db.Decimal(18, 2)
   pendingBal   Decimal       @default(0.00) @db.Decimal(18, 2)
+  sandboxBalance Decimal     @default(100000.00) @db.Decimal(18, 2)
+  sandboxPendingBal Decimal  @default(0.00) @db.Decimal(18, 2)
   currency     String        @default("XAF")
   users        User[]
   apiKeys      ApiKey[]
@@ -133,6 +135,7 @@ model ApiKey {
 model Payment {
   id                String         @id @default(uuid())
   merchantId        String
+  isLive            Boolean        @default(false)
   merchant          Merchant       @relation(fields: [merchantId], references: [id], onDelete: Cascade)
   amount            Decimal        @db.Decimal(18, 2)
   currency          String         @default("XAF")

@@ -43,6 +43,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [showNotificationMenu, setShowNotificationMenu] = useState(false);
   const [hideBalances, setHideBalances] = useState(false);
+  const [isSandbox, setIsSandbox] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -50,6 +51,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     const storedHideBalances = localStorage.getItem('hideBalances') === 'true';
     
     setHideBalances(storedHideBalances);
+    const storedSandbox = localStorage.getItem('isSandbox') === 'true';
+    setIsSandbox(storedSandbox);
     
     if (!token || !storedUser) {
       localStorage.removeItem('accessToken');
@@ -72,6 +75,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     localStorage.setItem('hideBalances', String(newState));
     // Trigger custom event so components re-read state
     window.dispatchEvent(new Event('balanceVisibilityChanged'));
+  };
+
+  const toggleSandboxMode = () => {
+    const newState = !isSandbox;
+    setIsSandbox(newState);
+    localStorage.setItem('isSandbox', String(newState));
+    // Trigger custom event so components re-read sandbox state
+    window.dispatchEvent(new Event('sandboxModeChanged'));
   };
 
   // V3 Role-based access mapping
@@ -164,9 +175,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 IP
               </div>
               {!isCollapsed && (
-                <span className="text-white font-extrabold text-lg tracking-tight select-none">
-                  Innov<span className="text-[#ea580c]">Pay</span>
-                </span>
+                <div className="flex flex-col select-none">
+                  <span className="text-white font-extrabold text-lg tracking-tight leading-none">
+                    Innov<span className="text-[#ea580c]">Pay</span>
+                  </span>
+                  {isSandbox && (
+                    <span className="text-[9px] text-[#ea580c] font-black uppercase tracking-wider mt-1.5 animate-pulse">
+                      Mode Sandbox
+                    </span>
+                  )}
+                </div>
               )}
             </div>
           </div>
@@ -331,6 +349,30 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <Menu className="h-6 w-6" />
               </button>
               <span className="text-[#00103e] font-black text-lg">InnovPay</span>
+            </div>
+
+            {/* Sandbox / Production Toggle (Stripe-Style) */}
+            <div className="hidden sm:flex items-center bg-slate-100 hover:bg-slate-200/80 border border-[#e2e5ea] rounded-xl p-1 transition duration-150">
+              <button
+                onClick={() => isSandbox && toggleSandboxMode()}
+                className={`text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer ${
+                  !isSandbox 
+                    ? 'bg-[#0a2463] text-white shadow-sm scale-105' 
+                    : 'text-[#5c6470] hover:text-[#00103e]'
+                }`}
+              >
+                Production
+              </button>
+              <button
+                onClick={() => !isSandbox && toggleSandboxMode()}
+                className={`text-[10px] font-bold px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer ${
+                  isSandbox 
+                    ? 'bg-[#ea580c] text-white shadow-sm scale-105' 
+                    : 'text-[#5c6470] hover:text-[#00103e]'
+                }`}
+              >
+                Test (Sandbox)
+              </button>
             </div>
 
             {/* Balances hide button toggle (Prompt 1 / V3) */}

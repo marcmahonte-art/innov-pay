@@ -109,15 +109,19 @@ export class CheckoutService {
     }
 
     // Trigger the actual payment creation/execution
-    const paymentResult = await this.paymentsService.createPayment(session.merchantId, {
-      amount: session.amount,
-      currency: session.currency,
-      paymentMethod: dto.paymentMethod,
-      customerEmail: session.customerEmail,
-      customerPhone: dto.customerPhone || session.customerPhone,
-      merchantReference: session.merchantReference,
-      metadata: session.metadata,
-    });
+    const paymentResult = await this.paymentsService.createPayment(
+      session.merchantId,
+      {
+        amount: session.amount,
+        currency: session.currency,
+        paymentMethod: dto.paymentMethod,
+        customerEmail: session.customerEmail,
+        customerPhone: dto.customerPhone || session.customerPhone,
+        merchantReference: session.merchantReference,
+        metadata: session.metadata,
+      },
+      session.isLive,
+    );
 
     session.paymentId = paymentResult.paymentId;
 

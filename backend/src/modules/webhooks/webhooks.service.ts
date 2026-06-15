@@ -174,4 +174,82 @@ export class WebhooksService {
       });
     }
   }
+
+  /**
+   * Simulate a webhook event for testing purposes
+   */
+  async simulateWebhookEvent(merchantId: string, eventType: string) {
+    const config = await this.prisma.webhook.findUnique({
+      where: { merchantId },
+    });
+
+    if (!config || !config.url) {
+      throw new NotFoundException("Webhook configuration missing or no URL configured");
+    }
+
+    // Find the latest payment or create a mock one to satisfy database foreign keys
+    let payment = await this.prisma.payment.findFirst({
+      where: { merchantId },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    if (!payment) {
+      // Create a mock payment for this merchant
+      payment = await this.prisma.payment.create({
+        data: {
+          merchantId,
+          amount: 5000,
+          currency: 'XAF',
+          paymentMethod: 'KONOOM_MONEY',
+          customerEmail: 'simulated@customer.com',
+          customerPhone: '+23560000000',
+          providerId: 'airtel',
+          providerReference: `sim_${crypto.randomUUID()}`,
+          merchantReference: `order_sim_${crypto.randomUUID().substring(0, 8)}`,
+          fee: 100,
+          providerFee: 60,
+          netAmount: 4900,
+          status: 'SUCCESS',
+          isLive: false,
+        },
+      });
+    }
+
+    const payload = {
+      paymentId: payment.id,
+      merchantReference: payment.merchantReference,
+      amount: Number(payment.amount),
+      currency: payment.currency,
+      status: eventType === 'payment.failed' ? 'FAILED' : 'SUCCESS',
+      fee: Number(payment.fee),
+      netAmount: Number(payment.netAmount),
+      customerEmail: payment.customerEmail || 'simulated@customer.com',
+      customerPhone: payment.customerPhone || '+23560000000',
+      createdAt: payment.createdAt,
+    };
+
+    const jobData = {
+      webhookId: config.id,
+      paymentId: payment.id,
+      url: config.url,
+      secret: config.secret,
+      event: eventType,
+      payload,
+      attempt: 1,
+    };
+
+    try {
+      await this.deliverWebhook(jobData);
+    } catch (err) {
+      // Ignore network errors so the API request itself returns status success of the trigger action
+      this.logger.debug(`Webhook simulation HTTP post failed: ${err.message}`);
+    }
+
+    return {
+      message: 'Simulation webhook envoyée avec succès',
+      url: config.url,
+      event: eventType,
+      payload,
+    };
+  }
 }
