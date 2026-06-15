@@ -383,4 +383,21 @@ export class MerchantsService {
       operatorLatency,
     };
   }
+
+  async topupBalance(merchantId: string, amount: number) {
+    const merchant = await this.prisma.merchant.findUnique({
+      where: { id: merchantId },
+    });
+    if (!merchant) {
+      throw new NotFoundException('Merchant not found');
+    }
+    return this.prisma.merchant.update({
+      where: { id: merchantId },
+      data: {
+        balance: {
+          increment: amount,
+        },
+      },
+    });
+  }
 }

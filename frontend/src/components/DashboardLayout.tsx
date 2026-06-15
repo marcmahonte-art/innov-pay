@@ -26,7 +26,8 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  ShieldCheck
+  ShieldCheck,
+  Settings
 } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -351,6 +352,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             {/* Right side options: notifications + profile */}
             <div className="flex items-center space-x-4">
               
+              {/* Settings shortcut button */}
+              <Link 
+                href="/dashboard/settings"
+                className="p-2 text-slate-500 hover:text-[#00103e] hover:bg-slate-100 rounded-lg transition"
+                title="Paramètres"
+              >
+                <Settings className="h-5 w-5" />
+              </Link>
+
               {/* Notification icon Bell */}
               <div className="relative">
                 <button 

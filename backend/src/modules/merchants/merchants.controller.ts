@@ -132,4 +132,14 @@ export class MerchantsController {
   getAdvancedAnalytics(@GetUser('merchantId') merchantId: string) {
     return this.merchantsService.getAdvancedAnalytics(merchantId);
   }
+
+  @Post('topup')
+  @Roles(UserRole.MERCHANT_OWNER, UserRole.MERCHANT_ADMIN)
+  @ApiOperation({ summary: 'Top up merchant balance (simulation)' })
+  async topupBalance(
+    @GetUser('merchantId') merchantId: string,
+    @Body() body: { amount: number },
+  ) {
+    return this.merchantsService.topupBalance(merchantId, Number(body.amount));
+  }
 }
