@@ -117,6 +117,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     { name: 'Conformité KYC', href: '/dashboard/kyc', icon: ShieldCheck },
     { name: 'Recharger le compte', href: '/dashboard/topup', icon: Wallet, hasChevron: true },
     { name: 'Retirer l\'argent', href: '/dashboard/settlements', icon: CreditCard },
+    { name: 'Paramètres', href: '/dashboard/settings', icon: Settings },
   ];
 
   if (!user) {
@@ -156,21 +157,22 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             {isCollapsed ? <ChevronRight className="h-4.5 w-4.5" /> : <ChevronLeft className="h-4.5 w-4.5" />}
           </button>
 
-          <div className="space-y-6">
-            {/* Sidebar Header Brand (Prompt 1) */}
-            <div className="flex items-center px-2 py-3 border-b border-white/5 overflow-hidden">
-              <div className="flex items-center space-x-3 shrink-0">
-                <div className="h-9 w-9 bg-[#ea580c] rounded-xl flex items-center justify-center text-white font-black shadow-lg">
-                  IP
-                </div>
-                {!isCollapsed && (
-                  <span className="text-white font-extrabold text-lg tracking-tight select-none">
-                    Innov<span className="text-[#ea580c]">Pay</span>
-                  </span>
-                )}
+          {/* Sidebar Header Brand (Prompt 1) */}
+          <div className="flex items-center px-2 py-3 border-b border-white/5 overflow-hidden shrink-0">
+            <div className="flex items-center space-x-3 shrink-0">
+              <div className="h-9 w-9 bg-[#ea580c] rounded-xl flex items-center justify-center text-white font-black shadow-lg">
+                IP
               </div>
+              {!isCollapsed && (
+                <span className="text-white font-extrabold text-lg tracking-tight select-none">
+                  Innov<span className="text-[#ea580c]">Pay</span>
+                </span>
+              )}
             </div>
+          </div>
 
+          {/* Scrollable Navigation section */}
+          <div className="flex-1 overflow-y-auto min-h-0 my-4 pr-1 space-y-4 select-none scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
             {/* Merchant Account number (masked, Prompt 1) */}
             {!isCollapsed && (
               <div className="bg-slate-900/60 border border-white/5 rounded-xl p-3 mx-1 text-left space-y-1">
