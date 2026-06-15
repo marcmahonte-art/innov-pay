@@ -27,7 +27,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ShieldCheck,
-  Settings
+  Settings,
+  Key
 } from 'lucide-react';
 
 interface DashboardLayoutProps {
@@ -110,8 +111,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     { name: 'Débourser des paiements', href: '/dashboard/bulk-payouts', icon: ArrowDownToLine },
     { name: 'InnovQR', href: '/dashboard/qr', icon: QrCode, badge: 'New' },
     { name: 'Intégrez notre API', href: '/dashboard/integrations', icon: Code2 },
+    { name: 'Clés API', href: '/dashboard/api-keys', icon: Key },
     { name: 'Gestion des rôles', href: '/dashboard/team', icon: Users },
     { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart2, badge: 'New' },
+    { name: 'Conformité KYC', href: '/dashboard/kyc', icon: ShieldCheck },
     { name: 'Recharger le compte', href: '/dashboard/topup', icon: Wallet, hasChevron: true },
     { name: 'Retirer l\'argent', href: '/dashboard/settlements', icon: CreditCard },
   ];
