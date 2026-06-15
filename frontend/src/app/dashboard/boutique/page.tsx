@@ -22,7 +22,7 @@ export default function BoutiquePage() {
   // Accepted payment methods
   const [acceptAirtel, setAcceptAirtel] = useState(true);
   const [acceptMoov, setAcceptMoov] = useState(true);
-  const [acceptOrange, setAcceptOrange] = useState(true);
+  const [acceptKonoom, setAcceptKonoom] = useState(true);
   const [acceptCard, setAcceptCard] = useState(true);
 
   // Products state (mock boutique products list)
@@ -54,12 +54,12 @@ export default function BoutiquePage() {
 
     const savedAirtel = localStorage.getItem('boutique_acceptAirtel');
     const savedMoov = localStorage.getItem('boutique_acceptMoov');
-    const savedOrange = localStorage.getItem('boutique_acceptOrange');
+    const savedKonoom = localStorage.getItem('boutique_acceptKonoom');
     const savedCard = localStorage.getItem('boutique_acceptCard');
 
     if (savedAirtel !== null) setAcceptAirtel(savedAirtel === 'true');
     if (savedMoov !== null) setAcceptMoov(savedMoov === 'true');
-    if (savedOrange !== null) setAcceptOrange(savedOrange === 'true');
+    if (savedKonoom !== null) setAcceptKonoom(savedKonoom === 'true');
     if (savedCard !== null) setAcceptCard(savedCard === 'true');
 
     const savedProducts = localStorage.getItem('boutique_products');
@@ -86,7 +86,7 @@ export default function BoutiquePage() {
       
       localStorage.setItem('boutique_acceptAirtel', String(acceptAirtel));
       localStorage.setItem('boutique_acceptMoov', String(acceptMoov));
-      localStorage.setItem('boutique_acceptOrange', String(acceptOrange));
+      localStorage.setItem('boutique_acceptKonoom', String(acceptKonoom));
       localStorage.setItem('boutique_acceptCard', String(acceptCard));
 
       localStorage.setItem('boutique_products', JSON.stringify(products));
@@ -252,7 +252,7 @@ export default function BoutiquePage() {
                   {/* Airtel Money Toggle */}
                   <div className="flex items-center justify-between p-3 border border-[#e2e5ea] rounded-xl hover:bg-slate-50 transition cursor-pointer">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-orange-50 text-[#ea580c] flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-[#ea580c]/10 text-[#ea580c] flex items-center justify-center shrink-0">
                         <Smartphone className="h-4.5 w-4.5" />
                       </div>
                       <div>
@@ -287,21 +287,21 @@ export default function BoutiquePage() {
                     />
                   </div>
 
-                  {/* Orange Money Toggle */}
+                  {/* Konoom Money Toggle */}
                   <div className="flex items-center justify-between p-3 border border-[#e2e5ea] rounded-xl hover:bg-slate-50 transition cursor-pointer">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-orange-50 text-[#ea580c] flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
                         <Smartphone className="h-4.5 w-4.5" />
                       </div>
                       <div>
-                        <span className="text-xs font-bold text-[#00103e] block">Orange Money</span>
-                        <span className="text-[9px] text-[#8b919d]">Mobile Money Zone CEMAC</span>
+                        <span className="text-xs font-bold text-[#00103e] block">Konoom Mobile Money</span>
+                        <span className="text-[9px] text-[#8b919d]">Mobile Money Tchad</span>
                       </div>
                     </div>
                     <input
                       type="checkbox"
-                      checked={acceptOrange}
-                      onChange={(e) => setAcceptOrange(e.target.checked)}
+                      checked={acceptKonoom}
+                      onChange={(e) => setAcceptKonoom(e.target.checked)}
                       className="rounded border-[#e2e5ea] text-[#0a2463] focus:ring-[#0a2463] h-4.5 w-4.5 cursor-pointer"
                     />
                   </div>
@@ -309,7 +309,7 @@ export default function BoutiquePage() {
                   {/* Card Toggle */}
                   <div className="flex items-center justify-between p-3 border border-[#e2e5ea] rounded-xl hover:bg-slate-50 transition cursor-pointer">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-[#0a2463]/5 text-[#0a2463] flex items-center justify-center shrink-0">
                         <CreditCard className="h-4.5 w-4.5" />
                       </div>
                       <div>
@@ -490,7 +490,7 @@ export default function BoutiquePage() {
                         {acceptAirtel && (
                           <div className="flex items-center justify-between p-2.5 bg-white border border-[#0a2463] rounded-xl shadow-sm cursor-pointer hover:bg-slate-50/50">
                             <div className="flex items-center gap-2.5">
-                              <div className="w-7 h-7 rounded-full bg-orange-50 text-[#ea580c] flex items-center justify-center text-xs">
+                              <div className="w-7 h-7 rounded-full bg-[#ea580c]/10 text-[#ea580c] flex items-center justify-center text-xs">
                                 🇹🇩
                               </div>
                               <span className="text-xs font-bold text-slate-800">Airtel Money Tchad</span>
@@ -513,13 +513,13 @@ export default function BoutiquePage() {
                           </div>
                         )}
 
-                        {acceptOrange && (
+                        {acceptKonoom && (
                           <div className="flex items-center justify-between p-2.5 bg-white border border-[#e2e5ea] rounded-xl cursor-pointer hover:bg-slate-50/50">
                             <div className="flex items-center gap-2.5">
-                              <div className="w-7 h-7 rounded-full bg-orange-50 text-[#ea580c] flex items-center justify-center text-xs">
-                                🇨🇲
+                              <div className="w-7 h-7 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                                <Smartphone className="h-4 w-4" />
                               </div>
-                              <span className="text-xs font-semibold text-slate-800">Orange Money</span>
+                              <span className="text-xs font-semibold text-slate-800">Konoom Mobile Money</span>
                             </div>
                             <div className="h-4 w-4 rounded-full border border-slate-300" />
                           </div>
@@ -528,7 +528,7 @@ export default function BoutiquePage() {
                         {acceptCard && (
                           <div className="flex items-center justify-between p-2.5 bg-white border border-[#e2e5ea] rounded-xl cursor-pointer hover:bg-slate-50/50">
                             <div className="flex items-center gap-2.5">
-                              <div className="w-7 h-7 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center">
+                              <div className="w-7 h-7 rounded-full bg-[#0a2463]/5 text-[#0a2463] flex items-center justify-center">
                                 <CreditCard className="h-4 w-4" />
                               </div>
                               <span className="text-xs font-semibold text-slate-800">Carte de crédit (Visa, Mastercard)</span>
@@ -537,7 +537,7 @@ export default function BoutiquePage() {
                           </div>
                         )}
 
-                        {!acceptAirtel && !acceptMoov && !acceptOrange && !acceptCard && (
+                        {!acceptAirtel && !acceptMoov && !acceptKonoom && !acceptCard && (
                           <p className="text-[10px] text-rose-600 italic">Aucune méthode de paiement activée pour le moment.</p>
                         )}
 

@@ -51,7 +51,7 @@ export default function PayoutsPage() {
         recipientPhone: phone.startsWith('+235') ? phone : `+235${phone}`,
         recipientName: 'Destinataire Unique',
         amount: parseFloat(singleAmount),
-        provider: `${operator.toUpperCase()}_MONEY`,
+        provider: operator.toLowerCase(),
       }];
 
       // 1. Create bulk payout draft
@@ -177,7 +177,7 @@ export default function PayoutsPage() {
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-[#5c6470] uppercase tracking-wider block">Opérateur / Canal</label>
                       <div className="grid grid-cols-4 gap-2">
-                        {['AIRTEL', 'MOOV', 'ORANGE', 'VISA'].map((op) => (
+                        {['AIRTEL', 'MOOV', 'KONOOM', 'VISA'].map((op) => (
                           <button
                             key={op}
                             type="button"
@@ -189,7 +189,7 @@ export default function PayoutsPage() {
                             }`}
                           >
                             <Smartphone className="h-5 w-5" />
-                            <span className="text-[10px] font-bold mt-1 capitalize">{op.toLowerCase()}</span>
+                            <span className="text-[10px] font-bold mt-1 uppercase">{op === 'KONOOM' ? 'Konoom Money' : op.toLowerCase()}</span>
                           </button>
                         ))}
                       </div>

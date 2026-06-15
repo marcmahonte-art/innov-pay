@@ -160,7 +160,7 @@ export default function TopUpPage() {
                       </div>
                       <div>
                         <p className="text-xs font-bold text-[#00103e]">Mobile Money</p>
-                        <p className="text-[10px] text-[#8b919d] mt-0.5">Airtel, Moov, Orange</p>
+                        <p className="text-[10px] text-[#8b919d] mt-0.5">Airtel, Moov, Konoom Mobile Money</p>
                       </div>
                       {method === 'momo' && (
                         <div className="absolute top-2 right-2 text-[#0a2463]">
@@ -240,7 +240,7 @@ export default function TopUpPage() {
                           >
                             <option>Airtel Tchad</option>
                             <option>Moov Africa</option>
-                            <option>Orange Money</option>
+                            <option>Konoom Mobile Money</option>
                           </select>
                         </div>
                       </div>
