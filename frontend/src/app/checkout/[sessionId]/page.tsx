@@ -150,7 +150,7 @@ export default function CheckoutSessionPage() {
     { id: 'KONOOM_MONEY', name: 'Konoom Money', operator: 'KONOOM', logo: '/operators/konoom.png', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
     { id: 'AIRTEL_MONEY', name: 'Airtel Money', operator: 'AIRTEL', logo: '/operators/airtel.png', color: 'bg-red-50 text-red-600 border-red-200' },
     { id: 'MOOV_MONEY', name: 'Moov Money', operator: 'MOOV', logo: '/operators/moov.png', color: 'bg-blue-50 text-blue-600 border-blue-200' },
-    { id: 'VISA', name: 'Carte Visa', operator: 'VISA/GIMAC', logo: '/operators/visa.png', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
+    { id: 'VISA', name: 'Carte Visa', operator: 'VISA/GIMAC', logo: '/operators/visa.svg', color: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
     { id: 'MASTERCARD', name: 'Carte Mastercard', operator: 'MASTERCARD', logo: '/operators/mastercard.svg', color: 'bg-orange-50 text-orange-700 border-orange-200' },
   ];
 
