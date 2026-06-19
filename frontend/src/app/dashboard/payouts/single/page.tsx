@@ -177,19 +177,26 @@ export default function PayoutsPage() {
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-[#5c6470] uppercase tracking-wider block">Opérateur / Canal</label>
                       <div className="grid grid-cols-4 gap-2">
-                        {['AIRTEL', 'MOOV', 'KONOOM', 'VISA'].map((op) => (
+                        {[
+                          { id: 'AIRTEL', name: 'Airtel', logo: '/operators/airtel.png' },
+                          { id: 'MOOV', name: 'Moov', logo: '/operators/moov.png' },
+                          { id: 'KONOOM', name: 'Konoom', logo: '/operators/konoom.png' },
+                          { id: 'VISA', name: 'Visa', logo: '/operators/visa.svg' },
+                        ].map((op) => (
                           <button
-                            key={op}
+                            key={op.id}
                             type="button"
-                            onClick={() => setOperator(op)}
-                            className={`border rounded-xl p-3 flex flex-col items-center justify-center gap-1 transition ${
-                              operator === op
+                            onClick={() => setOperator(op.id)}
+                            className={`border rounded-xl p-2.5 flex flex-col items-center justify-center gap-2 transition h-24 ${
+                              operator === op.id
                                 ? 'border-[#0a2463] bg-[#0a2463]/5 font-bold text-[#0a2463]'
                                 : 'border-[#e2e5ea] bg-white hover:bg-slate-50 text-[#5c6470]'
                             }`}
                           >
-                            <Smartphone className="h-5 w-5" />
-                            <span className="text-[10px] font-bold mt-1 uppercase">{op === 'KONOOM' ? 'Konoom Money' : op.toLowerCase()}</span>
+                            <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white overflow-hidden p-1 border border-[#e2e5ea] shadow-sm shrink-0">
+                              <img src={op.logo} alt={op.name} className="max-w-full max-h-full object-contain" />
+                            </div>
+                            <span className="text-[9px] font-extrabold uppercase tracking-wider">{op.name}</span>
                           </button>
                         ))}
                       </div>
